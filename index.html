@@ -19,8 +19,8 @@
     <div class="span3 types">XLS</div>
     <div class="span3 types">PPT</div>
   </div>
-  <div class="row-fluid item">
-    <div class="span2 list-title"></div>
+  <section class="row-fluid item" style="display:none">
+    <div class="span2 list-title doctype"></div>
     <div class="span10">
       <div class="row-fluid">
         <div class="span12 name">
@@ -31,7 +31,16 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
+  <section id="empty-list">
+    <div class="row-fluid empty-title" data-l10-id="files_not_found">No docx files found.</div>
+    <div class="row-fluid empty-subtitle" data-l10n-id="rescan">You can try to refresh to re-scan.</div>
+    <div class="row-fluid">
+      <div class="refresh-btn empty-rescan">
+        <span data-l10n-id="refresh">Refresh</span>
+      </div>
+    </div>
+  </section>
   <script src="bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>

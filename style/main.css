@@ -67,3 +67,34 @@
   color: rgba(255, 255, 255, 0.5);
   font-size: 12px;
 }
+
+.refresh-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.empty-title {
+  font-size: 18px;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.empty-subtitle {
+  font-size: 16px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.empty-rescan {
+  margin-left: calc(50% - 40px);
+  margin-top: 30px;
+}
+
+.empty-rescan span {
+  display: block;
+  padding-top: 30px;
+  font-size: 20px;
+  text-align: center;
+}
