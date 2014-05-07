@@ -1,0 +1,37 @@
+{
+  "activities": {
+    "ads_odf": {
+      "returnValue": true,
+      "href": "/advertising.html",
+      "disposition": "inline",
+      "filters": {
+        "url": {
+          "regexp": "/^https?:.{1,16384}$/i",
+          "required": true
+        },
+        "type": "url"
+      }
+    }
+  },
+  "name": "HTML Office",
+  "description": "office for Firefox OS.",
+  "type": "privileged",
+  "launch_path": "/index.html",
+  "version": "1.0",
+  "icons": {
+    "48": "/icons/icon.png",
+    "64": "/icons/icon64.png",
+    "128": "/icons/icon128.png"
+  },
+  "developer": {
+    "name": "Mozilla Online",
+    "url": "http://firefox.com.cn/"
+  },
+  "permissions": {
+    "device-storage:sdcard": {
+      "description": "Pick a .doc .xls .ppt file from the SD card.",
+      "access": "readonly"
+    }
+  },
+  "default_locale": "en-US"
+}
