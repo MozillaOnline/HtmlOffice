@@ -549,34 +549,6 @@ function generateOdfxml(zipfiles, xmlGroup, fileType) {
 
 var pxsi = {};
 
-function transformXlsx(oXMLParent) {
-  var nAttrLen = 0, nLength = 0, sCollectedTxt = '';
-  if (!oXMLParent.hasChildNodes()) {
-    return;
-  }
-  for (var oNode, nItem = 0; nItem < oXMLParent.childNodes.length; nItem++) {
-    oNode = oXMLParent.childNodes.item(nItem);
-    if (oNode.nodeName == 'pxsi:v') {
-      var num = oNode.innerHTML;
-      oXMLParent.removeChild(oNode);
-      oXMLParent.innerHTML = pxsi[num];
-      nItem--;
-    } else {
-      if (oNode.nodeName == 'pxsi:si') {
-        var numberAttr = oNode.getAttribute('pxsi:number');
-        pxsi[numberAttr] = oNode.innerHTML;
-      }
-      if (oNode.nodeType === 1) {
-        transformXlsx(oNode);
-      }
-      if (oNode.nodeName == 'pxsi:sst') {
-        oXMLParent.removeChild(oNode);
-        nItem--;
-      }
-    }
-  }
-}
-
 /*
  * Convert the xml format from docx/xslx/pptx to odt/ods/odp
  */
@@ -639,12 +611,7 @@ function xslTransform(xmlFile, fileType) {
     end = xmlString.indexOf(endString, start);
     startIndex = start;
   }
-  if (fileType == 'xlsx') {
-    var parser = new DOMParser();
-    var oXMLParent = parser.parseFromString(xmlString, "text/xml");
-    transformXlsx(oXMLParent);
-    xmlString = oXMLParent.children[0].outerHTML;
-  }
+
   return xmlString;
 }
 
@@ -695,12 +662,7 @@ function analysisOox(xmlFile, fileType) {
     }
   }
   var xmlfile = generateOdfxml(zipfiles, xmlGroup);
-  if (fileType == 'xlsx') {
-    parser = new DOMParser();
-    xmlDoc = parser.parseFromString(xmlfile, 'text/xml');
-    JXONTree(xmlDoc);
-    xmlfile = xmlDoc.children[0].outerHTML;
-  }
+
   return xmlfile;
 }
 
@@ -718,22 +680,19 @@ function convertoox2odf(ooxFile, callback) {
     switch (fileType) {
     case docx:
     case xlsx:
-      xmlfile = analysisOox(zip.files, fileType);
-      break;
     case pptx:
-      xmlfile = analysisPptx(zip.files);
+      xmlfile = analysisOox(zip.files, fileType);
+      if (xmlfile) {
+        var sourcePzip = xslTransform(xmlfile, fileType);
+        if (sourcePzip) {
+          xmlfile = zipFile(sourcePzip, zip.files);
+        } else {
+          xmlfile = null;
+        }
+      }
       break;
     default:
-      callback(null);
-      return;
-    }
-    if (xmlfile) {
-      var sourcePzip = xslTransform(xmlfile, fileType);
-      if (sourcePzip) {
-        xmlfile = zipFile(sourcePzip, zip.files);
-      } else {
-        xmlfile = '';
-      }
+      break;
     }
     callback(xmlfile);
     return;
