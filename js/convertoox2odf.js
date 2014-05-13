@@ -648,7 +648,7 @@ function xslTransform(xmlFile, fileType) {
   return xmlString;
 }
 
-function analysisDocx(zipfiles) {
+function analysisOox(xmlFile, fileType) {
   var xmlGroup = [];
   if (!zipfiles[Content_TypesXml]) {
     return null;
@@ -661,17 +661,9 @@ function analysisDocx(zipfiles) {
     id: null
   };
   xmlGroup.push(tempjson);
-  for (var i = 0; i < xmlDoc.children[0].children.length; i++) {
-    var filename = xmlDoc.children[0].children[i].attributes.getNamedItem('PartName');
-    if (!filename) {
-      continue;
-    }
-    filename = filename.value;
+  for (var filename in zipfiles) {
     if (filename.substring(filename.length - rels.length, filename.length) != rels) {
       continue;
-    }
-    if (filename.indexOf('/') == 0) {
-      filename = filename.substring(1, filename.length);
     }
     var relsparser = new DOMParser();
     var relsDoc = relsparser.parseFromString(zipfiles[filename].asText(), 'text/xml');
@@ -682,34 +674,41 @@ function analysisDocx(zipfiles) {
     };
     xmlGroup.push(tempjson);
     var path = filename.substring(0, filename.indexOf(_rels));
-    for (var j = 0; j < relsDoc.children[0].children.length; j++) {
-      var tempname = path + relsDoc.children[0].children[j].attributes.getNamedItem('Target').value;
+    for (var i = 0; i < relsDoc.children[0].children.length; i++) {
+      var tempname = relsDoc.children[0].children[i].attributes.getNamedItem('Target').value;
       if (xml != tempname.substring(tempname.length - xml.length, tempname.length)) {
         continue;
       }
+      if (tempname.indexOf(updir) == 0) {
+        var temppath = path.split('/');
+        temppath.splice(temppath.length - 2, 1);
+        tempname = temppath.join('/') + tempname.substring(updir.length, tempname.length);
+      } else {
+        tempname = path + tempname;
+      }
       tempjson = {
         name: tempname,
-        type: relsDoc.children[0].children[j].attributes.getNamedItem('Type').value,
-        id: relsDoc.children[0].children[j].attributes.getNamedItem('Id').value
+        type: relsDoc.children[0].children[i].attributes.getNamedItem('Type').value,
+        id: relsDoc.children[0].children[i].attributes.getNamedItem('Id').value
       };
       xmlGroup.push(tempjson);
     }
   }
-  return generateOdfxml(zipfiles, xmlGroup);
-}
-
-function analysisXlsx(zipfiles) {
-  
-}
-
-function analysisPptx(zipfiles) {
-  
+  var xmlfile = generateOdfxml(zipfiles, xmlGroup);
+  if (fileType == 'xlsx') {
+    parser = new DOMParser();
+    xmlDoc = parser.parseFromString(xmlfile, 'text/xml');
+    JXONTree(xmlDoc);
+    xmlfile = xmlDoc.children[0].outerHTML;
+  }
+  return xmlfile;
 }
 
 function convertoox2odf(ooxFile, callback) {
   _name2ncname = [];
   _ncname2name = [];
   pxsi = {};
+
   var docx = 'docx';
   var xlsx = 'xlsx';
   var pptx = 'pptx';
@@ -718,16 +717,15 @@ function convertoox2odf(ooxFile, callback) {
     var xmlfile;
     switch (fileType) {
     case docx:
-      xmlfile = analysisDocx(zip.files);
-      break;
     case xlsx:
-      xmlfile = analysisXlsx(zip.files);
+      xmlfile = analysisOox(zip.files, fileType);
       break;
     case pptx:
       xmlfile = analysisPptx(zip.files);
       break;
     default:
-      break;
+      callback(null);
+      return;
     }
     if (xmlfile) {
       var sourcePzip = xslTransform(xmlfile, fileType);
