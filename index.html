@@ -6,36 +6,41 @@
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="style/main.css" rel="stylesheet" media="screen">
     <script src="js/3rd/jszip.js"></script>
-    <script src="js/common.js"></script>
-    <script src="js/ooxConvert.js"></script>
+    <script src="js/3rd/webodf.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/convertoox2odf.js"></script>
+    <script src="js/utils.js"></script>
   </head>
   <body class="main">
-  <div class="row-fluid">
-    <div class="span8 offset2 title"> Document Reader</div>
-    <div class="span2">
-      <div class="refresh"></div>
+  <section id="list-header">
+    <div class="row-fluid">
+      <div class="span8 offset2 title"> Document Reader</div>
+      <div class="span2">
+        <div class="refresh"></div>
+      </div>
     </div>
-  </div>
-  <div class="row-fluid header">
-    <div id="recent" class="span3 types">RECENT</div>
-    <div id="doc" data-type="docx" class="span3 types">DOC</div>
-    <div id="xls" data-type="xls" class="span3 types">XLS</div>
-    <div id="ppt" data-type="ppt" class="span3 types">PPT</div>
-  </div>
-  <section class="row-fluid item" style="display:none">
-    <div class="span2 list-title doctype"></div>
-    <div class="span10">
-      <div class="row-fluid">
-        <div class="span12 name">
-          file_name.suffix
-        </div>
-        <div class="span12 detail">
-          2014-04-11 13:30 231KB
+    <div class="row-fluid header">
+      <div id="recent" class="span3 types">RECENT</div>
+      <div id="doc" data-type="docx" class="span3 types">DOC</div>
+      <div id="xls" data-type="xls" class="span3 types">XLS</div>
+      <div id="ppt" data-type="ppt" class="span3 types">PPT</div>
+    </div>
+  </section>
+  <section id="list-container" class="hidden">
+    <div class="row-fluid item">
+      <div class="span2 list-title doctype"></div>
+      <div class="span10">
+        <div class="row-fluid">
+          <div class="span12 name">
+            file_name.suffix
+          </div>
+          <div class="span12 detail">
+            2014-04-11 13:30 231KB
+          </div>
         </div>
       </div>
     </div>
   </section>
-  <section id="empty-list" style="display:none">
+  <section id="empty-list" class="hidden">
     <div class="row-fluid empty-title" data-l10-id="files_not_found">No docx files found.</div>
     <div class="row-fluid empty-subtitle" data-l10n-id="rescan">You can try to refresh to re-scan.</div>
     <div class="row-fluid">
@@ -44,10 +49,10 @@
       </div>
     </div>
   </section>
-  <section id="file-container" style="display:none">
+  <section id="file-container" class="hidden">
     <div class="row-fluid">
       <div class="span2">
-        <div class="back"></div>
+        <div id="goback" class="back"></div>
       </div>
       <div id="file-header" class="span10">
         <span>File Name</span>
@@ -56,31 +61,55 @@
     <div id="file-display">
       <p>helldfuodifiodusfioudoi</p>
     </div>
-    <div id="footer" class="row-fluid">
-      <div class="span2">
-        <div class="zoom-in"></div>
-      </div>
-      <div class="span2">
-        <div class="zoom-out"></div>
+    <div id="file-info" class="hidden">
+      <div class="nameInfo"> docName</div>
+      <div class="name" data-l10n-id="size">Size</div>
+      <div class="value"> 100K</div>
+      <div class="name" data-l10n-id="directory">directory</div>
+      <div class="value"> /sdcard/tiger/test.docx</div>
+      <div class="name" data-l10n-id="lastModifiedTime">Last Modification Time</div>
+      <div class="value"> 2014-05-09 14:10:10</div>
+      <div class="row-fluid">
+        <div class="empty-btn return-btn">
+          <span id="open" data-l10n-id="open">Open</span>
+        </div>
       </div>
     </div>
-    <div id="loadingFailed" style="display:none">
+    <div id="footer" class="row-fluid hidden">
+      <div class="span2">
+        <div id="zoom-in" class="zoom-in"></div>
+      </div>
+      <div class="span2">
+        <div id="zoom-out" class="zoom-out"></div>
+      </div>
+    </div>
+    <div id="loadingFailed" class="hidden">
       <div class="row-fluid empty-title" data-l10-id="loading_failed">Oops,
       failed to load.</div>
       <div class="row-fluid empty-subtitle"
       data-l10n-id="choose_another_file">Please go back to choose another file.</div>
       <div class="row-fluid">
         <div class="empty-btn return-btn">
-          <span data-l10n-id="return">Return</span>
+          <span id="return" data-l10n-id="return">Return</span>
         </div>
       </div>
     </div>
   </section>
-  <div id="modal-loading" class="modal" style="display:none">
-    <div class="progress progress-striped active loading-container">
-      <div class="bar" style="width: 100%;"></div>
+  <section id="modal-loading" class="modal hidden">
+    <div class="loading-container">
+      <img id="loading-img" src="images/1.png"/>
     </div>
-  </div>
+  </section>
+  <section id="modal-file-ops" class="modal hidden">
+    <div class="file-ops row-fluid">
+      <div class="row-fluid">
+        <div id="fileInfo" class="span12 fileInfo" data-l10n-id="file-info"> File Info. ...</div>
+      </div>
+      <div class="row-fluid">
+        <div id="deleteFile" class="span12 deleteFile" data-l10n-id="delete-file"> Delete this file </div>
+      </div>
+    </div>
+  </section>
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script src="js/main.js"></script>
   </body>
