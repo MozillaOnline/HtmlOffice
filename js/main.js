@@ -130,20 +130,14 @@ function loadFile(event) {
   try {
     var file = files[event.target.parentNode.parentNode.dataset.index];
     convertoox2odf(file, function(content) {
-      var array = new ArrayBuffer(content.length);
-      for (var i = 0; i < array.length; i++) {
-        array[i] = str.at(i);
+      var fr = new FileReader();
+      fr.onload = function() {
+        var url = fr.result;
+        var odfelement = $id('file-display');
+        var odfcanvas = new odf.OdfCanvas(odfelement);
+        odfcanvas.load(url);
       }
-    });
-    unzipFile(file, function (zip) {
-      var xmlfile = analysisDocx(zip.files);
-      var sourcePzip = xslTransform(xmlfile, "../xsl/word/oox2odf/oox2odf.xsl");
-      var base64zip = zipFile(sourcePzip, zip.files);
-      var odfelement = $id('file-display');
-      var odfcanvas = new odf.OdfCanvas(odfelement);
-      // var blob = new Blob(, {type: ''});
-      storage.addNamed(b64toBlob(base64zip, ''), 'tmp.odt');
-      odfcanvas.load("tmp.odt");
+      fr.readAsDataURL(content);
     });
   } catch (e) {
     alert(e);
