@@ -8,8 +8,8 @@ var hideZoomPanelTimer = null;
 var bItemLongPressed = false;
 var files = [];
 
-//var files = [{name: "/sdcard/test.docx", lastModifiedDate: new Date(), size: 100},
-//             {name: "/sdcard/test2.docx", lastModifiedDate: new Date(), size: 200}];
+//var files = [{name: "/sdcard/test.docx", lastModifiedDate: new Date(), size: 100000},
+//             {name: "/sdcard/test2.docx", lastModifiedDate: new Date(), size: 2086760}];
 //var files = [];
 
 function loadFiles(e) {
@@ -126,6 +126,7 @@ function loadFile(event) {
 
   $id('file-display').classList.remove('hidden');
   $id('file-info').classList.add('hidden');
+  $id('fileName').innerHTML = extractFileName(event.target.parentNode.parentNode.dataset.filePath);
 
   try {
     var file = files[event.target.parentNode.parentNode.dataset.index];
@@ -142,7 +143,6 @@ function loadFile(event) {
   } catch (e) {
     alert(e);
   }
-  // $id('file-display').innerHTML = 'woujdoifuoisdfjiodfjodifjdfiodufioduoi';
 }
 
 function select(id) {
@@ -203,6 +203,7 @@ function init() {
   $id('xls').onclick = loadFiles;
   $id('ppt').onclick = loadFiles;
   $id('goback').onclick = $id('return').onclick = goBack;
+  /*
   $id('file-display').onmousedown = function() {
     showZoomPanelTimer = setTimeout(function() {
       $id('footer').classList.remove('hidden');
@@ -215,34 +216,23 @@ function init() {
       showZoomPanelTimer = null;
     }
   };
+  */
   $id('zoom-in').onclick = zoomIn;
   $id('zoom-out').onclick = zoomOut;
   $id('fileInfo').onclick = showFileInfo;
-}
-
-function b64toBlob(b64Data, contentType, sliceSize) {
-    contentType = contentType || '';
-    sliceSize = sliceSize || 512;
-
-    var byteCharacters = b64Data;
-    //var byteCharacters = atob(b64Data);
-    var byteArrays = [];
-
-    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-        var slice = byteCharacters.slice(offset, offset + sliceSize);
-
-        var byteNumbers = new Array(slice.length);
-        for (var i = 0; i < slice.length; i++) {
-            byteNumbers[i] = slice.charCodeAt(i);
-        }
-
-        var byteArray = new Uint8Array(byteNumbers);
-
-        byteArrays.push(byteArray);
-    }
-
-    var blob = new Blob(byteArrays, {type: contentType});
-    return blob;
+  $id('btn').onclick = function() {
+    var f = $id('test').files[0];
+    convertoox2odf(f, function(content) {
+      var fr = new FileReader();
+      fr.onload = function() {
+        var url = fr.result;
+        var odfelement = $id('file-display');
+        var odfcanvas = new odf.OdfCanvas(odfelement);
+        odfcanvas.load(url);
+      }
+      fr.readAsDataURL(content);
+    });
+  };
 }
 
 window.addEventListener("load", init, false);

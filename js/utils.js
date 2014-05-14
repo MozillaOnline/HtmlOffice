@@ -9,11 +9,11 @@ function formatDate(dt) {
   var h = dt.getHours();
   var min = dt.getMinutes();
 
-  var strDate = y;
+  var strDate = y + '-';
   if (m < 10) {
     strDate += '0';
   }
-  strDate += '-' + m + '-' + d + ' ';
+  strDate += m + '-' + d + ' ';
 
   if (h < 10) {
     strDate += '0';

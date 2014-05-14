@@ -1,6 +1,6 @@
-var xslDocxFile = './xsl/word/oox2odf/oox2odf.xsl';
-var xslXlsxFile = './xsl/spreadsheet/oox2odf/oox2odf.xsl';
-var xslPptxFile = './xsl/presentation/oox2odf/oox2odf.xsl';
+var xslDocxFile = 'js/xsl/word/oox2odf/oox2odf.xsl';
+var xslXlsxFile = 'js/xsl/spreadsheet/oox2odf/oox2odf.xsl';
+var xslPptxFile = 'js/xsl/presentation/oox2odf/oox2odf.xsl';
 
 String.prototype.format = function(args) {
   if (arguments.length > 0) {
