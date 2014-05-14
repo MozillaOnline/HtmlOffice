@@ -1,6 +1,6 @@
-var xslDocxFile = '../xsl/word/oox2odf/oox2odf.xsl';
-var xslXlsxFile = '../xsl/spreadsheet/oox2odf/oox2odf.xsl';
-var xslPptxFile = '../xsl/presentation/oox2odf/oox2odf.xsl';
+var xslDocxFile = './xsl/word/oox2odf/oox2odf.xsl';
+var xslXlsxFile = './xsl/spreadsheet/oox2odf/oox2odf.xsl';
+var xslPptxFile = './xsl/presentation/oox2odf/oox2odf.xsl';
 
 String.prototype.format = function(args) {
   if (arguments.length > 0) {
@@ -648,7 +648,7 @@ function xslTransform(xmlFile, fileType) {
   return xmlString;
 }
 
-function analysisOox(xmlFile, fileType) {
+function analysisOox(zipfiles, fileType) {
   var xmlGroup = [];
   if (!zipfiles[Content_TypesXml]) {
     return null;
