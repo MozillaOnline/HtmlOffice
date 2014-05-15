@@ -108,7 +108,6 @@ function ODFViewerPlugin() {
 
             odfElement = document.getElementById('canvas');
             odfCanvas = new odf.OdfCanvas(odfElement);
-            alert(documentUrl);
             odfCanvas.load(documentUrl);
 
             odfCanvas.addListener('statereadychange', function () {

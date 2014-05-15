@@ -48,14 +48,6 @@
     </div>
   </section>
   <section id="file-container" class="hidden">
-    <div class="row-fluid">
-      <div class="span2">
-        <div id="goback" class="back"></div>
-      </div>
-      <div id="file-header" class="span10">
-        <span id="fileName">File Name</span>
-      </div>
-    </div>
     <div id="file-info" class="hidden">
       <div class="nameInfo"> docName</div>
       <div class="name" data-l10n-id="size">Size</div>
@@ -105,7 +97,16 @@
       </div>
     </div>
   </section>
-  <section id="file-display">
+  <section id="container">
+    <div class="row-fluid">
+      <div class="span2">
+        <div id="goback" class="back"></div>
+      </div>
+      <div id="file-header" class="span10">
+        <span id="fileName">File Name</span>
+      </div>
+    </div>
+    <div id="file-display"></div>
   </section>
   <div class="row-fluid bottom">
     <div class="span4"><input id="input" type="file"></div>
