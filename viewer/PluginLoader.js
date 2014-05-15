@@ -68,6 +68,7 @@ function loadDocument(documentUrl) {
         case 'odp':
         case 'ods':
         case 'fodt':
+        case 'docx':
             loadPlugin('./ODFViewerPlugin', function () {
                 Plugin = ODFViewerPlugin;
             });
