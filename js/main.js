@@ -197,7 +197,7 @@ function showFileInfo() {
 }
 
 function init() {
-  storage = navigator.getDeviceStorage("sdcard");
+  //storage = navigator.getDeviceStorage("sdcard");
   $id("recent").onclick = recent;
   $id('doc').onclick = loadFiles;
   $id('xls').onclick = loadFiles;
@@ -226,9 +226,14 @@ function init() {
       var fr = new FileReader();
       fr.onload = function() {
         var url = fr.result;
-        var odfelement = $id('file-display');
+        // var odfelement = $id('file-display');
+        var odfelement = document.createElement('div');
         var odfcanvas = new odf.OdfCanvas(odfelement);
+        $id('file-container').appendChild(odfelement);
         odfcanvas.load(url);
+        odfelement.style.display = "flex";
+        odfelement.style.height= "460px";
+        edfcanvas.style.transform = 'scale: 0.3';
       }
       fr.readAsDataURL(content);
     });
