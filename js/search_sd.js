@@ -7,13 +7,14 @@ $(document).ready(function(){
     
     var total_page = 1;
     var show_page = 1;
-    storage = navigator.getDeviceStorage("sdcard");
+    //storage = navigator.getDeviceStorage("sdcard");
     
     $('.ui.icon.button.refresh').click(function(){
     	if ($('.ui.inbox.list.active').attr("data-tab") == "unread"){
     		show_page = 1;
 	        total_page = 1;
-	        load();
+            var files = document.getElementById("input").files;
+	        load(files);
     	}    
     });
     $('.ui.pagination.sd .item.page_prev').click(function(){
@@ -40,24 +41,25 @@ $(document).ready(function(){
           }
         }
       });
-    load();
-    function load(){
+   // load();
+    function load(files){
       $('.ui.inbox.list.active').html('<a id="Message" class="active item">'+find_msg+'</a>');
-      $('.ui.segment.loader_pdf').show();
+      // $('.ui.segment.loader_pdf').show();
       var divided_pdf = 0;
       var style = "";
       
-      var all_files = storage.enumerate("");
-      all_files.onsuccess = function() {
+     // var all_files = storage.enumerate("");
+     // all_files.onsuccess = function() {
         $('.ui.page.pdf').hide()
-        while (all_files.result) {
-          var each_file = all_files.result;
+        var index = 0;
+        while (files[index]) {
+          var each_file = files[index]; //all_files.result;
           if (each_file.name.match(/.odt$/) || each_file.name.match(/.odp$/) || each_file.name.match(/.ods$/)) {
-            /*if (divided_pdf == 10){
-              divided_pdf = 0;
-              style="style='display:none;'";
-              total_page++;
-            }*/
+            //if (divided_pdf == 10){
+            //  divided_pdf = 0;
+            //  style="style='display:none;'";
+            //  total_page++;
+            // }
             divided_pdf++;
             ultimo = each_file.name.split("/").pop();
             pdf = ultimo.charAt(0).toUpperCase() + ultimo.slice(1);
@@ -89,8 +91,10 @@ $(document).ready(function(){
             }
             
           }
-          all_files.continue();
+          index++;
+          //all_files.continue();
         }
+        /*
         if (all_files.readyState != "pending"){
           $('#Message').remove();
           if ($('.ui.inbox.list.active a').size() == 0){
@@ -104,8 +108,8 @@ $(document).ready(function(){
           }
           $('.ui.page.pdf').show()
           $('.ui.segment.loader_pdf').hide();   
-              
         }
+        */
 
        /* if (total_page > 1){
           $('.page.pagination.sd').html(''+nav_page+' <b>'+show_page+'</b> / '+total_page+'')
@@ -140,10 +144,12 @@ $(document).ready(function(){
               .sidebar('hide')
             ;
         });
-      };
+      //};
 
+      /*
       all_files.onerror = function(){
           console.log("error al leer archivos");
       }
+      */
     }
 });

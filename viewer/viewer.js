@@ -64,7 +64,12 @@ function Viewer(viewerPlugin) {
         pages = [],
         currentPage,
         scaleChangeTimer,
+        file,
         touchTimer;
+    document.getElementById("test").onclick = function() {
+      self.file = document.getElementById("input").files[0];
+      init();
+    };
 
     function initializeAboutInformation() {
         var basedOnDiv, aboutButton, pluginName, pluginVersion, pluginURL;
@@ -289,13 +294,13 @@ function Viewer(viewerPlugin) {
         };
 
         viewerPlugin.initialize(canvasContainer, location);*/
-        var storage = navigator.getDeviceStorage("sdcard");
-            var pdf_file = storage.get(location);
-            pdf_file.onerror = function() {
-                console.error("Error in: ", pdf_file.error.name);
-            };
-            pdf_file.onsuccess = function(event) {
-                var file = pdf_file.result;
+        // var storage = navigator.getDeviceStorage("sdcard");
+            //var pdf_file = storage.get(location);
+            //pdf_file.onerror = function() {
+            //    console.error("Error in: ", pdf_file.error.name);
+            //};
+            //pdf_file.onsuccess = function(event) {
+                var file = self.file; //pdf_file.result;
                 var reader  = new FileReader();
 
                 reader.onload = function () {
@@ -342,7 +347,7 @@ function Viewer(viewerPlugin) {
                 if (file) {
                    reader.readAsDataURL(file);
                 }
-            };
+            //};
     };
 
     /**
@@ -619,5 +624,5 @@ function Viewer(viewerPlugin) {
         }
     }
 
-    init();
+   // init();
 }
