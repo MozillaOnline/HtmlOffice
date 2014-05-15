@@ -1,35 +1,20 @@
 ﻿{
-  "activities": {
-    "ads_odf": {
-      "returnValue": true, 
-      "href": "/advertising.html", 
-      "disposition": "inline", 
-      "filters": {
-        "url": {
-          "regexp": "/^https?:.{1,16384}$/i", 
-          "required": true
-        }, 
-        "type": "url"
-      }
-    }
-  },
-  "name": "ODF Reader",
-  "description": "ODF Reader for Firefox OS.",
+  "name": "HTML Office",
+  "description": "office for Firefox OS.",
   "type" : "privileged",
   "launch_path": "/index.html",
   "version": "1.0",
   "icons": {
     "128": "/icon128.png",
-    "64": "/icon64.png", 
-    "48": "/icon.png"
+    "60": "/icon60.png"
   },
   "developer": {
-    "name": "FoxXapp © 2014",
-    "url": "http://foxxapp.com/"
+    "name": "Mozilla Online",
+    "url": "http://firefox.com.cn/"
   },
   "permissions": {
     "device-storage:sdcard": {
-      "description" : "Pick a .pdf file from the SD card.",
+      "description" : "Pick a .docx .xls .ppt file from the SD card.",
       "access": "readonly"
     }
   },
