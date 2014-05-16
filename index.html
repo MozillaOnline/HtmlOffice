@@ -6,7 +6,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="style/main.css" rel="stylesheet" media="screen">
-    <script src="js/3rd/webodf.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/utils.js"></script>
   </head>
   <body class="main">
@@ -48,7 +47,7 @@
       </div>
     </div>
   </section>
-  <section id="file-container" class="">
+  <section id="file-container" class="hidden">
     <div class="row-fluid">
       <div class="span2">
         <div id="goback" class="back"></div>
@@ -56,8 +55,6 @@
       <div id="file-header" class="span10">
         <span id="fileName">File Name</span>
       </div>
-    </div>
-    <div id="file-display">
     </div>
     <div id="file-info" class="hidden">
       <div class="nameInfo"> docName</div>
@@ -108,7 +105,9 @@
       </div>
     </div>
   </section>
-  <div class="row-fluid">
+  <section id="file-display">
+  </section>
+  <div class="row-fluid bottom">
     <div class="span4"><input id="input" type="file"></div>
     <div class="span4"><input id="btn" type="button" value="click"></div>
   </div>

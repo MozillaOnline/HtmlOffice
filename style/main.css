@@ -1,3 +1,7 @@
+html, body {
+  height: 100%;
+}
+
 .main {
   return;
   background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll 0 0 rgba(0, 0, 0, 0);
@@ -221,4 +225,10 @@
   width: 90%;
   margin: 10px calc(5%) 0;
   border-bottom: 1px solid rgba(42, 42, 42, 0.1);
+}
+
+.bottom {
+  position: absolute;
+  bottom: 0;
+  background-color: gray;
 }

@@ -9,14 +9,15 @@ var bItemLongPressed = false;
 var files = [];
 
 function loadFiles(e) {
-  if (!storage) return;
+  // if (!storage) return;
   if (currentTarget == e.target) return;
 
   select(e.target.id);
   currentTarget = e.target;
   loading('images/loading1/');
   var type = new RegExp(e.target.dataset.type);
-  searchFiles(type);
+  showFiles();
+  //searchFiles(type);
 }
 
 function searchFiles(type) {
