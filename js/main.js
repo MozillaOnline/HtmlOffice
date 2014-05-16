@@ -198,7 +198,7 @@ function showFileInfo() {
 }
 
 function init() {
-  storage = navigator.getDeviceStorage("sdcard");
+ // storage = navigator.getDeviceStorage("sdcard");
   $id("recent").onclick = recent;
   $id('doc').onclick = loadFiles;
   $id('xls').onclick = loadFiles;
@@ -222,25 +222,9 @@ function init() {
   $id('zoom-out').onclick = zoomOut;
   $id('fileInfo').onclick = showFileInfo;
   $id('btn').onclick = function() {
-    var f = $id('test').files[0];
+    var f = $id('input').files[0];
     var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + f.name + '" WIDTH=99.9% HEIGHT=100% FRAMEBORDER=1 scrolling="no"></IFRAME>';
     $id('file-display').innerHTML = iframe;
-    /*var f = $id('test').files[0];
-    convertoox2odf(f, function(content) {
-      var fr = new FileReader();
-      fr.onload = function() {
-        var url = fr.result;
-        // var odfelement = $id('file-display');
-        var odfelement = document.createElement('div');
-        var odfcanvas = new odf.OdfCanvas(odfelement);
-        $id('file-container').appendChild(odfelement);
-        odfcanvas.load(url);
-        odfelement.style.display = "flex";
-        odfelement.style.height= "460px";
-        edfcanvas.style.transform = 'scale: 0.3';
-      }
-      fr.readAsDataURL(content);
-    });*/
   };
 }
 

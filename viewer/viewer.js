@@ -66,12 +66,10 @@ function Viewer(viewerPlugin) {
         scaleChangeTimer,
         file,
         touchTimer;
-        /*
     document.getElementById("test").onclick = function() {
       self.file = document.getElementById("input").files[0];
       init();
     };
-    */
 
     function initializeAboutInformation() {
         var basedOnDiv, aboutButton, pluginName, pluginVersion, pluginURL;
@@ -296,15 +294,16 @@ function Viewer(viewerPlugin) {
         };
 
         viewerPlugin.initialize(canvasContainer, location);*/
-         var storage = navigator.getDeviceStorage("sdcard");
-            var pdf_file = storage.get(location);
-            pdf_file.onerror = function() {
-                console.error("Error in: ", pdf_file.error.name);
-            };
-            pdf_file.onsuccess = function(event) {
-                var file = pdf_file.result;
-
-                convertoox2odf(file, function(content) {
+        // var storage = navigator.getDeviceStorage("sdcard");
+        //    var pdf_file = storage.get(location);
+        //    pdf_file.onerror = function() {
+        //        console.error("Error in: ", pdf_file.error.name);
+        //    };
+        //    pdf_file.onsuccess = function(event) {
+               // var file = pdf_file.result;
+try {
+    
+                convertoox2odf(self.file, function(content) {
                   var reader  = new FileReader();
 
                 reader.onload = function () {
@@ -347,12 +346,15 @@ function Viewer(viewerPlugin) {
 
                     viewerPlugin.initialize(canvasContainer, url);
                 }
-                  if (file) {
+                  if (self.file) {
                      reader.readAsDataURL(content);
                   }
                 });
+                } catch(e) {
+    alert(e);
+}
 
-            };
+            //};
     };
 
     /**
@@ -629,5 +631,5 @@ function Viewer(viewerPlugin) {
         }
     }
 
-    init();
+   // init();
 }

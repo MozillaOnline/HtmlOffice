@@ -11,6 +11,7 @@
         <link rel="stylesheet" type="text/css" href="viewer.css" media="screen"/>
         <script src="viewer.js" type="text/javascript" charset="utf-8"></script>
         <script src="PluginLoader.js" type="text/javascript" charset="utf-8"></script>
+        <script src="jszip.js"></script>
         <script src="convertoox2odf.js" type="text/javascript" charset="utf-8"></script>
         <script src="../semantic-ui/js/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" href="../semantic-ui/css/semantic.min.css">
@@ -70,7 +71,8 @@
             <div id="canvasContainer" style="top: 0px;">
                 <div>
                     <div class="ui dimmer active" style=" position: fixed;border-radius: 0px;background-color:transparent;height: 83%;">
-
+                <input type="file" id="input">
+                <input type="button" id="test" value="click me">
                 </div>
                 <div id="canvas">
                 </div>
