@@ -121,11 +121,8 @@ html, body {
 }
 
 #file-display, #container {
-  display: inline-block;
-  background: none repeat scroll 0% 0% white;
-  float: left ! important;
   width: 100%;
-  height: calc(100% - 80px);
+  height: calc(100% - 20px);
 }
 
 .zoom-in {

@@ -9,15 +9,14 @@ var bItemLongPressed = false;
 var files = [];
 
 function loadFiles(e) {
-  // if (!storage) return;
+  if (!storage) return;
   if (currentTarget == e.target) return;
 
   select(e.target.id);
   currentTarget = e.target;
   loading('images/loading1/');
   var type = new RegExp(e.target.dataset.type);
-  showFiles();
-  //searchFiles(type);
+  searchFiles(type);
 }
 
 function searchFiles(type) {
@@ -112,39 +111,12 @@ function createListItem(index) {
 
 function loadFile(event) {
   if (bItemLongPressed) return;
-  var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + extractFileName(event.target.parentNode.parentNode.dataset.filePath) +
-               '" WIDTH=99.9% HEIGHT=100% FRAMEBORDER=1 scrolling="no"></IFRAME>';
-  $id('file-display').innerHTML = iframe;
-  /*
-  console.log('loadFile');
   $id('list-header').classList.add('hidden');
   $id('list-container').classList.add('hidden');
-  $id('file-container').classList.remove('hidden');
-  // loading('images/loading2/');
-
-  // $id('file-display').classList.add('hidden');
-  // $id('loadingFailed').classList.remove('hidden');
-
-  $id('file-display').classList.remove('hidden');
-  $id('file-info').classList.add('hidden');
-  $id('fileName').innerHTML = extractFileName(event.target.parentNode.parentNode.dataset.filePath);
-
-  try {
-    var file = files[event.target.parentNode.parentNode.dataset.index];
-    convertoox2odf(file, function(content) {
-      var fr = new FileReader();
-      fr.onload = function() {
-        var url = fr.result;
-        var odfelement = $id('file-display');
-        var odfcanvas = new odf.OdfCanvas(odfelement);
-        odfcanvas.load(url);
-      }
-      fr.readAsDataURL(content);
-    });
-  } catch (e) {
-    alert(e);
-  }
-  */
+  var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + extractFileName(event.target.parentNode.parentNode.dataset.filePath) +
+               '" WIDTH=99.9% HEIGHT=100% FRAMEBORDER=1 scrolling="no"></IFRAME>';
+  $id('container').classList.remove('hidden');
+  $id('file-display').innerHTML = iframe;
 }
 
 function select(id) {
@@ -199,7 +171,7 @@ function showFileInfo() {
 }
 
 function init() {
- // storage = navigator.getDeviceStorage("sdcard");
+  storage = navigator.getDeviceStorage("sdcard");
   $id("recent").onclick = recent;
   $id('doc').onclick = loadFiles;
   $id('xls').onclick = loadFiles;
@@ -222,11 +194,6 @@ function init() {
   $id('zoom-in').onclick = zoomIn;
   $id('zoom-out').onclick = zoomOut;
   $id('fileInfo').onclick = showFileInfo;
-  $id('btn').onclick = function() {
-    var f = $id('input').files[0];
-    var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + f.name + '" WIDTH=99.9% HEIGHT=100% FRAMEBORDER=1 scrolling="no"></IFRAME>';
-    $id('file-display').innerHTML = iframe;
-  };
 }
 
 window.addEventListener("load", init, false);
