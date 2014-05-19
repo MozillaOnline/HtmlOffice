@@ -122,7 +122,7 @@ html, body {
 
 #file-display, #container {
   width: 100%;
-  height: calc(100% - 20px);
+  height: calc(100% - 18px);
 }
 
 .zoom-in {

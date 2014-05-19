@@ -113,6 +113,7 @@ function loadFile(event) {
   if (bItemLongPressed) return;
   $id('list-header').classList.add('hidden');
   $id('list-container').classList.add('hidden');
+  $id('fileName').innerHTML = extractFileName(event.target.parentNode.parentNode.dataset.filePath);
   var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + extractFileName(event.target.parentNode.parentNode.dataset.filePath) +
                '" WIDTH=99.9% HEIGHT=100% FRAMEBORDER=1 scrolling="no"></IFRAME>';
   $id('container').classList.remove('hidden');
@@ -135,6 +136,8 @@ function goBack() {
   $id('list-header').classList.remove('hidden');
   $id('list-container').classList.remove('hidden');
   $id('file-container').classList.add('hidden');
+  $id('container').classList.add('hidden');
+  $id('file-display').innerHTML = '';
 }
 
 function zoomIn() {
