@@ -1,43 +1,3 @@
-/**
- * @license
- * Copyright (C) 2013 KO GmbH <copyright@kogmbh.com>
- *
- * @licstart
- * The JavaScript code in this page is free software: you can redistribute it
- * and/or modify it under the terms of the GNU Affero General Public License
- * (GNU AGPL) as published by the Free Software Foundation, either version 3 of
- * the License, or (at your option) any later version.  The code is distributed
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU AGPL for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this code.  If not, see <http://www.gnu.org/licenses/>.
- *
- * As additional permission under GNU AGPL version 3 section 7, you
- * may distribute non-source (e.g., minimized or compacted) forms of
- * that code without the copy of the GNU GPL normally required by
- * section 4, provided you include this license notice and a URL
- * through which recipients can access the Corresponding Source.
- *
- * As a special exception to the AGPL, any HTML file which merely makes function
- * calls to this code, and for that purpose includes it by reference shall be
- * deemed a separate work for copyright law purposes. In addition, the copyright
- * holders of this code give you permission to combine this code with free
- * software libraries that are released under the GNU LGPL. You may copy and
- * distribute such a system following the terms of the GNU AGPL for this code
- * and the LGPL for the libraries. If you modify this code, you may extend this
- * exception to your version of the code, but you are not obligated to do so.
- * If you do not wish to do so, delete this exception statement from your
- * version.
- *
- * This license applies to this entire compilation.
- * @licend
- * @source: http://www.webodf.org/
- * @source: https://github.com/kogmbh/WebODF/
- */
-
-/*global document, window*/
-
 function Viewer(viewerPlugin) {
     "use strict";
 
@@ -58,14 +18,14 @@ function Viewer(viewerPlugin) {
         zoomWidget = document.getElementById('toolbarMiddleContainer'),
         scaleSelector = document.getElementById('scaleSelect'),
         overlay = document.getElementById('overlay'),
-        toolbarRight = document.getElementById('toolbarRight'),
-        aboutDialog,
+        //toolbarRight = document.getElementById('toolbarRight'),
+        //aboutDialog,
         filename,
         pages = [],
         currentPage,
         scaleChangeTimer,
         touchTimer;
-
+/*
     function initializeAboutInformation() {
         var basedOnDiv, aboutButton, pluginName, pluginVersion, pluginURL;
 
@@ -90,29 +50,6 @@ function Viewer(viewerPlugin) {
             "<button id = \"aboutDialogCloseButton\" class = \"toolbarButton textButton\">Close</button>";
         viewerElement.appendChild(aboutDialog);
 
-        // Create "based on" line
-       /* basedOnDiv = document.createElement('div');
-        basedOnDiv.id = "basedOn";
-        basedOnDiv.innerHTML =
-            "Based on " +
-            "<a href = \"http://webodf.org\" target=\"_blank\">WebODF</a>" +
-            " by " +
-            "<a href = \"http://kogmbh.com\" target=\"_blank\">KO</a>";
-
-        toolbarRight.appendChild(basedOnDiv);*/
-
-        // Create button to open dialog that says "ViewerJS"
-        /*aboutButton = document.createElement('button');
-        aboutButton.id = "about";
-        aboutButton.className = "toolbarButton textButton about";
-        aboutButton.title = "About";
-        aboutButton.innerHTML = "ViewerJS"
-        toolbarRight.appendChild(aboutButton);*/
-
-        // Attach events to the above
-        /*aboutButton.addEventListener('click', function () {
-                showAboutDialog();
-        });*/
         document.getElementById('aboutDialogCloseButton').addEventListener('click', function () {
                 hideAboutDialog();
         });
@@ -134,7 +71,7 @@ function Viewer(viewerPlugin) {
     // be considered different from content fullscreen when expecting a boolean
         return document.isFullScreen || document.mozFullScreen || document.webkitIsFullScreen;
     }
-
+*/
     function selectScaleOption(value) {
         // Retrieve the options from the zoom level <select> element
         var options = scaleSelector.options,
@@ -252,43 +189,6 @@ function Viewer(viewerPlugin) {
             return;
         }
         location = decodeURIComponent(location)
-        /*url = location;
-        filename = url.replace(/^.*[\\\/]/, '');
-        document.title = filename;
-        document.getElementById('documentName').innerHTML = document.title;
-
-        viewerPlugin.onLoad = function () {
-            document.getElementById('pluginVersion').innerHTML = viewerPlugin.getPluginVersion();
-
-            isSlideshow = viewerPlugin.isSlideshow();
-            if (isSlideshow) {
-                // No padding for slideshows
-                canvasContainer.style.padding = 0;
-                // Show page nav controls only for presentations
-                pageSwitcher.style.visibility = 'visible';
-            } else {
-                // For text documents, show the zoom widget.
-                zoomWidget.style.visibility = 'visible';
-                // Only show the page switcher widget if the plugin supports page numbers
-                if (viewerPlugin.getPageInView) {
-                    pageSwitcher.style.visibility = 'visible';
-                }
-            }
-
-            initialized = true;
-            pages = getPages();
-            document.getElementById('numPages').innerHTML = 'of ' + pages.length;
-
-            self.showPage(1);
-
-            // Set default scale
-            parseScale(kDefaultScale);
-
-            canvasContainer.onscroll = onScroll;
-            delayedRefresh();
-        };
-
-        viewerPlugin.initialize(canvasContainer, location);*/
         var storage = navigator.getDeviceStorage("sdcard");
             var pdf_file = storage.get(location);
             pdf_file.onerror = function() {
@@ -304,10 +204,10 @@ function Viewer(viewerPlugin) {
                     document.title = location;
                     var ultimo = document.title.split("/").pop();
                     var pdf = ultimo.charAt(0).toUpperCase() + ultimo.slice(1);
-                    document.getElementById('documentName').innerHTML = pdf;
+                    //document.getElementById('documentName').innerHTML = pdf;
 
                     viewerPlugin.onLoad = function () {
-                        document.getElementById('pluginVersion').innerHTML = viewerPlugin.getPluginVersion();
+                        //document.getElementById('pluginVersion').innerHTML = viewerPlugin.getPluginVersion();
 
                         isSlideshow = viewerPlugin.isSlideshow();
                         if (isSlideshow) {
@@ -385,16 +285,18 @@ function Viewer(viewerPlugin) {
      * Attempts to 'download' the file.
      * @return {undefined}
      */
-    this.download = function () {
+/*
+	 this.download = function () {
         var documentUrl = url.split('#')[0];
         documentUrl += '#viewer.action=download';
         window.open(documentUrl, '_parent');
     };
-
+*/
     /**
      * Toggles the fullscreen state of the viewer
      * @return {undefined}
      */
+	 /*
     this.toggleFullScreen = function () {
         var elem = viewerElement;
         if (!isFullScreen()) {
@@ -415,12 +317,14 @@ function Viewer(viewerPlugin) {
             }
         }
     };
+	*/
  
     /**
      * Toggles the presentation mode of the viewer.
      * Presentation mode involves fullscreen + hidden UI controls
      */
-    this.togglePresentationMode = function () {
+/*
+	 this.togglePresentationMode = function () {
         var titlebar = document.getElementById('titlebar'),
             toolbar = document.getElementById('toolbarContainer'),
             overlayCloseButton = document.getElementById('overlayCloseButton');
@@ -458,6 +362,7 @@ function Viewer(viewerPlugin) {
 
         presentationMode = !presentationMode;
     };
+	*/
 
     /**
      * Gets the zoom level of the document
@@ -497,12 +402,13 @@ function Viewer(viewerPlugin) {
         newScale = Math.min(kMaxScale, newScale);
         parseScale(newScale, true);
     };
-
+/*
     function cancelPresentationMode() {
         if (presentationMode && !isFullScreen()) {
             self.togglePresentationMode();
         }
     }
+	*/
 
     function showOverlayNavigator() {
         if (isSlideshow) {
@@ -516,31 +422,31 @@ function Viewer(viewerPlugin) {
 
     function init() {
 
-        initializeAboutInformation();
+        //initializeAboutInformation();
 
         if (viewerPlugin) {
             self.initialize();
-
+/*
             if (!(document.cancelFullScreen || document.mozCancelFullScreen || document.webkitCancelFullScreen)) {
                 document.getElementById('fullscreen').style.visibility = 'hidden';
             }
+*/
+//            document.getElementById('overlayCloseButton').addEventListener('click', self.toggleFullScreen);
+//            document.getElementById('fullscreen').addEventListener('click', self.toggleFullScreen);
+//            document.getElementById('presentation').addEventListener('click', function () {
+//                if (!isFullScreen()) {
+//                    self.toggleFullScreen();
+//                }
+//                self.togglePresentationMode();
+//            });
 
-            document.getElementById('overlayCloseButton').addEventListener('click', self.toggleFullScreen);
-            document.getElementById('fullscreen').addEventListener('click', self.toggleFullScreen);
-            document.getElementById('presentation').addEventListener('click', function () {
-                if (!isFullScreen()) {
-                    self.toggleFullScreen();
-                }
-                self.togglePresentationMode();
-            });
+//            document.addEventListener('fullscreenchange', cancelPresentationMode);
+//            document.addEventListener('webkitfullscreenchange', cancelPresentationMode);
+//            document.addEventListener('mozfullscreenchange', cancelPresentationMode);
 
-            document.addEventListener('fullscreenchange', cancelPresentationMode);
-            document.addEventListener('webkitfullscreenchange', cancelPresentationMode);
-            document.addEventListener('mozfullscreenchange', cancelPresentationMode);
-
-            document.getElementById('download').addEventListener('click', function () {
-                self.download();
-            });
+//            document.getElementById('download').addEventListener('click', function () {
+//                self.download();
+//            });
 
             document.getElementById('zoomOut').addEventListener('click', function () {
                 self.zoomOut();
@@ -588,7 +494,7 @@ function Viewer(viewerPlugin) {
                     customScaleOption.selected = true;
                 }
             }, true);
-
+/*
             window.addEventListener('resize', function (evt) {
                 if (initialized &&
                           (document.getElementById('pageWidthOption').selected ||
@@ -617,7 +523,7 @@ function Viewer(viewerPlugin) {
                     shiftKey ? self.showPreviousPage() : self.showNextPage();
                     break;
                 }
-            });
+            });*/
         }
     }
 
