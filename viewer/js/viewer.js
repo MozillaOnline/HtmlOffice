@@ -13,7 +13,10 @@ function Viewer(viewerPlugin) {
         filename,
         scaleChangeTimer,
         file,
-        touchTimer;
+        touchTimer,
+        currentFontSize = 14,
+        showZoomPanelTimer = null,
+        hideZoomPanelTimer = null;
 
         document.getElementById('test').onclick = function() {
           file = document.getElementById('input').files[0];
@@ -129,12 +132,54 @@ function Viewer(viewerPlugin) {
 			//};
     };
 
-    function init() {
+  function zoomIn() {
+    var zoomLevel = viewerPlugin.getZoomLevel();
+    var newScale = (zoomLevel * kDefaultScaleDelta).toFixed(2);
+    newScale = Math.min(kMaxScale, newScale);
+    viewerPlugin.setZoomLevel(newScale);
+    hideZoomPanel();
+  }
 
-        if (viewerPlugin) {
-            self.initialize();
-        }
+  function zoomOut() {
+    var zoomLevel = viewerPlugin.getZoomLevel();
+    var newScale = (zoomLevel / kDefaultScaleDelta).toFixed(2);
+    newScale = Math.max(kMinScale, newScale);
+    viewerPlugin.setZoomLevel(newScale);
+    hideZoomPanel();
+  }
+
+  function hideZoomPanel() {
+    if (hideZoomPanelTimer) {
+      clearTimeout(hideZoomPanelTimer);
+      hideZoomPanelTimer = null;
     }
+    hideZoomPanelTimer = setTimeout(function() {
+      document.getElementById('scale').classList.add('hidden');
+      hideZoomPanelTimer = null;
+    }, 3000);
+  }
+
+  function init() {
+    if (viewerPlugin) {
+      self.initialize();
+    }
+
+    var canvas = document.getElementById('canvas');
+    canvas.onmousedown = function() {
+      showZoomPanelTimer = setTimeout(function() {
+        document.getElementById('scale').classList.remove('hidden');
+        hideZoomPanel();
+      }, 1500);
+    };
+    canvas.onmouseup = function() {
+      if (showZoomPanelTimer) {
+        clearTimeout(showZoomPanelTimer);
+        showZoomPanelTimer = null;
+      }
+    };
+    document.getElementById('zoom-in').onclick = zoomIn;
+    document.getElementById('zoom-out').onclick = zoomOut;
+  }
 
    // init();
 }

@@ -2,9 +2,6 @@
 var storage = null;
 var currentTarget = null;
 var loadingTimer = null;
-var currentFontSize = 14;
-var showZoomPanelTimer = null;
-var hideZoomPanelTimer = null;
 var bItemLongPressed = false;
 var delayShowTimer = null;
 var files = [];
@@ -168,29 +165,6 @@ function goBack() {
   $id('file-display').innerHTML = '';
 }
 
-function zoomIn() {
-  if (currentFontSize < 30)  currentFontSize += 5;
-  $id('file-display').style.fontSize = currentFontSize + 'px';
-  hideZoomPanel();
-}
-
-function zoomOut() {
-  if (currentFontSize > 10)  currentFontSize -= 5;
-  $id('file-display').style.fontSize = currentFontSize + 'px';
-  hideZoomPanel();
-}
-
-function hideZoomPanel() {
-  if (hideZoomPanelTimer) {
-    clearTimeout(hideZoomPanelTimer);
-    hideZoomPanelTimer = null;
-  }
-  hideZoomPanelTimer = setTimeout(function() {
-    $id('footer').classList.add('hidden');
-    hideZoomPanelTimer = null;
-  }, 3000);
-}
-
 function showFileInfo() {
   $id('modal-file-ops').classList.add('hidden');
   $id('list-header').classList.add('hidden');
@@ -226,22 +200,6 @@ function init() {
   $id('ppt').onclick = loadFiles;
   $id('goback').onclick = goBack;
   $id('refresh').onclick = refresh;
-  /*
-  $id('file-display').onmousedown = function() {
-    showZoomPanelTimer = setTimeout(function() {
-      $id('footer').classList.remove('hidden');
-      hideZoomPanel();
-    }, 1500);
-  };
-  $id('file-display').onmouseup = function() {
-    if (showZoomPanelTimer) {
-      clearTimeout(showZoomPanelTimer);
-      showZoomPanelTimer = null;
-    }
-  };
-  */
-  // $id('zoom-in').onclick = zoomIn;
-  // $id('zoom-out').onclick = zoomOut;
 }
 
 window.addEventListener("load", init, false);
