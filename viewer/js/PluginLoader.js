@@ -69,7 +69,7 @@ function loadDocument(documentUrl) {
         case 'ods':
         case 'fodt':
         case 'docx':
-            loadPlugin('./ODFViewerPlugin', function () {
+            loadPlugin('js/ODFViewerPlugin', function () {
                 Plugin = ODFViewerPlugin;
             });
             break;
