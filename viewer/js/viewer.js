@@ -24,54 +24,13 @@ function Viewer(viewerPlugin) {
         pages = [],
         currentPage,
         scaleChangeTimer,
+        file,
         touchTimer;
-/*
-    function initializeAboutInformation() {
-        var basedOnDiv, aboutButton, pluginName, pluginVersion, pluginURL;
 
-        if (viewerPlugin) {
-            pluginName = viewerPlugin.getPluginName();
-            pluginVersion = viewerPlugin.getPluginVersion();
-            pluginURL = viewerPlugin.getPluginURL();
-        }
-
-        // Create dialog
-        aboutDialog = document.createElement('div');
-        aboutDialog.id = "aboutDialog";
-        aboutDialog.innerHTML =
-            "<h1><a href = \"http://viewerjs.org\" target=\"_blank\">ViewerJS</a></h1>" +
-            "<p><a href = \"http://nlnet.nl\" target=\"_blank\"><img src=\"images\/nlnet.png\" width=\"160\" height=\"60\"></img></a></p>" +
-            "<p><a href = \"http://kogmbh.com\" target=\"_blank\"><img src=\"images\/kogmbh.png\" width=\"172\" height=\"40\"></img></a></p>" +
-            (viewerPlugin ? ("<p>Using the <a href = \""+ pluginURL + "\" target=\"_blank\">" + pluginName + "</a> " +
-                            "(<span id = \"pluginVersion\">" + pluginVersion + "</span>) " +
-                            "plugin to show you this document.</p>")
-                         : "") +
-            "<p>Made by <a href = \"http://kogmbh.com\" target=\"_blank\">KO GmbH</a>.</p>" +
-            "<button id = \"aboutDialogCloseButton\" class = \"toolbarButton textButton\">Close</button>";
-        viewerElement.appendChild(aboutDialog);
-
-        document.getElementById('aboutDialogCloseButton').addEventListener('click', function () {
-                hideAboutDialog();
-        });
-
-    }
-
-    function showAboutDialog() {
-        aboutDialog.style.display = 'block';
-        overlay.style.visibility = "visible";
-    }
-
-    function hideAboutDialog() {
-        aboutDialog.style.display = "none";
-        overlay.style.visibility = "hidden";
-    }
-
-    function isFullScreen() {
-    // Note that the browser fullscreen (triggered by short keys) might
-    // be considered different from content fullscreen when expecting a boolean
-        return document.isFullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-    }
-*/
+        document.getElementById('test').onclick = function() {
+          file = document.getElementById('input').files[0];
+          init();
+        };
     function selectScaleOption(value) {
         // Retrieve the options from the zoom level <select> element
         var options = scaleSelector.options,
@@ -189,14 +148,16 @@ function Viewer(viewerPlugin) {
             return;
         }
         location = decodeURIComponent(location)
+        /*
         var storage = navigator.getDeviceStorage("sdcard");
             var pdf_file = storage.get(location);
             pdf_file.onerror = function() {
                 console.error("Error in: ", pdf_file.error.name);
             };
-            pdf_file.onsuccess = function(event) {
-                var file = pdf_file.result;
-				convertoox2odf(file, function(content) {
+            */
+         //   pdf_file.onsuccess = function(event) {
+                //var file = pdf_file.result;
+                convertoox2odf(file, function(content) {
                 var reader  = new FileReader();
 
                 reader.onload = function () {
@@ -244,7 +205,7 @@ function Viewer(viewerPlugin) {
                    reader.readAsDataURL(content);
                 }
             });
-			};
+			//};
     };
 
     /**
@@ -422,31 +383,8 @@ function Viewer(viewerPlugin) {
 
     function init() {
 
-        //initializeAboutInformation();
-
         if (viewerPlugin) {
             self.initialize();
-/*
-            if (!(document.cancelFullScreen || document.mozCancelFullScreen || document.webkitCancelFullScreen)) {
-                document.getElementById('fullscreen').style.visibility = 'hidden';
-            }
-*/
-//            document.getElementById('overlayCloseButton').addEventListener('click', self.toggleFullScreen);
-//            document.getElementById('fullscreen').addEventListener('click', self.toggleFullScreen);
-//            document.getElementById('presentation').addEventListener('click', function () {
-//                if (!isFullScreen()) {
-//                    self.toggleFullScreen();
-//                }
-//                self.togglePresentationMode();
-//            });
-
-//            document.addEventListener('fullscreenchange', cancelPresentationMode);
-//            document.addEventListener('webkitfullscreenchange', cancelPresentationMode);
-//            document.addEventListener('mozfullscreenchange', cancelPresentationMode);
-
-//            document.getElementById('download').addEventListener('click', function () {
-//                self.download();
-//            });
 
             document.getElementById('zoomOut').addEventListener('click', function () {
                 self.zoomOut();
@@ -527,5 +465,5 @@ function Viewer(viewerPlugin) {
         }
     }
 
-    init();
+   // init();
 }
