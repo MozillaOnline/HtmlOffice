@@ -46,7 +46,7 @@ function ODFViewerPlugin() {
             pluginCSS;
 
         lib.async = false;
-        lib.src = './webodf.js';
+        lib.src = './js/webodf.js';
         lib.type = 'text/javascript';
         lib.onload = function () {
             runtime.loadClass('gui.HyperlinkClickHandler');
