@@ -120,6 +120,16 @@ function loadFile(event) {
   $id('file-display').innerHTML = iframe;
 }
 
+function refresh() {
+  if (!storage) return;
+  if (!currentTarget) return;
+
+  $id('list-container').innerHTML = '';
+  loading('images/loading1/');
+  var type = new RegExp(currentTarget.dataset.type);
+  searchFiles(type);
+}
+
 function select(id) {
   $id('recent').classList.remove('selected');
   $id('doc').classList.remove('selected');
@@ -180,6 +190,7 @@ function init() {
   $id('xls').onclick = loadFiles;
   $id('ppt').onclick = loadFiles;
   $id('goback').onclick = $id('return').onclick = goBack;
+  $id('refresh').onclick = refresh;
   /*
   $id('file-display').onmousedown = function() {
     showZoomPanelTimer = setTimeout(function() {
