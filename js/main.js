@@ -6,11 +6,16 @@ var currentFontSize = 14;
 var showZoomPanelTimer = null;
 var hideZoomPanelTimer = null;
 var bItemLongPressed = false;
+var delayShowTimer = null;
 var files = [];
 
 function loadFiles(e) {
   if (!storage) return;
   if (currentTarget == e.target) return;
+
+  var container = $id('list-container');
+  container.innerHTML = '';
+  $id('empty-list').classList.add('hidden');
 
   select(e.target.id);
   currentTarget = e.target;
@@ -29,8 +34,12 @@ function searchFiles(type) {
         files.push(file);
       }
       all_files.continue();
+      if (delayShowTimer) {
+        clearTimeout(delayShowTimer);
+        delayShowTimer = null;
+      }
     }
-    showFiles();
+    delayShowFiles();
   };
 }
 
@@ -43,6 +52,10 @@ function loading(baseUrl) {
     img.src = baseUrl + index + '.png';
     index++;
   }, 100);
+}
+
+function delayShowFiles() {
+  delayShowTimer  = setTimeout(showFiles, 300);
 }
 
 function showFiles () {
