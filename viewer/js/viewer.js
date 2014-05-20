@@ -204,6 +204,11 @@ function Viewer(viewerPlugin) {
     };
     document.getElementById('zoom-in').onclick = zoomIn;
     document.getElementById('zoom-out').onclick = zoomOut;
+
+    window.addEventListener('resize', function (evt) {
+      parseScale(kDefaultScale);
+      console.log('resize');
+    });
   }
 
    // init();
