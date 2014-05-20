@@ -59,6 +59,46 @@ body {
   display: none;
 }
 
+.empty-title {
+  font-size: 18px;
+  padding-top: 40px;
+  text-align: center;
+}
+
+.empty-subtitle {
+  font-size: 16px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.empty-btn {
+  margin-left: calc(50% - 40px);
+  margin-top: 30px;
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.empty-btn span {
+  display: block;
+  padding-top: 30px;
+  font-size: 20px;
+  text-align: center;
+}
+
+#loadingFailed {
+  min-height: 360px;
+  background-color: #FFFFFF;
+  color: #919394;
+  height: calc(100% - 25px);
+}
+
+.return-btn {
+  color: #FFFFFF;
+  background-color: #8ED2FF;
+}
+
 .titlebar > span,
 .toolbarLabel,
 input,

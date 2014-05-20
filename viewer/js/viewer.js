@@ -169,6 +169,7 @@ function Viewer(viewerPlugin) {
     }
 
     document.getElementById('goback').onclick = goBack;
+    document.getElementById('return').onclick = goBack;
 
     var canvas = document.getElementById('canvas');
     canvas.onmousedown = function() {
