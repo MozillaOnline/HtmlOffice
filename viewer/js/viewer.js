@@ -103,7 +103,7 @@ function Viewer(viewerPlugin) {
                     document.title = location;
                     var ultimo = document.title.split("/").pop();
                     var pdf = ultimo.charAt(0).toUpperCase() + ultimo.slice(1);
-                    //document.getElementById('documentName').innerHTML = pdf;
+                    document.getElementById('documentName').innerHTML = pdf;
 
                     viewerPlugin.onLoad = function () {
 

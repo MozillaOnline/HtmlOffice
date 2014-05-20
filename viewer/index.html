@@ -10,19 +10,26 @@
     <script src="js/jszip.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/convertoox2odf.js" type="text/javascript" charset="utf-8"></script>
   </head>
-
-    <body>
-        <div id = "viewer">
-            <div id="canvasContainer" style="top: 0px;">
-                <div>
-                    <div class="ui dimmer active" style=" position: fixed;border-radius: 0px;background-color:transparent;height: 83%;">
-                    <input type="file" id="input">
-                    <input type="button" id="test" value="click">
-                </div>
-                <div id="canvas"></div>
-                </div>
-            </div>
+  <body>
+    <div id = "viewer">
+      <div id="canvasContainer" style="">
+        <div class="row-fluid header">
+          <div class="span2">
+            <div id="goback" class="back"></div>
+          </div>
+          <div id="file-header" class="span10">
+            <span id="documentName">File Name</span>
+          </div>
         </div>
-  <script src="../bootstrap/js/bootstrap.min.js"></script>
+        <div>
+          <div class="ui dimmer active" style=" position: fixed;border-radius: 0px;background-color:transparent;height: 83%;">
+            <input type="file" id="input">
+            <input type="button" id="test" value="click">
+          </div>
+          <div id="canvas"></div>
+        </div>
+      </div>
+    </div>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
     </body>
 </html>

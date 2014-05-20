@@ -7,6 +7,24 @@ body {
   font-family: sans-serif;
 }
 
+.header {
+  background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+
+.back {
+  width: 26px;
+  height: 26px;
+  border-radius: 13px;
+  background-color: rgba(255, 255, 255, 0.5);
+  background-image: url("images/back.png");
+  background-position: center center;
+  margin: 5px 0 0 11px;
+}
+
+#file-header {
+  padding-top: 6px;
+}
+
 .titlebar > span,
 .toolbarLabel,
 input,
@@ -240,9 +258,7 @@ html[dir='rtl'] .dropdownToolbarButton {
 .splitToolbarButton > .toolbarButton:focus,
 .dropdownToolbarButton:hover,
 .toolbarButton.textButton:hover,
-.toolbarButton.textButton:focus {
-      background-color: hsla(0,0%,0%,.2);
-        box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
+.toolbarButton.textButton:focus { background-color: hsla(0,0%,0%,.2); box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
                     0 0 1px hsla(0,0%,100%,.15) inset,
                     0 0 1px hsla(0,0%,0%,.05);
                     z-index: 199;
@@ -549,10 +565,10 @@ html[dir='rtl'] .dropdownToolbarButton {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
 
-    padding-top: 6px;
+    padding-top: 0px;
     padding-bottom: 6px;
     position: absolute;
-    top: 32px;
+    top: 0;
     right: 0;
     bottom: 32px;
     left: 0;
