@@ -16,7 +16,8 @@ function Viewer(viewerPlugin) {
         touchTimer,
         currentFontSize = 14,
         showZoomPanelTimer = null,
-        hideZoomPanelTimer = null;
+        hideZoomPanelTimer = null,
+        loadingTimer = null;
 
         document.getElementById('test').onclick = function() {
           file = document.getElementById('input').files[0];
@@ -89,6 +90,7 @@ function Viewer(viewerPlugin) {
             return;
         }
         location = decodeURIComponent(location)
+        loading('images/loading/');
         /*
         var storage = navigator.getDeviceStorage("sdcard");
             var pdf_file = storage.get(location);
@@ -120,6 +122,11 @@ function Viewer(viewerPlugin) {
 
                         //canvasContainer.onscroll = onScroll;
                         //delayedRefresh();
+                        if (loadingTimer) {
+                          clearInterval(loadingTimer);
+                          loadingTimer = null;
+                        }
+                        document.getElementById('modal-loading').classList.add('hidden');
                     };
 
                     viewerPlugin.initialize(canvasContainer, url);
@@ -161,6 +168,17 @@ function Viewer(viewerPlugin) {
 
   function goBack() {
     parent.document.getElementById('file-display').innerHTML = '';
+  }
+
+  function loading(baseUrl) {
+    document.getElementById('modal-loading').classList.remove('hidden');
+    var img = document.getElementById('loading-img');
+    var index = 0;
+    loadingTimer = setInterval(function() {
+      index %= 24;
+      img.src = baseUrl + index + '.png';
+      index++;
+    }, 100);
   }
 
   function init() {

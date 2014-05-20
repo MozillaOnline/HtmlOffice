@@ -99,6 +99,29 @@ body {
   background-color: #8ED2FF;
 }
 
+.modal {
+  position: fixed;
+  width: 100%;
+  min-height: 460px;
+  top: 0;
+  left: 0;
+  background-color: rgba(42, 42, 42, 0.4);
+  margin-left: 0;
+  height: 100%;
+}
+
+.loading-container {
+  margin: 180px calc(50% - 50px) 0;
+  height: 100px;
+  width: 100px;
+  background-color: rgba(42, 186, 204, 0.7);
+  border-radius: 10px;
+}
+
+#loading-img {
+  margin: 27px;
+}
+
 .titlebar > span,
 .toolbarLabel,
 input,
