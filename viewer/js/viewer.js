@@ -159,10 +159,16 @@ function Viewer(viewerPlugin) {
     }, 3000);
   }
 
+  function goBack() {
+    parent.document.getElementById('file-display').innerHTML = '';
+  }
+
   function init() {
     if (viewerPlugin) {
       self.initialize();
     }
+
+    document.getElementById('goback').onclick = goBack;
 
     var canvas = document.getElementById('canvas');
     canvas.onmousedown = function() {
