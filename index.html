@@ -9,7 +9,7 @@
     <script src="js/utils.js"></script>
   </head>
   <body class="main">
-  <section id="list-header">
+  <section id="list-header" class="">
     <div class="row-fluid">
       <div class="span8 offset2 title"> Document Reader</div>
       <div class="span2">
@@ -24,19 +24,6 @@
     </div>
   </section>
   <section id="list-container" class="hidden">
-    <div class="row-fluid item">
-      <div class="span2 list-title doctype"></div>
-      <div class="span10">
-        <div class="row-fluid">
-          <div class="span12 name">
-            file_name.suffix
-          </div>
-          <div class="span12 detail">
-            2014-04-11 13:30 231KB
-          </div>
-        </div>
-      </div>
-    </div>
   </section>
   <section id="empty-list" class="hidden">
     <div class="row-fluid empty-title" data-l10-id="files_not_found">No docx files found.</div>
@@ -47,21 +34,30 @@
       </div>
     </div>
   </section>
-  <section id="file-container" class="hidden">
-    <div id="file-info" class="hidden">
-      <div class="nameInfo"> docName</div>
+  <section id="file-info" class="hidden">
+    <div class="row-fluid">
+      <div class="span2">
+        <div id="goback" class="back"></div>
+      </div>
+      <div class="span10 file-info-title">
+        <span>File Info</span>
+      </div>
+    </div>
+    <div class="file-info-detail">
+      <div id="name" class="nameInfo"> docName</div>
       <div class="name" data-l10n-id="size">Size</div>
-      <div class="value"> 100K</div>
+      <div id="size" class="value"> 100K</div>
       <div class="name" data-l10n-id="directory">directory</div>
-      <div class="value"> /sdcard/tiger/test.docx</div>
+      <div id="dir" class="value"> /sdcard/tiger/test.docx</div>
       <div class="name" data-l10n-id="lastModifiedTime">Last Modification Time</div>
-      <div class="value"> 2014-05-09 14:10:10</div>
+      <div id="lastModify" class="value"> 2014-05-09 14:10:10</div>
       <div class="row-fluid">
         <div class="empty-btn return-btn">
           <span id="open" data-l10n-id="open">Open</span>
         </div>
       </div>
     </div>
+    <!--
     <div id="footer" class="row-fluid hidden">
       <div class="span2">
         <div id="zoom-in" class="zoom-in"></div>
@@ -81,6 +77,7 @@
         </div>
       </div>
     </div>
+    -->
   </section>
   <section id="modal-loading" class="modal hidden">
     <div class="loading-container">

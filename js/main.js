@@ -107,6 +107,7 @@ function createListItem(index) {
   var timer = null;
   infoDiv.onmousedown = infoDiv.ontouchstart = function() {
     bItemLongPressed = false;
+    $id('fileInfo').onclick = '';
     timer = setTimeout(function() {
       bItemLongPressed = true;
       $id('modal-file-ops').classList.remove('hidden');
@@ -117,6 +118,10 @@ function createListItem(index) {
     if (timer) {
       clearTimeout(timer);
       timer = null;
+    }
+    if (bItemLongPressed) {
+      $id('fileInfo').dataset.index = this.dataset.index;
+      $id('fileInfo').onclick = showFileInfo;
     }
   };
   return div;
@@ -158,7 +163,7 @@ function showEmptyList() {
 function goBack() {
   $id('list-header').classList.remove('hidden');
   $id('list-container').classList.remove('hidden');
-  $id('file-container').classList.add('hidden');
+  $id('file-info').classList.add('hidden');
   $id('container').classList.add('hidden');
   $id('file-display').innerHTML = '';
 }
@@ -190,9 +195,26 @@ function showFileInfo() {
   $id('modal-file-ops').classList.add('hidden');
   $id('list-header').classList.add('hidden');
   $id('list-container').classList.add('hidden');
-  $id('file-container').classList.remove('hidden');
+ // $id('file-container').classList.remove('hidden');
   $id('file-display').classList.add('hidden');
+  var index = parseInt(this.dataset.index);
+
+  $id('name').innerHTML = $id('file-info').dataset.name = extractFileName(files[index].name);
+  $id('size').innerHTML = formatFileSize(files[index].size);
+  $id('dir').innerHTML = files[index].name;
+  $id('lastModify').innerHTML = formatDate(files[index].lastModifiedDate);
   $id('file-info').classList.remove('hidden');
+  $id('open').onclick = function() {
+    $id('list-header').classList.add('hidden');
+    $id('list-container').classList.add('hidden');
+    $id('fileName').innerHTML = extractFileName($id('file-info').dataset.name);
+    var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + extractFileName($id('file-info').dataset.name) +
+                 '" WIDTH=99.9% HEIGHT=100% FRAMEBORDER=1 scrolling="no"></IFRAME>';
+    $id('container').classList.remove('hidden');
+    $id('file-display').classList.remove('hidden');
+    $id('file-display').innerHTML = iframe;
+    $id('file-info').classList.add('hidden');
+  };
 
 }
 
@@ -202,7 +224,7 @@ function init() {
   $id('doc').onclick = loadFiles;
   $id('xls').onclick = loadFiles;
   $id('ppt').onclick = loadFiles;
-  $id('goback').onclick = $id('return').onclick = goBack;
+  $id('goback').onclick = goBack;
   $id('refresh').onclick = refresh;
   /*
   $id('file-display').onmousedown = function() {
@@ -218,9 +240,8 @@ function init() {
     }
   };
   */
-  $id('zoom-in').onclick = zoomIn;
-  $id('zoom-out').onclick = zoomOut;
-  $id('fileInfo').onclick = showFileInfo;
+  // $id('zoom-in').onclick = zoomIn;
+  // $id('zoom-out').onclick = zoomOut;
 }
 
 window.addEventListener("load", init, false);

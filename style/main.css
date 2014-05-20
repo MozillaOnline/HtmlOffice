@@ -202,9 +202,17 @@ html, body {
 }
 
 #file-info {
+  height: calc(100% - 20px);
+}
+
+.file-info-title {
+  padding-top: 10px;
+}
+
+.file-info-detail{
   background-color: #FFFFFF;
+  height: calc(100% - 20px);
   color: #000000;
-  height: 340px;
 }
 
 .name {
