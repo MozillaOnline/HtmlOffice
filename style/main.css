@@ -45,6 +45,11 @@ html, body {
   border-bottom: 4px solid #FFC0CB;
 }
 
+#list-container {
+  height: calc(100% - 78px);
+  overflow-y: scroll;
+}
+
 .item {
   border-bottom: 2px solid rgba(255, 255, 255, 0.5);
 }

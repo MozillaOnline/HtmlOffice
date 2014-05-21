@@ -158,6 +158,7 @@ function select(id) {
 }
 
 function showEmptyList() {
+  $id('list-container').classList.add('hidden');
   $id('empty-list').classList.remove('hidden');
 }
 
