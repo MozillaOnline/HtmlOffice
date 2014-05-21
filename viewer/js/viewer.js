@@ -89,6 +89,7 @@ function Viewer(viewerPlugin) {
     var pdf_file = storage.get(location);
     pdf_file.onerror = function() {
       document.getElementById('loadingFailed').classList.remove('hidden');
+      parent.document.getElementById('modal-loading').classList.add('hidden');
       parent.loaded = true;
       console.error("Error in: ", pdf_file.error.name);
     };
@@ -124,6 +125,7 @@ function Viewer(viewerPlugin) {
           }
           reader.onerror = function () {
             document.getElementById('loadingFailed').classList.remove('hidden');
+            parent.document.getElementById('modal-loading').classList.add('hidden');
             parent.loaded = true;
           };
 
@@ -131,11 +133,13 @@ function Viewer(viewerPlugin) {
             reader.readAsDataURL(content);
           } else {
             document.getElementById('loadingFailed').classList.remove('hidden');
+            parent.document.getElementById('modal-loading').classList.add('hidden');
             parent.loaded = true;
           }
         });
       } catch (e) {
         document.getElementById('loadingFailed').classList.remove('hidden');
+        parent.document.getElementById('modal-loading').classList.add('hidden');
         parent.loaded = true;
       }
     };

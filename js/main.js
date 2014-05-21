@@ -135,7 +135,7 @@ function loadFile(event) {
   $id('documentName').innerHTML = extractFileName(event.target.parentNode.parentNode.dataset.filePath);
   $id('container').classList.remove('hidden');
   loading('images/loading1/');
-  var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + extractFileName(event.target.parentNode.parentNode.dataset.filePath) +
+  var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + event.target.parentNode.parentNode.dataset.filePath +
                '" WIDTH=100% HEIGHT=100% FRAMEBORDER=0 scrolling="no"></IFRAME>';
   $id('file-display').innerHTML = iframe;
 }
