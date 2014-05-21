@@ -9,7 +9,7 @@ html, body {
 
 .main {
   return;
-  background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll -1px -5px rgba(0, 0, 0, 0);
+  background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll 0 0 rgba(0, 0, 0, 0);
   width: 100%;
   min-height: 460px;
   color: #FFFFFF;
@@ -127,7 +127,7 @@ html, body {
 
 #file-display, #container {
   width: calc(100%);
-  height: calc(100% - 2px);
+  height: calc(100%);
 }
 
 .zoom-in {

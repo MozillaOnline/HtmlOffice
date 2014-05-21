@@ -1,6 +1,7 @@
 
 var storage = null;
 var currentTarget = null;
+var loaded = false;
 var loadingTimer = null;
 var bItemLongPressed = false;
 var delayShowTimer = null;
@@ -48,6 +49,11 @@ function loading(baseUrl) {
     index %= 24;
     img.src = baseUrl + index + '.png';
     index++;
+    if (loadingTimer && loaded) {
+      clearInterval(loadingTimer);
+      loadingTimer = null;
+      loaded = false;
+    }
   }, 100);
 }
 
@@ -56,11 +62,6 @@ function delayShowFiles() {
 }
 
 function showFiles () {
-  if (loadingTimer) {
-    clearInterval(loadingTimer);
-    loadingTimer = null;
-  }
-
   var container = $id('list-container');
   container.innerHTML = '';
   if (files.length == 0) {
@@ -72,6 +73,7 @@ function showFiles () {
   for (var i = 0; i < files.length; i++) {
     container.appendChild(createListItem(i));
   }
+  loaded = true;
   $id('modal-loading').classList.add('hidden');
   $id('empty-list').classList.add('hidden');
 }
@@ -128,11 +130,11 @@ function loadFile(event) {
   if (bItemLongPressed) return;
   $id('list-header').classList.add('hidden');
   $id('list-container').classList.add('hidden');
-  $id('fileName').innerHTML = extractFileName(event.target.parentNode.parentNode.dataset.filePath);
   var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + extractFileName(event.target.parentNode.parentNode.dataset.filePath) +
-               '" WIDTH=99.9% HEIGHT=100% FRAMEBORDER=1 scrolling="no"></IFRAME>';
+               '" WIDTH=100% HEIGHT=100% FRAMEBORDER=0 scrolling="no"></IFRAME>';
   $id('container').classList.remove('hidden');
   $id('file-display').innerHTML = iframe;
+  loading('images/loading1/');
 }
 
 function refresh() {
@@ -183,7 +185,7 @@ function showFileInfo() {
     $id('list-container').classList.add('hidden');
     $id('fileName').innerHTML = extractFileName($id('file-info').dataset.name);
     var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + extractFileName($id('file-info').dataset.name) +
-                 '" WIDTH=99.9% HEIGHT=100% FRAMEBORDER=1 scrolling="no"></IFRAME>';
+                 '" WIDTH=100% HEIGHT=100% FRAMEBORDER=0 scrolling="no"></IFRAME>';
     $id('container').classList.remove('hidden');
     $id('file-display').classList.remove('hidden');
     $id('file-display').innerHTML = iframe;

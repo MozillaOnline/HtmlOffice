@@ -12,17 +12,17 @@ function Viewer(viewerPlugin) {
         canvasContainer = document.getElementById('canvasContainer'),
         filename,
         scaleChangeTimer,
-        file,
-        touchTimer,
+        // file,
         currentFontSize = 14,
         showZoomPanelTimer = null,
         hideZoomPanelTimer = null,
         loadingTimer = null;
-
+        /*
         document.getElementById('test').onclick = function() {
           file = document.getElementById('input').files[0];
           init();
         };
+        */
 
 
     function setScale(val, resetAutoSettings, noScroll) {
@@ -78,7 +78,7 @@ function Viewer(viewerPlugin) {
         }
     }
 
-    
+
     this.initialize = function () {
         var location = String(document.location),
             pos = location.indexOf('#'),
@@ -90,16 +90,13 @@ function Viewer(viewerPlugin) {
             return;
         }
         location = decodeURIComponent(location)
-        loading('images/loading/');
-        /*
         var storage = navigator.getDeviceStorage("sdcard");
             var pdf_file = storage.get(location);
             pdf_file.onerror = function() {
                 console.error("Error in: ", pdf_file.error.name);
             };
-            */
-         //   pdf_file.onsuccess = function(event) {
-                //var file = pdf_file.result;
+            pdf_file.onsuccess = function(event) {
+                var file = pdf_file.result;
                 convertoox2odf(file, function(content) {
                 var reader  = new FileReader();
 
@@ -126,7 +123,12 @@ function Viewer(viewerPlugin) {
                           clearInterval(loadingTimer);
                           loadingTimer = null;
                         }
-                        document.getElementById('modal-loading').classList.add('hidden');
+                        //document.getElementById('modal-loading').classList.add('hidden');
+                        parent.loaded = true;
+                        parent.document.getElementById('modal-loading').classList.add('hidden');
+                        setTimeout(function() {
+                          document.getElementById('file-header').click();
+                        }, 1000);
                     };
 
                     viewerPlugin.initialize(canvasContainer, url);
@@ -136,7 +138,7 @@ function Viewer(viewerPlugin) {
                    reader.readAsDataURL(content);
                 }
             });
-			//};
+      };
     };
 
   function zoomIn() {
@@ -168,6 +170,10 @@ function Viewer(viewerPlugin) {
 
   function goBack() {
     parent.document.getElementById('file-display').innerHTML = '';
+    var h = parent.document.getElementById('list-header');
+    h.classList.remove('hidden');
+    var c = parent.document.getElementById('list-container');
+    c.classList.remove('hidden');
   }
 
   function loading(baseUrl) {
@@ -211,5 +217,6 @@ function Viewer(viewerPlugin) {
     });
   }
 
-   // init();
+  //loading('images/loading/');
+  init();
 }
