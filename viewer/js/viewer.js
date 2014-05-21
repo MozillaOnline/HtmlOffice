@@ -127,8 +127,11 @@ function Viewer(viewerPlugin) {
             parent.loaded = true;
           };
 
-          if (content) {
+          if (content != '') {
             reader.readAsDataURL(content);
+          } else {
+            document.getElementById('loadingFailed').classList.remove('hidden');
+            parent.loaded = true;
           }
         });
       } catch (e) {

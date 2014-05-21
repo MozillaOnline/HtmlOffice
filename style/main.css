@@ -11,7 +11,6 @@ html, body {
   return;
   background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll 0 0 rgba(0, 0, 0, 0);
   width: 100%;
-  min-height: 460px;
   color: #FFFFFF;
 }
 
@@ -165,7 +164,7 @@ html, body {
 .modal {
   position: fixed;
   width: 100%;
-  min-height: 460px;
+  height: 100%;
   top: 0;
   left: 0;
   background-color: rgba(42, 42, 42, 0.4);

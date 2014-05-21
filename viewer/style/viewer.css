@@ -9,6 +9,7 @@ body {
 
 .header {
   background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+  height: 35px;
 }
 
 .back {
@@ -30,7 +31,7 @@ body {
 #scale {
   background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll 0 0 rgba(0, 0, 0, 0);
   position: fixed;
-  height: 32px;
+  height: 40px;
   bottom: 0px;
 }
 
@@ -42,7 +43,7 @@ body {
   background-color: rgba(255, 255, 255, 0.5);
   background-position: center center;
   margin-left: 11px;
-  margin-top: 2px;
+  margin-top: 6px;
 }
 
 .zoom-out {
@@ -52,7 +53,7 @@ body {
   background-image: url("images/minus.png");
   background-color: rgba(255, 255, 255, 0.5);
   background-position: center center;
-  margin-top: 2px;
+  margin-top: 6px;
 }
 
 .hidden {
