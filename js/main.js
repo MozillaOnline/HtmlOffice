@@ -43,6 +43,7 @@ function searchFiles(type) {
 
 function loading(baseUrl) {
   $id('modal-loading').classList.remove('hidden');
+  $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50) + 'px';
   var img = $id('loading-img');
   var index = 0;
   loadingTimer = setInterval(function() {
@@ -110,6 +111,7 @@ function createListItem(index) {
     timer = setTimeout(function() {
       bItemLongPressed = true;
       $id('modal-file-ops').classList.remove('hidden');
+      $id('file-ops-container').style.marginTop = ($id('modal-file-ops').clientHeight/2 - 50) + 'px';
     }, 1500);
   };
   infoDiv.onmouseup = infoDiv.ontouchend = function() {
@@ -181,17 +183,17 @@ function showFileInfo() {
   $id('lastModify').innerHTML = formatDate(files[index].lastModifiedDate);
   $id('file-info').classList.remove('hidden');
   $id('open').onclick = function() {
+    $id('file-info').classList.add('hidden');
     $id('list-header').classList.add('hidden');
     $id('list-container').classList.add('hidden');
-    $id('fileName').innerHTML = extractFileName($id('file-info').dataset.name);
+    //$id('fileName').innerHTML = extractFileName($id('file-info').dataset.name);
     var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + extractFileName($id('file-info').dataset.name) +
                  '" WIDTH=100% HEIGHT=100% FRAMEBORDER=0 scrolling="no"></IFRAME>';
     $id('container').classList.remove('hidden');
     $id('file-display').classList.remove('hidden');
     $id('file-display').innerHTML = iframe;
-    $id('file-info').classList.add('hidden');
+    loading('images/loading1/');
   };
-
 }
 
 function init() {
@@ -202,6 +204,10 @@ function init() {
   $id('ppt').onclick = loadFiles;
   $id('goback').onclick = goBack;
   $id('refresh').onclick = refresh;
+  window.onresize = function() {
+    $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50) + 'px';
+    $id('file-ops-container').style.marginTop = ($id('modal-file-ops').clientHeight/2 - 50) + 'px';
+  };
 }
 
 window.addEventListener("load", init, false);
