@@ -14,10 +14,15 @@ html, body {
   color: #FFFFFF;
 }
 
+.header {
+  height: 40px;
+}
+
 .title {
   text-align: center;
   font-size: 18px;
   margin-top: 10px;
+  font-style: italic;
 }
 
 .refresh {
@@ -30,15 +35,16 @@ html, body {
   background-color: #6BB3E2;
 }
 
-.header {
+.navi {
   background-color: rgba(255, 255, 255, 0.3);
   border-top: 2px solid rgba(255, 255, 255, 0.5);
   border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+  font-size: 16px;
 }
 
 .types {
   text-align: center;
-  margin-top: 4px;
+  padding-top: 4px;
 }
 
 .selected {
@@ -111,9 +117,9 @@ html, body {
 }
 
 .back {
-  width: 26px;
-  height: 26px;
-  border-radius: 13px;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
   background-color: rgba(255, 255, 255, 0.5);
   background-image: url("images/back.png");
   background-position: center center;
@@ -121,17 +127,25 @@ html, body {
 }
 
 #file-header {
-  margin-left: 0;
+  padding-top: 6px;
+  text-align: left;
+  color: #FFFFFF;
 }
 
 #file-header span {
-  margin: 8px 0 0 0;
+  margin: 4px 0 0 0;
   display: block;
+  font-size: 16px;
 }
 
 #file-display, #container {
   width: calc(100%);
   height: calc(100%);
+}
+
+.content {
+  height: calc(100% - 40px);
+  background-color: #FFFFFF;
 }
 
 .zoom-in {

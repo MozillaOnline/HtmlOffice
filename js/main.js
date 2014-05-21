@@ -132,11 +132,12 @@ function loadFile(event) {
   if (bItemLongPressed) return;
   $id('list-header').classList.add('hidden');
   $id('list-container').classList.add('hidden');
+  $id('documentName').innerHTML = extractFileName(event.target.parentNode.parentNode.dataset.filePath);
+  $id('container').classList.remove('hidden');
+  loading('images/loading1/');
   var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + extractFileName(event.target.parentNode.parentNode.dataset.filePath) +
                '" WIDTH=100% HEIGHT=100% FRAMEBORDER=0 scrolling="no"></IFRAME>';
-  $id('container').classList.remove('hidden');
   $id('file-display').innerHTML = iframe;
-  loading('images/loading1/');
 }
 
 function refresh() {
@@ -191,7 +192,6 @@ function showFileInfo() {
     var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + extractFileName($id('file-info').dataset.name) +
                  '" WIDTH=100% HEIGHT=100% FRAMEBORDER=0 scrolling="no"></IFRAME>';
     $id('container').classList.remove('hidden');
-    $id('file-display').classList.remove('hidden');
     $id('file-display').innerHTML = iframe;
     loading('images/loading1/');
   };
@@ -205,6 +205,12 @@ function init() {
   $id('ppt').onclick = loadFiles;
   $id('goback').onclick = goBack;
   $id('refresh').onclick = refresh;
+  $id('quitViewer').onclick = function() {
+    $id('list-header').classList.remove('hidden');
+    $id('list-container').classList.remove('hidden');
+    $id('container').classList.add('hidden');
+    $id('file-display').innerHTML = '';
+  };
   window.onresize = function() {
     $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50) + 'px';
     $id('file-ops-container').style.marginTop = ($id('modal-file-ops').clientHeight/2 - 50) + 'px';

@@ -103,7 +103,7 @@ function Viewer(viewerPlugin) {
             document.title = location;
             var ultimo = document.title.split("/").pop();
             var pdf = ultimo.charAt(0).toUpperCase() + ultimo.slice(1);
-            document.getElementById('documentName').innerHTML = pdf;
+            //document.getElementById('documentName').innerHTML = pdf;
 
             viewerPlugin.onLoad = function () {
               parseScale(kDefaultScale);
@@ -191,7 +191,7 @@ function Viewer(viewerPlugin) {
       self.initialize();
     }
 
-    document.getElementById('goback').onclick = goBack;
+    //document.getElementById('goback').onclick = goBack;
     document.getElementById('return').onclick = goBack;
 
     var canvas = document.getElementById('canvas');

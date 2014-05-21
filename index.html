@@ -16,7 +16,7 @@
         <div id="refresh" class="refresh"></div>
       </div>
     </div>
-    <div class="row-fluid header">
+    <div class="row-fluid navi">
       <div id="recent" class="span3 types">RECENT</div>
       <div id="doc" data-type="docx" class="span3 types">DOC</div>
       <div id="xls" data-type="xls" class="span3 types">XLS</div>
@@ -74,7 +74,16 @@
     </div>
   </section>
   <section id="container" class="hidden">
-    <div id="file-display">
+    <div class="row-fluid header">
+      <div class="span2">
+        <div id="quitViewer" class="back"></div>
+      </div>
+      <div id="file-header" class="span10">
+        <span id="documentName"></span>
+      </div>
+    </div>
+    <div class="row-fluid content">
+      <div id="file-display" class="span12"></div>
     </div>
   </section>
   <script src="bootstrap/js/bootstrap.min.js"></script>
