@@ -15,7 +15,7 @@
   "permissions": {
     "device-storage:sdcard": {
       "description" : "Pick a .docx .xls .ppt file from the SD card.",
-      "access": "readonly"
+      "access": "readwrite"
     }
   },
   "default_locale": "en-US"

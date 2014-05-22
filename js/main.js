@@ -108,6 +108,7 @@ function createListItem(index) {
   infoDiv.onmousedown = infoDiv.ontouchstart = function() {
     bItemLongPressed = false;
     $id('fileInfo').onclick = '';
+    $id('deleteFile').onclick = '';
     timer = setTimeout(function() {
       bItemLongPressed = true;
       $id('modal-file-ops').classList.remove('hidden');
@@ -123,6 +124,8 @@ function createListItem(index) {
     if (bItemLongPressed) {
       $id('fileInfo').dataset.index = this.dataset.index;
       $id('fileInfo').onclick = showFileInfo;
+      $id('deleteFile').dataset.index = this.dataset.index;
+      $id('deleteFile').onclick = deleteFile;
     }
   };
   return div;
@@ -194,6 +197,24 @@ function showFileInfo() {
     $id('container').classList.remove('hidden');
     $id('file-display').innerHTML = iframe;
     loading('images/loading1/');
+  };
+}
+
+function deleteFile() {
+  $id('modal-file-ops').classList.add('hidden');
+  var index = parseInt(this.dataset.index);
+  var req =  storage.delete(files[index].name);
+  req.onsuccess = function() {
+    var container = $id('list-container');
+    var items = container.querySelectorAll('.item');
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].lastChild.dataset.index == index) {
+        container.removeChild(items[i]);
+      }
+    }
+  };
+  req.onerror = function(e) {
+    console.log('delete file failed:' + e.name);
   };
 }
 
