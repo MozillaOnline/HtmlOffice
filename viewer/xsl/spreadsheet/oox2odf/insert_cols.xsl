@@ -1927,7 +1927,7 @@ RefNo-1 26-Oct-2007 Sandeep S     1757322   Modification done to handle column b
                   <xsl:if test="not(@min = @max)">
                     <xsl:attribute name="table:number-columns-repeated">
                       <xsl:choose>
-                        <xsl:when test="@max &gt; 256">
+                        <xsl:when test="256 &gt; @max">
                           <xsl:value-of select="256 - @min + 1"/>
                         </xsl:when>
                         <xsl:otherwise>
@@ -1941,7 +1941,7 @@ RefNo-1 26-Oct-2007 Sandeep S     1757322   Modification done to handle column b
                   <xsl:if test="not($LastBreak = (@max-1))">
                     <xsl:attribute name="table:number-columns-repeated">
                       <xsl:choose>
-                        <xsl:when test="@max &gt; 256">
+                        <xsl:when test="256 &gt; @max">
                           <xsl:value-of select="256 - $LastBreak - 1"/>
                         </xsl:when>
                         <xsl:otherwise>

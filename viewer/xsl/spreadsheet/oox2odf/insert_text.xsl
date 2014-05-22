@@ -110,19 +110,19 @@ RefNo-3 8-Jan-2009 Sandeep S     ODF1.1   Changes done for ODF1.1 conformance
               <xsl:choose>
                 <xsl:when test="string-length($sheetNames) = string-length(translate($sheetNames,$invalidChars,''))">
                   <xsl:attribute name="table:formula">
-                    <xsl:value-of select="concat('sonataOoxFormula',e:f)"/>
+                    <xsl:value-of select="concat('ooc-sonataOoxFormula-oop-',e:f, '-ooe')"/>
                  </xsl:attribute>
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:attribute name="table:formula">
-                    <xsl:value-of select="concat('sonataOoxFormula',e:f,'##shtName##',$sheetNames)"/>
+                    <xsl:value-of select="concat('ooc-sonataOoxFormula-oop-',e:f,'##shtName##',$sheetNames, '-ooe')"/>
                   </xsl:attribute>
                 </xsl:otherwise>
               </xsl:choose>       
             </xsl:when>
             <xsl:otherwise>
               <xsl:attribute name="table:formula">
-                <xsl:value-of select="concat('sonataOoxFormula',e:f)"/>
+                <xsl:value-of select="concat('ooc-sonataOoxFormula-oop-',e:f, '-ooe')"/>
               </xsl:attribute>
             </xsl:otherwise>
           </xsl:choose>

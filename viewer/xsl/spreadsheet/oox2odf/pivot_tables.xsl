@@ -894,7 +894,7 @@
 				  <!--Comparing Pivot field names with Source sheet column names-->
 				  <xsl:choose>
 					  <xsl:when test="$cacheDataName != '' and $cacheDataValues != '' and $sourceDataValues != ''">
-						<xsl:value-of select ="concat('ExcelPivotField_',$cacheDataName,'_',$cacheDataValues,'_',$sourceDataValues)"/>
+						<xsl:value-of select ="concat('ooc-ExcelPivotField-oop-',$cacheDataName,'_',$cacheDataValues,'_',$sourceDataValues, '-ooe')"/>
 					  </xsl:when>
 					  <xsl:otherwise>
 			    	    <xsl:value-of select="$cacheDataName"/>		  

@@ -3267,7 +3267,7 @@ RefNo-6 12-Jan-2009 Sandeep S     ODF1.1   Changes done for ODF1.1 conformance
         <xsl:variable name ="Id" >
           <xsl:value-of select ="generate-id(.)"/>
         </xsl:variable>
-        <xsl:value-of select ="concat('SonataAnnotation|',$textContent,'|',$Id)"/>
+        <xsl:value-of select ="concat('00c-SonataAnnotation-oop-',$textContent,'|',$Id, '-ooe')"/>
       </xsl:when>
       <!--Start of RefNo-1-->
       <!--<xsl:when test ="$textp='T'">

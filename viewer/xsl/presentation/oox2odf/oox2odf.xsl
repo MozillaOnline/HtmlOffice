@@ -56,7 +56,7 @@ Copyright (c) 2007, Sonata Software Limited
   <xsl:param name="documentType" />
   
 	<xsl:output method="xml" encoding="UTF-8"/>
-    <xsl:key name="Part" match="/oox:source/oox:part" use="@oox:name"/>
+        <xsl:key name="Part" match="/oox:source/oox:part" use="@oox:name"/>
 	<!-- App version number -->
 	<xsl:variable name="app-version">2.0.0</xsl:variable>
 	<xsl:template match="/oox:source">

@@ -1552,7 +1552,7 @@
         <xsl:variable name="style" select="key('StyleId', 'TableNormal')" />
         <xsl:call-template name="GetLeftCellMargin">
           <xsl:with-param name="tblPr" select="$style/w:tblPr"/>
-          <xsl:with-param name="styleName" select="$style/w:basedOn/@w:val" />
+          <xsl:with-param name="styleName" select="$style/w:basedOn/@w:val or $style/w:name/@w:val" />
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
@@ -1590,7 +1590,7 @@
         <xsl:variable name="style" select="key('StyleId', 'TableNormal')" />
         <xsl:call-template name="GetTableIndent">
           <xsl:with-param name="tblPr" select="$style/w:tblPr"/>
-          <xsl:with-param name="styleName" select="$style/w:basedOn/@w:val" />
+          <xsl:with-param name="styleName" select="$style/w:basedOn/@w:val  or $style/w:name/@w:val" />
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise>

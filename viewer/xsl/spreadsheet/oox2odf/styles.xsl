@@ -211,13 +211,13 @@ RefNo-5 12-Jan-2009 Sandeep S     ODF1.1   Changes done for ODF1.1 conformance
 				<xsl:choose>
 					<xsl:when
 					  test="key('Part', concat('xl/',$sheet))/e:worksheet/e:sheetFormatPr/@defaultColWidth">
-						<xsl:value-of select="concat('sonataColumnWidth:','True|',$defaultFontStyle,'|',$defaultFontSize,'|',key('Part', concat('xl/',$sheet))/e:worksheet/e:sheetFormatPr/@defaultColWidth)"/>
+						<xsl:value-of select="concat('ooc-sonataColumnWidth-oop-','True|',$defaultFontStyle,'|',$defaultFontSize,'|',key('Part', concat('xl/',$sheet))/e:worksheet/e:sheetFormatPr/@defaultColWidth, '-ooe')"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<!-- Here To calculate the def col width formula used is 
 						     width=Truncate([{Number of Characters} * {Maximum Digit Width} + {5 pixel padding}]/{Maximum Digit Width}*256)/256
 							 Column Width =Truncate(((256 * {width} + Truncate(128/{Maximum Digit Width}))/256)*{Maximum Digit Width})-->
-						<xsl:value-of select="concat('sonataColumnWidth:','False|',$defaultFontStyle,'|',$defaultFontSize)"/>
+						<xsl:value-of select="concat('ooc-sonataColumnWidth-oop-','False|',$defaultFontStyle,'|',$defaultFontSize, '-ooe')"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:attribute>
@@ -232,14 +232,14 @@ RefNo-5 12-Jan-2009 Sandeep S     ODF1.1   Changes done for ODF1.1 conformance
 			  <xsl:choose>
 				  <xsl:when
 					test="key('Part', concat('xl/',$sheet))/e:worksheet/e:sheetFormatPr/@defaultColWidth">
-					  <xsl:value-of select="concat('sonataColumnWidth:','True|',$defaultFontStyle,'|',$defaultFontSize,'|',key('Part', concat('xl/',$sheet))/e:worksheet/e:sheetFormatPr/@defaultColWidth)"/>
+					  <xsl:value-of select="concat('ooc-sonataColumnWidth-oop-','True|',$defaultFontStyle,'|',$defaultFontSize,'|',key('Part', concat('xl/',$sheet))/e:worksheet/e:sheetFormatPr/@defaultColWidth, '-ooe')"/>
 				  </xsl:when>
 				  <xsl:otherwise>
 					  <!-- Excel application default-->
 					  <!-- Here To calculate the def col width formula used is 
 				           width=Truncate([{Number of Characters} * {Maximum Digit Width} + {5 pixel padding}]/{Maximum Digit Width}*256)/256
                            Column Width =Truncate(((256 * {width} + Truncate(128/{Maximum Digit Width}))/256)*{Maximum Digit Width})-->
-					  <xsl:value-of select="concat('sonataColumnWidth:','False|',$defaultFontStyle,'|',$defaultFontSize)"/>
+					  <xsl:value-of select="concat('ooc-sonataColumnWidth-oop-','False|',$defaultFontStyle,'|',$defaultFontSize, '-ooe')"/>
 				  </xsl:otherwise>
 			  </xsl:choose>
 		  </xsl:attribute>

@@ -2354,20 +2354,20 @@ RefNo-1 12-Jan-2009 Sandeep S     ODF1.1   Changes done for ODF1.1 conformance
 												<xsl:variable name="totalDefWid">
 													<xsl:value-of select="number($defaultColCount) * number($defaultcolWidth) "/>
 												</xsl:variable>
-												<xsl:value-of select="concat('sonataChartWidth:','False|',$defaultFontStyle,'|',$defaultFontSize,'|','0','|',$totalDefWid,'|',substring-before($startcoloffset,'cm'),'|',substring-before($endcoloffset,'cm'))"/>
+												<xsl:value-of select="concat('ooc-sonataChartWidth-oop-','False|',$defaultFontStyle,'|',$defaultFontSize,'|','0','|',$totalDefWid,'|',substring-before($startcoloffset,'cm'),'|',substring-before($endcoloffset,'cm'), '-ooe')"/>
 																				</xsl:when>
                       <xsl:when test="$defaultcolWidth != 'null' and $customColWid !=0">
 												<xsl:variable name="totalDefWid">
                           <xsl:value-of select="number($defaultColCount) * number($defaultcolWidth)+ $customColWid"/>
 												</xsl:variable>
-												<xsl:value-of select="concat('sonataChartWidth:','False|',$defaultFontStyle,'|',$defaultFontSize,'|','0','|',$totalDefWid,'|',substring-before($startcoloffset,'cm'),'|',substring-before($endcoloffset,'cm'))"/>
+												<xsl:value-of select="concat('ooc-sonataChartWidth-oop-','False|',$defaultFontStyle,'|',$defaultFontSize,'|','0','|',$totalDefWid,'|',substring-before($startcoloffset,'cm'),'|',substring-before($endcoloffset,'cm'), '-ooe')"/>
 											</xsl:when>
 											<xsl:otherwise>
                         <xsl:if test ="$customColWid !=0">
-                          <xsl:value-of select="concat('sonataChartWidth:','False|',$defaultFontStyle,'|',$defaultFontSize,'|',$defaultColCount,'|',$customColWid,'|',substring-before($startcoloffset,'cm'),'|',substring-before($endcoloffset,'cm'))"/>
+                          <xsl:value-of select="concat('ooc-sonataChartWidth-oop-','False|',$defaultFontStyle,'|',$defaultFontSize,'|',$defaultColCount,'|',$customColWid,'|',substring-before($startcoloffset,'cm'),'|',substring-before($endcoloffset,'cm'), '-ooe')"/>
 												</xsl:if>
                         <xsl:if test ="$customColWid =0">
-													<xsl:value-of select="concat('sonataChartWidth:','False|',$defaultFontStyle,'|',$defaultFontSize,'|',$defaultColCount,'|','0','|',substring-before($startcoloffset,'cm'),'|',substring-before($endcoloffset,'cm'))"/>
+													<xsl:value-of select="concat('ooc-sonataChartWidth-oop-','False|',$defaultFontStyle,'|',$defaultFontSize,'|',$defaultColCount,'|','0','|',substring-before($startcoloffset,'cm'),'|',substring-before($endcoloffset,'cm'), '-ooe')"/>
 												</xsl:if>
 																	</xsl:otherwise>
 										</xsl:choose>

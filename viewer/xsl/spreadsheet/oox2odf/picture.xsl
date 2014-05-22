@@ -895,21 +895,21 @@ RefNo-1	1-Feb-2008 Sandeep s           1835598   Changes done to fix bug:XLSX: T
 										<xsl:variable name="totalDefWid">
 											<xsl:value-of select="number($defaultColCount) * number($defaultcolWidth) "/>
 										</xsl:variable>
-										<xsl:value-of select="concat('sonataChartWidth:','False|',$defaultFontStyle,'|',$defaultFontSize,'|','0','|',$totalDefWid,'|',substring-before($startcoloffset,'cm'),'|',substring-before($endcoloffset,'cm'))"/>
+										<xsl:value-of select="concat('ooc-sonataChartWidth-oop-','False|',$defaultFontStyle,'|',$defaultFontSize,'|','0','|',$totalDefWid,'|',substring-before($startcoloffset,'cm'),'|',substring-before($endcoloffset,'cm'), '-ooe')"/>
 										<!--<xsl:value-of select="concat(($defaultColCount * substring-before($defaultcolWidth,'cm')),'cm') "/>-->
 									</xsl:when>
 									<xsl:when test="$defaultcolWidth != 'null' and translate($customColWid,'cm','')!=0">
 										<xsl:variable name="totalDefWid">
 											<xsl:value-of select="number($defaultColCount) * number($defaultcolWidth)+ substring-before($colWidPlusdefaultColCount,'|')"/>
 										</xsl:variable>
-										<xsl:value-of select="concat('sonataChartWidth:','False|',$defaultFontStyle,'|',$defaultFontSize,'|','0','|',$totalDefWid,'|',substring-before($startcoloffset,'cm'),'|',substring-before($endcoloffset,'cm'))"/>
+										<xsl:value-of select="concat('ooc-sonataChartWidth-oop-','False|',$defaultFontStyle,'|',$defaultFontSize,'|','0','|',$totalDefWid,'|',substring-before($startcoloffset,'cm'),'|',substring-before($endcoloffset,'cm'), '-ooe')"/>
 									</xsl:when>
 									<xsl:otherwise>
 										<xsl:if test ="substring-before($colWidPlusdefaultColCount,'|')!=''">
-											<xsl:value-of select="concat('sonataChartWidth:','False|',$defaultFontStyle,'|',$defaultFontSize,'|',$defaultColCount,'|',substring-before($colWidPlusdefaultColCount,'|'),'|',substring-before($startcoloffset,'cm'),'|',substring-before($endcoloffset,'cm'))"/>
+											<xsl:value-of select="concat('ooc-sonataChartWidth-oop-','False|',$defaultFontStyle,'|',$defaultFontSize,'|',$defaultColCount,'|',substring-before($colWidPlusdefaultColCount,'|'),'|',substring-before($startcoloffset,'cm'),'|',substring-before($endcoloffset,'cm'), '-ooe')"/>
 										</xsl:if>
 										<xsl:if test ="substring-before($colWidPlusdefaultColCount,'|')=''">
-											<xsl:value-of select="concat('sonataChartWidth:','False|',$defaultFontStyle,'|',$defaultFontSize,'|',$defaultColCount,'|','0','|',substring-before($startcoloffset,'cm'),'|',substring-before($endcoloffset,'cm'))"/>
+											<xsl:value-of select="concat('ooc-sonataChartWidth-oop-','False|',$defaultFontStyle,'|',$defaultFontSize,'|',$defaultColCount,'|','0','|',substring-before($startcoloffset,'cm'),'|',substring-before($endcoloffset,'cm'), '-ooe')"/>
 										</xsl:if>
 										<!--<xsl:value-of select="concat('sonataChartWidth:','False|',$defaultFontStyle,'|',$defaultFontSize,'|',$defaultColCount,'|',substring-before($colWidPlusdefaultColCount,'|'))"/>-->
 									</xsl:otherwise>
@@ -1159,7 +1159,7 @@ RefNo-1	1-Feb-2008 Sandeep s           1835598   Changes done to fix bug:XLSX: T
           </xsl:variable>
           <xsl:attribute name ="fo:clip">
             <xsl:variable name="temp">
-              <xsl:value-of select="concat('image-props:',concat('xl/',substring-after($pzipsource, '/')),':',$left,':',$right,':',$top,':',$bottom)"/>
+              <xsl:value-of select="concat('ooc-image-props-oop-',concat('xl/',substring-after($pzipsource, '/')),'-oop-',$left,'-oop-',$right,'-oop-',$top,'-oop-',$bottom, '-ooe')"/>
             </xsl:variable>
             <xsl:value-of select="$temp"/>
           </xsl:attribute>
@@ -1259,7 +1259,7 @@ RefNo-1	1-Feb-2008 Sandeep s           1835598   Changes done to fix bug:XLSX: T
 					</xsl:variable>
 					<xsl:attribute name ="fo:clip">
 						<xsl:variable name="temp">
-							<xsl:value-of select="concat('image-props:',concat('xl/',substring-after($pzipsource, '/')),':',$left,':',$right,':',$top,':',$bottom)"/>
+							<xsl:value-of select="concat('ooc-image-props-oop-',concat('xl/',substring-after($pzipsource, '/')),'-oop-',$left,'-oop-',$right,'-oop-',$top,'-oop-',$bottom, '-ooe')"/>
 						</xsl:variable>
 						<xsl:value-of select="$temp"/>
 					</xsl:attribute>
