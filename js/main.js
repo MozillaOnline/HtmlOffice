@@ -4,6 +4,7 @@ var currentTarget = null;
 var loaded = false;
 var loadingTimer = null;
 var bItemLongPressed = false;
+var bTouchMoved = false;
 var delayShowTimer = null;
 var files = [];
 var db = null;
@@ -111,25 +112,37 @@ function createListItem(index) {
   var timer = null;
   infoDiv.onmousedown = infoDiv.ontouchstart = function() {
     bItemLongPressed = false;
-    $id('fileInfo').onclick = '';
-    $id('deleteFile').onclick = '';
+    bTouchMoved = false;
+    $id('modal-file-ops').onclick = '';
     timer = setTimeout(function() {
       bItemLongPressed = true;
       $id('modal-file-ops').classList.remove('hidden');
       $id('file-ops-container').style.marginTop = ($id('modal-file-ops').clientHeight/2 - 50) + 'px';
     }, 1500);
   };
+
+  infoDiv.ontouchmoved = function() {
+    bTouchMoved = true;
+  };
+
   infoDiv.onmouseup = infoDiv.ontouchend = function() {
     console.log('mouse up');
     if (timer) {
       clearTimeout(timer);
       timer = null;
     }
-    if (bItemLongPressed) {
-      $id('fileInfo').dataset.index = this.dataset.index;
-      $id('fileInfo').onclick = showFileInfo;
-      $id('deleteFile').dataset.index = this.dataset.index;
-      $id('deleteFile').onclick = deleteFile;
+    if (bItemLongPressed && !bTouchMoved) {
+      $id('modal-file-ops').dataset.index = this.dataset.index;
+      $id('modal-file-ops').onclick = function(evt) {
+        $id('modal-file-ops').classList.add('hidden');
+        if (evt.target.id == 'fileInfo') {
+          showFileInfo();
+        }
+        if (evt.target.id == 'deleteFile') {
+          deleteFile();
+        }
+      };
+
     }
   };
   return div;
@@ -185,14 +198,13 @@ function goBack() {
 }
 
 function showFileInfo() {
-  $id('modal-file-ops').classList.add('hidden');
   $id('list-header').classList.add('hidden');
   $id('list-container').classList.add('hidden');
- // $id('file-container').classList.remove('hidden');
   $id('file-display').classList.add('hidden');
-  var index = parseInt(this.dataset.index);
+  var index = parseInt($id('modal-file-ops').dataset.index);
+  $id('file-info').dataset.name = files[index].name;
 
-  $id('name').innerHTML = $id('file-info').dataset.name = extractFileName(files[index].name);
+  $id('name').innerHTML = extractFileName(files[index].name);
   $id('size').innerHTML = formatFileSize(files[index].size);
   $id('dir').innerHTML = files[index].name;
   $id('lastModify').innerHTML = formatDate(files[index].lastModifiedDate);
@@ -201,18 +213,17 @@ function showFileInfo() {
     $id('file-info').classList.add('hidden');
     $id('list-header').classList.add('hidden');
     $id('list-container').classList.add('hidden');
-    //$id('fileName').innerHTML = extractFileName($id('file-info').dataset.name);
-    var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + extractFileName($id('file-info').dataset.name) +
-                 '" WIDTH=100% HEIGHT=100% FRAMEBORDER=0 scrolling="no"></IFRAME>';
+    $id('documentName').innerHTML = extractFileName($id('file-info').dataset.name);
     $id('container').classList.remove('hidden');
-    $id('file-display').innerHTML = iframe;
     loading('images/loading1/');
+    var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + $id('file-info').dataset.name +
+                 '" WIDTH=100% HEIGHT=100% FRAMEBORDER=0 scrolling="no"></IFRAME>';
+    $id('file-display').innerHTML = iframe;
   };
 }
 
 function deleteFile() {
-  $id('modal-file-ops').classList.add('hidden');
-  var index = parseInt(this.dataset.index);
+  var index = parseInt($id('modal-file-ops').dataset.index);
   var req =  storage.delete(files[index].name);
   req.onsuccess = function() {
     var container = $id('list-container');
@@ -301,6 +312,7 @@ function init() {
     db = event.target.result;
     console.log('open indexedDB successfully');
   };
+  $id('doc').click();
 }
 
 window.addEventListener("load", init, false);
