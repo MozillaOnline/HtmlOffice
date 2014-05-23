@@ -80,6 +80,9 @@ html, body {
 
 .item .name{
   padding-top: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .item .detail {
@@ -136,6 +139,9 @@ html, body {
   margin: 4px 0 0 0;
   display: block;
   font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #file-display, #container {

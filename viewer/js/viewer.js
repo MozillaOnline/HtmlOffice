@@ -124,9 +124,9 @@ function Viewer(viewerPlugin) {
               if (!db) return;
 
               var obj = {
-                name: pdf_file.name,
-                size: pdf_file.size,
-                lastModifiedDate: pdf_file.lastModifiedDate,
+                name: file.name,
+                size: file.size,
+                lastModifiedDate: file.lastModifiedDate,
                 lastAccessDate: Date.now()
               };
 
@@ -140,7 +140,7 @@ function Viewer(viewerPlugin) {
               };
 
               var store = tx.objectStore("files");
-              var req = store.get(pdf_file.name);
+              var req = store.get(file.name);
 
               req.onsuccess = function(event) {
                 var data = event.target.result;

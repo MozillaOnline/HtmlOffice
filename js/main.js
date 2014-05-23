@@ -153,6 +153,12 @@ function refresh() {
 
   $id('list-container').innerHTML = '';
   loading('images/loading1/');
+
+  if (currentTarget.id == 'history') {
+    updateHistory();
+    return;
+  }
+
   var type = new RegExp(currentTarget.dataset.type);
   searchFiles(type);
 }
@@ -226,13 +232,18 @@ function showHistory(e) {
   if (!db) return;
   if (currentTarget == e.target) return;
 
-  var container = $id('list-container');
-  container.innerHTML = '';
-  $id('empty-list').classList.add('hidden');
-
   select(e.target.id);
   currentTarget = e.target;
+
+  var container = $id('list-container').innerHTML = '';
+  $id('empty-list').classList.add('hidden');
+
   loading('images/loading1/');
+  updateHistory();
+}
+
+function updateHistory() {
+  if (!db) return;
 
   files = [];
   var count = 0;
