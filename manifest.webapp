@@ -1,12 +1,12 @@
-﻿{
+{
   "name": "HTML Office",
   "description": "office for Firefox OS.",
-  "type" : "privileged",
+  "type": "privileged",
   "launch_path": "/index.html",
   "version": "1.0",
   "icons": {
-    "128": "/icon128.png",
-    "60": "/icon60.png"
+    "60": "/icon60.png",
+    "128": "/icon128.png"
   },
   "developer": {
     "name": "Mozilla Online",
@@ -14,7 +14,7 @@
   },
   "permissions": {
     "device-storage:sdcard": {
-      "description" : "Pick a .docx .xls .ppt file from the SD card.",
+      "description": "Pick a .docx .xls .ppt file from the SD card.",
       "access": "readwrite"
     }
   },

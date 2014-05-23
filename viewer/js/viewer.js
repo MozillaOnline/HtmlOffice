@@ -252,7 +252,7 @@ function Viewer(viewerPlugin) {
       showZoomPanelTimer = setTimeout(function() {
         document.getElementById('scale').classList.remove('hidden');
         hideZoomPanel();
-      }, 1500);
+      }, 1000);
     };
     canvas.onmouseup = canvas.ontouchend = function() {
       if (showZoomPanelTimer) {

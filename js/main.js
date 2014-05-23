@@ -116,13 +116,10 @@ function createListItem(index) {
     $id('modal-file-ops').onclick = '';
     timer = setTimeout(function() {
       bItemLongPressed = true;
+      if (bTouchMoved) return;
       $id('modal-file-ops').classList.remove('hidden');
       $id('file-ops-container').style.marginTop = ($id('modal-file-ops').clientHeight/2 - 50) + 'px';
     }, 1500);
-  };
-
-  infoDiv.ontouchmoved = function() {
-    bTouchMoved = true;
   };
 
   infoDiv.onmouseup = infoDiv.ontouchend = function() {
@@ -133,16 +130,17 @@ function createListItem(index) {
     }
     if (bItemLongPressed && !bTouchMoved) {
       $id('modal-file-ops').dataset.index = this.dataset.index;
-      $id('modal-file-ops').onclick = function(evt) {
-        $id('modal-file-ops').classList.add('hidden');
-        if (evt.target.id == 'fileInfo') {
-          showFileInfo();
-        }
-        if (evt.target.id == 'deleteFile') {
-          deleteFile();
-        }
-      };
-
+      setTimeout(function() {
+        $id('modal-file-ops').onclick = function(evt) {
+          $id('modal-file-ops').classList.add('hidden');
+          if (evt.target.id == 'fileInfo') {
+            showFileInfo();
+          }
+          if (evt.target.id == 'deleteFile') {
+            deleteFile();
+          }
+        };
+      }, 500);
     }
   };
   return div;
@@ -312,6 +310,18 @@ function init() {
     db = event.target.result;
     console.log('open indexedDB successfully');
   };
+
+  $id('list-container').ontouchstart = function(evt) {
+    console.log('touch start');
+  };
+  $id('list-container').ontouchmove = function(evt) {
+    bTouchMoved = true;
+    console.log('touch move');
+  };
+  $id('list-container').ontouchend = function(evt) {
+    console.log('touch end');
+  };
+
   $id('doc').click();
 }
 
