@@ -119,6 +119,53 @@ function Viewer(viewerPlugin) {
               setTimeout(function() {
                 document.getElementById('file-header').click();
               }, 1000);
+
+              var db = parent.db;
+              if (!db) return;
+
+              var obj = {
+                name: pdf_file.name,
+                size: pdf_file.size,
+                lastModifiedDate: pdf_file.lastModifiedDate,
+                lastAccessDate: Date.now()
+              };
+
+              var tx = db.transaction(["files"], "readwrite");
+              tx.oncomplete = function(event) {
+                console.log("addToIndexedDB transaction complete");
+              };
+
+              tx.onerror = function(event) {
+                console.log("addToIndexedDB transaction failed");
+              };
+
+              var store = tx.objectStore("files");
+              var req = store.get(pdf_file.name);
+
+              req.onsuccess = function(event) {
+                var data = event.target.result;
+                if (data) {
+                  data.lastAccessDate = Date.now();
+                  var reqUpdate = store.put(data);
+                  reqUpdate.onsuccess = function() {
+                    console.log('entity update successfully');
+                  };
+                  reqUpdate.onerror = function() {
+                    console.log('entity update failed');
+                  };
+                } else {
+                  var reqAdd = store.add(obj);
+                  reqAdd.onsuccess = function(event) {
+                    console.log("addToIndexedDB added to object store successfully");
+                  };
+                  reqAdd.onerror = function(event) {
+                    console.log("addToIndexedDB added to object store failed");
+                  };
+                }
+              };
+              req.onerror = function(event) {
+                console.log("lookup file by name failed");
+              };
             };
 
             viewerPlugin.initialize(canvasContainer, url);

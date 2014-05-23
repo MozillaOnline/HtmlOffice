@@ -6,6 +6,9 @@ var loadingTimer = null;
 var bItemLongPressed = false;
 var delayShowTimer = null;
 var files = [];
+var db = null;
+
+const MAX_COUNT = 10;
 
 function loadFiles(e) {
   if (!storage) return;
@@ -66,6 +69,7 @@ function showFiles () {
   var container = $id('list-container');
   container.innerHTML = '';
   if (files.length == 0) {
+    loaded = true;
     showEmptyList();
     $id('modal-loading').classList.add('hidden');
     return;
@@ -154,7 +158,7 @@ function refresh() {
 }
 
 function select(id) {
-  $id('recent').classList.remove('selected');
+  $id('history').classList.remove('selected');
   $id('doc').classList.remove('selected');
   $id('xls').classList.remove('selected');
   $id('ppt').classList.remove('selected');
@@ -218,9 +222,45 @@ function deleteFile() {
   };
 }
 
+function showHistory(e) {
+  if (!db) return;
+  if (currentTarget == e.target) return;
+
+  var container = $id('list-container');
+  container.innerHTML = '';
+  $id('empty-list').classList.add('hidden');
+
+  select(e.target.id);
+  currentTarget = e.target;
+  loading('images/loading1/');
+
+  files = [];
+  var count = 0;
+  var tx = db.transaction(["files"], "readwrite");
+  var store = tx.objectStore("files");
+  var index = store.index('lastAccessDate');
+  index.openCursor(null, 'prev').onsuccess = function(event) {
+    var cursor = event.target.result;
+    if (cursor) {
+      count++;
+      if (count < MAX_COUNT) {
+        files.push({
+          name: cursor.value.name,
+          size: cursor.value.size,
+          lastModifiedDate: cursor.value.lastModifiedDate
+        });
+      } else {
+        // TODO remove all the other entries
+      }
+      cursor.continue();
+    }
+    showFiles();
+  };
+}
+
 function init() {
   storage = navigator.getDeviceStorage("sdcard");
-  $id("recent").onclick = recent;
+  $id("history").onclick = showHistory;
   $id('doc').onclick = loadFiles;
   $id('xls').onclick = loadFiles;
   $id('ppt').onclick = loadFiles;
@@ -235,6 +275,20 @@ function init() {
   window.onresize = function() {
     $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50) + 'px';
     $id('file-ops-container').style.marginTop = ($id('modal-file-ops').clientHeight/2 - 50) + 'px';
+  };
+
+  var request = indexedDB.open("history");
+
+  request.onupgradeneeded = function(event) {
+    db = event.target.result;
+    var store = db.createObjectStore("files", { keyPath: "name" });
+    store.createIndex('lastAccessDate', 'lastAccessDate', { unique: true });
+    console.log("indexedDB upgraded");
+  }
+
+  request.onsuccess = function(event) {
+    db = event.target.result;
+    console.log('open indexedDB successfully');
   };
 }
 
