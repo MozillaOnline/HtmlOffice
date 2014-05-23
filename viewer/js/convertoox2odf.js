@@ -1380,9 +1380,9 @@ function xslTransform(xmlFile, fileType) {
 
   var parser = new DOMParser();
   var xmlDoc = parser.parseFromString(xmlFile, 'text/xml');
+  xmlFile = '';
   if (fileType != 'pptx') {
     copyPartBeforeTransform(xmlDoc, fileType);
-    xmlFile = xmlDoc.children[0].outerHTML;
   }
 
   var xslStylesheet;

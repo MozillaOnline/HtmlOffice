@@ -116,9 +116,11 @@ function Viewer(viewerPlugin) {
               //document.getElementById('modal-loading').classList.add('hidden');
               parent.loaded = true;
               parent.document.getElementById('modal-loading').classList.add('hidden');
-              setTimeout(function() {
-                document.getElementById('file-header').click();
-              }, 1000);
+              var container = document.getElementById('canvasContainer');
+              if (container) {
+                container.focus();
+                container.onblur = container.focus;
+              }
 
               var db = parent.db;
               if (!db) return;
