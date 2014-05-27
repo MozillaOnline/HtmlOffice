@@ -12,6 +12,7 @@ var db = null;
 const MAX_COUNT = 10;
 
 function loadFiles(e) {
+  $id('refresh').dataset.disabled = 'false';
   if (!storage) return;
   if (currentTarget == e.target) return;
 
@@ -22,7 +23,7 @@ function loadFiles(e) {
   select(e.target.id);
   currentTarget = e.target;
   loading('images/loading1/');
-  var type = new RegExp(e.target.dataset.type);
+  var type = new RegExp(e.target.dataset.type + '$');
   searchFiles(type);
 }
 
@@ -114,12 +115,17 @@ function createListItem(index) {
     bItemLongPressed = false;
     bTouchMoved = false;
     $id('modal-file-ops').onclick = '';
+    var self = this;
     timer = setTimeout(function() {
       bItemLongPressed = true;
       if (bTouchMoved) return;
+      $id('file-ops-dlg').classList.remove('hidden');
+      $id('fileName').innerHTML = extractFileName(files[self.dataset.index].name);
+      $id('deleteFileName').innerHTML = 'Dekete ' + extractFileName(files[self.dataset.index].name) + '?';
+      $id('delete-confirm').classList.add('hidden');
       $id('modal-file-ops').classList.remove('hidden');
-      $id('file-ops-container').style.marginTop = ($id('modal-file-ops').clientHeight/2 - 50) + 'px';
-    }, 1500);
+      $id('file-ops-container').style.marginTop = ($id('modal-file-ops').clientHeight/2 - 60) + 'px';
+    }, 1000);
   };
 
   infoDiv.onmouseup = infoDiv.ontouchend = function() {
@@ -132,12 +138,32 @@ function createListItem(index) {
       $id('modal-file-ops').dataset.index = this.dataset.index;
       setTimeout(function() {
         $id('modal-file-ops').onclick = function(evt) {
-          $id('modal-file-ops').classList.add('hidden');
+          if (evt.target.id == 'fileName') return;
+
           if (evt.target.id == 'fileInfo') {
+            $id('modal-file-ops').classList.add('hidden');
             showFileInfo();
+            return;
           }
           if (evt.target.id == 'deleteFile') {
-            deleteFile();
+            $id('file-ops-dlg').classList.add('hidden');
+            $id('delete-confirm').classList.remove('hidden');
+            return;
+          }
+
+          if (evt.target.id == 'cancel') {
+            $id('file-ops-dlg').classList.remove('hidden');
+            $id('delete-confirm').classList.add('hidden');
+            return;
+          }
+          if (evt.target.id == 'confirm') {
+            $id('modal-file-ops').classList.add('hidden');
+            //deleteFile();
+            return;
+          }
+
+          if ($id('delete-confirm').classList.contains('hidden')) {
+            $id('modal-file-ops').classList.add('hidden');
           }
         };
       }, 500);
@@ -193,6 +219,7 @@ function goBack() {
   $id('file-info').classList.add('hidden');
   $id('container').classList.add('hidden');
   $id('file-display').innerHTML = '';
+
 }
 
 function showFileInfo() {
@@ -238,6 +265,7 @@ function deleteFile() {
 }
 
 function showHistory(e) {
+  $id('refresh').dataset.disabled = 'true';
   if (!db) return;
   if (currentTarget == e.target) return;
 
@@ -291,6 +319,10 @@ function init() {
     $id('list-container').classList.remove('hidden');
     $id('container').classList.add('hidden');
     $id('file-display').innerHTML = '';
+    if (currentTarget.id == 'history') {
+      loading('images/loading1/');
+      updateHistory();
+    }
   };
   window.onresize = function() {
     $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50) + 'px';

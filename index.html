@@ -67,11 +67,25 @@
   </section>
   <section id="modal-file-ops" class="modal hidden">
     <div id="file-ops-container" class="file-ops row-fluid">
-      <div class="row-fluid">
-        <div id="fileInfo" class="span12 fileInfo" data-l10n-id="file-info"> File Info....</div>
+      <div id="file-ops-dlg">
+        <div class="row-fluid">
+          <div id="fileName" class="span12"></div>
+        </div>
+        <div class="row-fluid">
+          <div id="fileInfo" class="span12 fileInfo" data-l10n-id="file-info"> File Info....</div>
+        </div>
+        <div class="row-fluid">
+          <div id="deleteFile" class="span12 deleteFile" data-l10n-id="delete-file"> Delete this file </div>
+        </div>
       </div>
-      <div class="row-fluid">
-        <div id="deleteFile" class="span12 deleteFile" data-l10n-id="delete-file"> Delete this file </div>
+      <div id="delete-confirm" class="row-fluid">
+        <div id="deleteFileName" class="row-fluid">
+          <div class="span12"></div>
+        </div>
+        <div class="row-fluid">
+          <div id="confirm" class="span6">OK</div>
+          <div id="cancel" class="span6">Cancel</div>
+        </div>
       </div>
     </div>
   </section>

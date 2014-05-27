@@ -249,10 +249,10 @@ function Viewer(viewerPlugin) {
 
     var canvas = document.getElementById('canvas');
     canvas.onmousedown = canvas.ontouchstart = function() {
-      showZoomPanelTimer = setTimeout(function() {
+      //showZoomPanelTimer = setTimeout(function() {
         document.getElementById('scale').classList.remove('hidden');
         hideZoomPanel();
-      }, 1000);
+      //}, 1000);
     };
     canvas.onmouseup = canvas.ontouchend = function() {
       if (showZoomPanelTimer) {

@@ -35,6 +35,16 @@ html, body {
   background-color: #6BB3E2;
 }
 
+.refresh[data-disabled="true"] {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  background-image: url("images/refresh-disabled.png");
+  background-position: center;
+  margin-top: 5px;
+  background-color: rgba(0, 0, 0, .15);
+}
+
 .navi {
   background-color: rgba(255, 255, 255, 0.3);
   border-top: 2px solid rgba(255, 255, 255, 0.5);
@@ -58,6 +68,10 @@ html, body {
 
 .item {
   border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.item: hover {
+  background-color: rgba(0, 0, 0, 0.15);
 }
 
 .item > .list-title {
@@ -217,6 +231,37 @@ html, body {
   margin: 160px calc(10%) 0;
   background-color: #FFFFFF;
   width: 80%;
+}
+
+#delete-confirm {
+  height: 120px;
+}
+
+#deleteFileName {
+  margin-top: 30px;
+  padding-left: 20px;
+  height: 40px;
+  border-bottom: 1px solid rgba(42, 42, 42, 0.1);
+}
+
+#confirm {
+  text-align: center;
+  padding: 14px 0;
+  border-right: 1px solid rgba(42, 42, 42, 0.1);
+}
+
+#cancel {
+  text-align: center;
+  padding: 14px 0;
+}
+
+#fileName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 10px;
+  padding-left: 10px;
+  color: #818181;
 }
 
 .fileInfo {
