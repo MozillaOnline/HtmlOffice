@@ -1,5 +1,5 @@
 {
-  "name": "Doc Reader",
+  "name": "Document Reader",
   "description": "office for Firefox OS.",
   "type": "privileged",
   "launch_path": "/index.html",
