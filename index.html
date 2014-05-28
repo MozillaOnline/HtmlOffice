@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="row-fluid navi">
-      <div id="history" class="span3 types">RECENT</div>
+      <div id="history" data-type="history" class="span3 types">RECENT</div>
       <div id="doc" data-type="docx" class="span3 types">DOC</div>
       <div id="xls" data-type="xls" class="span3 types">XLS</div>
       <div id="ppt" data-type="ppt" class="span3 types">PPT</div>
@@ -28,9 +28,9 @@
   <section id="list-container" class="hidden">
   </section>
   <section id="empty-list" class="hidden">
-    <div class="row-fluid empty-title" data-l10-id="files_not_found">No docx files found.</div>
-    <div class="row-fluid empty-subtitle" data-l10n-id="rescan">You can try to refresh to re-scan.</div>
-    <div class="row-fluid">
+    <div id="empty-list-header" class="row-fluid empty-title" data-l10-id="files_not_found">No docx files found.</div>
+    <div id="empty-list-des" class="row-fluid empty-subtitle" data-l10n-id="rescan">You can try to refresh to re-scan.</div>
+    <div id="empty-list-button" class="row-fluid">
       <div class="empty-btn">
         <span data-l10n-id="refresh">Refresh</span>
       </div>

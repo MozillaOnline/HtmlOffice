@@ -7,6 +7,7 @@ var bItemLongPressed = false;
 var bTouchMoved = false;
 
 var filesContainer = {
+  history: [],
   docx: [],
   xls: [],
   ppt: [],
@@ -81,7 +82,7 @@ function showFiles(type) {
   container.innerHTML = '';
   if (filesContainer[type].length == 0) {
     loaded = true;
-    showEmptyList();
+    showEmptyList(type);
     $id('modal-loading').classList.add('hidden');
     return;
   }
@@ -220,7 +221,16 @@ function select(target) {
   $id(target.id).classList.add('selected');
 }
 
-function showEmptyList() {
+function showEmptyList(type) {
+  if (type == 'history') {
+    $id('empty-list-header').innerHTML = 'No recent files found.';
+    $id('empty-list-des').classList.add('hidden');
+    $id('empty-list-button').classList.add('hidden');
+  } else {
+    $id('empty-list-header').innerHTML = 'No ' + type + ' files found.';
+    $id('empty-list-des').classList.remove('hidden');
+    $id('empty-list-button').classList.remove('hidden');
+  }
   $id('list-container').classList.add('hidden');
   $id('empty-list').classList.remove('hidden');
 }
@@ -293,8 +303,8 @@ function showHistory(evt) {
   if (!db) return;
   if (currentTarget == evt.target) return;
 
-  select(currentTarget);
   currentTarget = evt.target;
+  select(currentTarget);
 
   var container = $id('list-container').innerHTML = '';
   $id('empty-list').classList.add('hidden');
@@ -306,7 +316,7 @@ function showHistory(evt) {
 function updateHistory() {
   if (!db) return;
 
-  files = [];
+  filesContainer.history = [];
   var count = 0;
   var tx = db.transaction(["files"], "readwrite");
   var store = tx.objectStore("files");
@@ -316,7 +326,7 @@ function updateHistory() {
     if (cursor) {
       count++;
       if (count < MAX_COUNT) {
-        files.push({
+        filesContainer.history.push({
           name: cursor.value.name,
           size: cursor.value.size,
           lastModifiedDate: cursor.value.lastModifiedDate
@@ -326,7 +336,7 @@ function updateHistory() {
       }
       cursor.continue();
     }
-    showFiles();
+    showFiles('history');
   };
 }
 
@@ -378,7 +388,7 @@ function init() {
     console.log('touch end');
   };
 
-  //$id('doc').click();
+  $id('doc').click();
 }
 
 window.addEventListener("load", init, false);
