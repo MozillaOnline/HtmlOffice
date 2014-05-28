@@ -131,7 +131,7 @@ function createListItem(index, type) {
       if (bTouchMoved) return;
       $id('file-ops-dlg').classList.remove('hidden');
       $id('fileName').innerHTML = extractFileName(filesContainer[type][self.dataset.index].name);
-      $id('deleteFileName').innerHTML = 'Dekete ' + extractFileName(filesContainer[type][self.dataset.index].name) + '?';
+      $id('deleteFileName').innerHTML = 'Delete ' + extractFileName(filesContainer[type][self.dataset.index].name) + '?';
       $id('delete-confirm').classList.add('hidden');
       $id('modal-file-ops').classList.remove('hidden');
       $id('file-ops-container').style.marginTop = ($id('modal-file-ops').clientHeight/2 - 60) + 'px';

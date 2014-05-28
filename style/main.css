@@ -206,8 +206,10 @@ html, body {
   height: 100%;
   top: 0;
   left: 0;
-  background-color: rgba(42, 42, 42, 0.4);
+  background-color: rgba(0, 0, 0, 0.6);
   margin-left: 0;
+  border: none;
+  border-radius: 0px;
 }
 
 .loading-container {
@@ -233,12 +235,22 @@ html, body {
   width: 80%;
 }
 
+.info-title {
+  height: 30px;
+  background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll 0px 0px transparent;
+}
+
 #delete-confirm {
-  height: 120px;
+}
+
+.confirm-header {
+  height: 4px;
+  width: 100%;
+  background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll 0px 0px transparent;
 }
 
 #deleteFileName {
-  margin-top: 30px;
+  margin-top: 22px;
   padding-left: 20px;
   height: 40px;
   border-bottom: 1px solid rgba(42, 42, 42, 0.1);
@@ -247,7 +259,7 @@ html, body {
 #confirm {
   text-align: center;
   padding: 14px 0;
-  border-right: 1px solid rgba(42, 42, 42, 0.1);
+  background: rgba(0, 0, 0, 0.15);
 }
 
 #cancel {
@@ -259,20 +271,22 @@ html, body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin-top: 10px;
+  margin-top: 5px;
   padding-left: 10px;
-  color: #818181;
+  color: #FFFFFF;
 }
 
 .fileInfo {
   margin-top: 10px;
   padding-left: 10px;
   border-bottom: 1px solid rgba(42, 42, 42, 0.1);
+  color: #444444;
 }
 
 .deleteFile {
   margin-top: 10px;
   padding-left: 10px;
+  color: #444444;
 }
 
 #file-info {
