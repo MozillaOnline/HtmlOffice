@@ -69,7 +69,7 @@ function loading(baseUrl) {
     index %= 24;
     img.src = baseUrl + index + '.png';
     index++;
-    if (loadingTimer && loaded) {
+    if (loadingTimer != null && loaded) {
       clearInterval(loadingTimer);
       loadingTimer = null;
       loaded = false;
@@ -181,6 +181,13 @@ function createListItem(index, type) {
       }, 500);
     }
   };
+  div.onmousedown = div.ontouchstart = function() {
+    this.classList.add('hover');
+  };
+  div.onmouseup = div.ontouchend = function() {
+    this.classList.remove('hover');
+  };
+
   return div;
 }
 
@@ -348,6 +355,23 @@ function init() {
   $id('ppt').onclick = loadFiles;
   $id('goback').onclick = goBack;
   $id('refresh').onclick = refresh;
+  $id("history").onmousedown = $id("history").ontouchstart =
+  $id("doc").onmousedown = $id("doc").ontouchstart =
+  $id("xls").onmousedown = $id("xls").ontouchstart =
+  $id("ppt").onmousedown = $id("ppt").ontouchstart =
+  $id("fileInfo").onmousedown = $id("fileInfo").ontouchstart =
+  $id("deleteFile").onmousedown = $id("deleteFile").ontouchstart =  function() {
+    this.classList.add('hover');
+  };
+  $id("history").onmouseup = $id("history").ontouchend =
+  $id("doc").onmouseup = $id("doc").ontouchend =
+  $id("xls").onmouseup = $id("xls").ontouchend =
+  $id("ppt").onmouseup = $id("ppt").ontouchend =
+  $id("fileInfo").onmouseup = $id("fileInfo").ontouchend =
+  $id("deleteFile").onmouseup = $id("deleteFile").ontouchend =  function() {
+    this.classList.remove('hover');
+  };
+
   $id('quitViewer').onclick = function() {
     $id('list-header').classList.remove('hidden');
     $id('list-container').classList.remove('hidden');

@@ -206,7 +206,7 @@ html, body {
   height: 100%;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(42, 42, 42, 0.4);
   margin-left: 0;
   border: none;
   border-radius: 0px;
@@ -325,4 +325,8 @@ html, body {
   position: absolute;
   bottom: 0;
   background-color: gray;
+}
+
+.hover {
+  background: rgba(0, 0, 0, 0.15);
 }
