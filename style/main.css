@@ -271,7 +271,7 @@ html, body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin-top: 5px;
+  padding-top: 5px;
   padding-left: 10px;
   color: #FFFFFF;
 }

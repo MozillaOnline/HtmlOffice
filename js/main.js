@@ -169,7 +169,7 @@ function createListItem(index, type) {
           }
           if (evt.target.id == 'confirm') {
             $id('modal-file-ops').classList.add('hidden');
-            //deleteFile();
+            deleteFile();
             return;
           }
 
