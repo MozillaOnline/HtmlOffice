@@ -346,6 +346,7 @@ function init() {
   $id('xls').onclick = loadFiles;
   $id('ppt').onclick = loadFiles;
   $id('goback').onclick = goBack;
+  $id('refresh').onclick = $id('empty-button').onclick = refresh;
   $id('refresh').onclick = refresh;
   $id("history").onmousedown = $id("history").ontouchstart =
   $id("doc").onmousedown = $id("doc").ontouchstart =
