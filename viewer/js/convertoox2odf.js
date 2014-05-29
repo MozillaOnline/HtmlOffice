@@ -928,8 +928,7 @@ function zipFile(xmlDoc) {
   var targetAttrHeader = 'pzip:target="';
   var namespaceHeader = 'xmlns:';
   var attrFooter = '"';
-
-  var zip = new JSZip();
+  var zipObject = {};
   for (var i = 0; i < xmlDoc.children[0].children.length; i++) {
     var xmlfilepath = xmlDoc.children[0].children[i].attributes.getNamedItem('pzip:target');
     if (!xmlfilepath) {
@@ -956,22 +955,16 @@ function zipFile(xmlDoc) {
         var temppzipsource = temppzip.substring(sourceIndex, sourceEnd);
         var temppziptarget = temppzip.substring(targetIndex, targetEnd);
         if (zipfiles[temppzipsource]) {
-          zip.file(temppziptarget, zipfiles[temppzipsource].asUint8Array());
+          zipObject[temppziptarget] = zipfiles[temppzipsource].asUint8Array();
           delete zipfiles[temppzipsource];
         }
       }
     } else {
       xmlfilecontent = xmlfilecontent.value;
     }
-    zip.file(xmlfilepath, xmlfilecontent);
+    zipObject[xmlfilepath] = xmlfilecontent
   }
-  zip.remove('tempfile');
-  var zipfile = zip.generate({
-    base64: false,
-    compression: 'DEFLATE',
-    type: 'blob'
-  });
-  return zipfile;
+  return zipObject;
 }
 
 var idSheet = 0;

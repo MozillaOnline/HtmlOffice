@@ -108,8 +108,6 @@ function ODFViewerPlugin() {
 
             odfElement = document.getElementById('canvas');
             odfCanvas = new odf.OdfCanvas(odfElement);
-            odfCanvas.load(documentUrl);
-
             odfCanvas.addListener('statereadychange', function () {
                 root = odfCanvas.odfContainer().rootElement;
                 initialized = true;
@@ -142,7 +140,7 @@ function ODFViewerPlugin() {
 
                 self.onLoad();
             });
-
+            odfCanvas.load(documentUrl);
             hyperlinkClickHandler = new gui.HyperlinkClickHandler(function () {
                 return odfCanvas.odfContainer().getContentElement();
             });

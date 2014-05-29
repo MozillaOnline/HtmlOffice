@@ -97,10 +97,8 @@ function Viewer(viewerPlugin) {
       var file = pdf_file.result;
       try {
         convertoox2odf(file, function(content) {
-          var reader  = new FileReader();
-
-          reader.onload = function () {
-            url = reader.result;
+          if (content) {
+            var url = {type: 4, files: content};
             document.title = location;
             var ultimo = document.title.split("/").pop();
             var pdf = ultimo.charAt(0).toUpperCase() + ultimo.slice(1);
@@ -108,7 +106,6 @@ function Viewer(viewerPlugin) {
 
             viewerPlugin.onLoad = function () {
               parseScale(kDefaultScale);
-
               if (loadingTimer) {
                 clearInterval(loadingTimer);
                 loadingTimer = null;
@@ -171,15 +168,6 @@ function Viewer(viewerPlugin) {
             };
 
             viewerPlugin.initialize(canvasContainer, url);
-          }
-          reader.onerror = function () {
-            document.getElementById('loadingFailed').classList.remove('hidden');
-            parent.document.getElementById('modal-loading').classList.add('hidden');
-            parent.loaded = true;
-          };
-
-          if (content != '') {
-            reader.readAsDataURL(content);
           } else {
             document.getElementById('loadingFailed').classList.remove('hidden');
             parent.document.getElementById('modal-loading').classList.add('hidden');
