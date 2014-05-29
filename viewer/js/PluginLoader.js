@@ -64,11 +64,8 @@ function loadDocument(documentUrl) {
         var extension = documentUrl.split('.').pop();
 
         switch (extension) {
-        case 'odt':
-        case 'odp':
-        case 'ods':
-        case 'fodt':
         case 'docx':
+        case 'xlsx':
             loadPlugin('js/ODFViewerPlugin', function () {
                 Plugin = ODFViewerPlugin;
             });
