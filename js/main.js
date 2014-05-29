@@ -254,26 +254,17 @@ function showFileInfo() {
   $id('list-header').classList.add('hidden');
   $id('list-container').classList.add('hidden');
   $id('file-display').classList.add('hidden');
+
   var index = parseInt($id('modal-file-ops').dataset.index);
-  var files;
-  switch ($id('modal-file-ops').dataset.type) {
-    case 'docx':
-      files = docFiles;
-      break;
-    case 'xls':
-      files = xlsFiles;
-      break;
-    case 'ppt':
-      files = pptFiles;
-      break;
-  }
+  var type = $id('modal-file-ops').dataset.type;
 
-  $id('file-info').dataset.name = files[index].name;
+  $id('file-info').dataset.name = filesContainer[type][index].name;
 
-  $id('name').innerHTML = extractFileName(files[index].name);
-  $id('size').innerHTML = formatFileSize(files[index].size);
-  $id('dir').innerHTML = files[index].name;
-  $id('lastModify').innerHTML = formatDate(files[index].lastModifiedDate);
+  var file = filesContainer[type][index];
+  $id('name').innerHTML = extractFileName(file.name);
+  $id('size').innerHTML = formatFileSize(file.size);
+  $id('dir').innerHTML = file.name;
+  $id('lastModify').innerHTML = formatDate(file.lastModifiedDate);
   $id('file-info').classList.remove('hidden');
   $id('open').onclick = function() {
     $id('file-info').classList.add('hidden');
@@ -290,7 +281,8 @@ function showFileInfo() {
 
 function deleteFile() {
   var index = parseInt($id('modal-file-ops').dataset.index);
-  var req =  storage.delete(files[index].name);
+  var type = $id('modal-file-ops').dataset.type;
+  var req =  storage.delete(filesContainer[type][index].name);
   req.onsuccess = function() {
     var container = $id('list-container');
     var items = container.querySelectorAll('.item');
