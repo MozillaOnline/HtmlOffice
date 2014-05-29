@@ -13,25 +13,28 @@ html, body {
   color: #FFFFFF;
 }
 
+.nav1 {
+  height: 46px;
+}
+
 .header {
-  height: 40px;
+  height: 46px;
 }
 
 .title {
   text-align: center;
-  font-size: 18px;
-  margin-top: 10px;
+  font-size: 24px;
+  margin-top: 12px;
   font-style: italic;
 }
 
 .refresh {
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
-  background-image: url("images/refresh.png");
-  background-position: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 17.5px;
   margin-top: 5px;
-  background-color: #6BB3E2;
+  background: rgba(255, 255, 255, 0.45) no-repeat 2px 1px url("images/refresh.png");
+  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 .refresh[data-disabled="true"] {
@@ -44,7 +47,7 @@ html, body {
   background-color: rgba(0, 0, 0, .15);
 }
 
-.navi {
+.nav2 {
   background-color: rgba(255, 255, 255, 0.3);
   border-top: 2px solid rgba(255, 255, 255, 0.5);
   border-bottom: 2px solid rgba(255, 255, 255, 0.5);
@@ -137,25 +140,23 @@ html, body {
 }
 
 .back {
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
-  background-color: rgba(255, 255, 255, 0.5);
-  background-image: url("images/back.png");
-  background-position: center center;
-  margin: 5px 0 0 11px;
+  width: 35px;
+  height: 35px;
+  border-radius: 17.5px;
+  margin: 6px 0 0 11px;
+  background: url("images/back.png") no-repeat scroll center center rgba(255, 255, 255, 0.5);
 }
 
 #file-header {
-  padding-top: 6px;
+  padding-top: 14px;
   text-align: left;
   color: #FFFFFF;
+  height: 42px;
 }
 
 #file-header span {
-  margin: 4px 0 0 0;
   display: block;
-  font-size: 16px;
+  font-size: 24px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -305,7 +306,8 @@ html, body {
 }
 
 .file-info-title {
-  padding-top: 10px;
+  padding-top: 13px;
+  font-size: 24px;
 }
 
 .file-info-detail{
@@ -318,6 +320,7 @@ html, body {
   width: 90%;
   margin: 0 calc(5%);
   padding-top: 10px;
+  color: #444444;
 }
 
 .value {
@@ -326,9 +329,8 @@ html, body {
 }
 
 .nameInfo {
-  padding-top: 10px;
   width: 90%;
-  margin: 10px calc(5%) 0;
+  padding: 10px calc(5%) 0;
   border-bottom: 1px solid rgba(42, 42, 42, 0.1);
 }
 
