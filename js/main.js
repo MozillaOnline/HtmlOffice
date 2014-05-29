@@ -9,11 +9,11 @@ var bTouchMoved = false;
 var filesContainer = {
   history: [],
   docx: [],
-  xls: [],
-  ppt: [],
+  xlsx: [],
+  pptx: [],
   docxLoaded: false,
-  xlsLoaded: false,
-  pptLoaded: false
+  xlsxLoaded: false,
+  pptxLoaded: false
 };
 
 var db = null;
@@ -222,9 +222,9 @@ function refresh() {
 
 function select(target) {
   $id('history').classList.remove('selected');
-  $id('doc').classList.remove('selected');
-  $id('xls').classList.remove('selected');
-  $id('ppt').classList.remove('selected');
+  $id('docx').classList.remove('selected');
+  $id('xlsx').classList.remove('selected');
+  $id('pptx').classList.remove('selected');
   $id(target.id).classList.add('selected');
 }
 
@@ -342,24 +342,24 @@ function updateHistory() {
 function init() {
   storage = navigator.getDeviceStorage("sdcard");
   $id("history").onclick = showHistory;
-  $id('doc').onclick = loadFiles;
-  $id('xls').onclick = loadFiles;
-  $id('ppt').onclick = loadFiles;
+  $id('docx').onclick = loadFiles;
+  $id('xlsx').onclick = loadFiles;
+  $id('pptx').onclick = loadFiles;
   $id('goback').onclick = goBack;
   $id('refresh').onclick = $id('empty-list-button').onclick = refresh;
 
   $id("history").onmousedown = $id("history").ontouchstart =
-  $id("doc").onmousedown = $id("doc").ontouchstart =
-  $id("xls").onmousedown = $id("xls").ontouchstart =
-  $id("ppt").onmousedown = $id("ppt").ontouchstart =
+  $id("docx").onmousedown = $id("docx").ontouchstart =
+  $id("xlsx").onmousedown = $id("xlsx").ontouchstart =
+  $id("pptx").onmousedown = $id("pptx").ontouchstart =
   $id("fileInfo").onmousedown = $id("fileInfo").ontouchstart =
   $id("deleteFile").onmousedown = $id("deleteFile").ontouchstart =  function() {
     this.classList.add('hover');
   };
   $id("history").onmouseup = $id("history").ontouchend =
-  $id("doc").onmouseup = $id("doc").ontouchend =
-  $id("xls").onmouseup = $id("xls").ontouchend =
-  $id("ppt").onmouseup = $id("ppt").ontouchend =
+  $id("docx").onmouseup = $id("docx").ontouchend =
+  $id("xlsx").onmouseup = $id("xlsx").ontouchend =
+  $id("pptx").onmouseup = $id("pptx").ontouchend =
   $id("fileInfo").onmouseup = $id("fileInfo").ontouchend =
   $id("deleteFile").onmouseup = $id("deleteFile").ontouchend =  function() {
     this.classList.remove('hover');
@@ -405,7 +405,7 @@ function init() {
     console.log('touch end');
   };
 
-  $id('doc').click();
+  $id('docx').click();
 }
 
 window.addEventListener("load", init, false);
