@@ -52,11 +52,13 @@ html, body {
   border-top: 2px solid rgba(255, 255, 255, 0.5);
   border-bottom: 2px solid rgba(255, 255, 255, 0.5);
   font-size: 16px;
+  height: 40px;
 }
 
 .types {
   text-align: center;
-  padding-top: 4px;
+  padding-top: 10px;
+  height: 40px;
 }
 
 .selected {
@@ -64,7 +66,7 @@ html, body {
 }
 
 #list-container {
-  height: calc(100% - 78px);
+  height: calc(100% - 96px);
   overflow-y: scroll;
 }
 
