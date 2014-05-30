@@ -365,3 +365,9 @@ html, body {
   background: rgba(255, 255, 255, 0.2) no-repeat 2px 1px url("images/refresh.png");
   border: 1px solid rgba(255, 255, 255, 0.35);
 }
+
+.loading {
+  -moz-animation:spin 4s linear infinite;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }

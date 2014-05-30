@@ -1,8 +1,6 @@
 
 var storage = null;
 var currentTarget = null;
-var loaded = false;
-var loadingTimer = null;
 var bItemLongPressed = false;
 var bTouchMoved = false;
 
@@ -74,24 +72,13 @@ function loading(baseUrl) {
   $id('modal-loading').classList.remove('hidden');
   $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50) + 'px';
   var img = $id('loading-img');
-  var index = 0;
-  loadingTimer = setInterval(function() {
-    index %= 24;
-    img.src = baseUrl + index + '.png';
-    index++;
-    if (loadingTimer != null && loaded) {
-      clearInterval(loadingTimer);
-      loadingTimer = null;
-      loaded = false;
-    }
-  }, 500);
+  img.src = baseUrl + '0.png';
 }
 
 function showFiles(type) {
   var container = $id('list-container');
   container.innerHTML = '';
   if (filesContainer[type].length == 0) {
-    loaded = true;
     showEmptyList(type);
     $id('modal-loading').classList.add('hidden');
     return;
@@ -100,7 +87,6 @@ function showFiles(type) {
   for (var i = 0; i < filesContainer[type].length; i++) {
     container.appendChild(createListItem(i, type));
   }
-  loaded = true;
   $id('modal-loading').classList.add('hidden');
   $id('empty-list').classList.add('hidden');
 }
@@ -222,7 +208,6 @@ function loadFile(event) {
 function refresh() {
   if (!storage || !currentTarget) return;
   if (currentTarget.id == 'history' || currentTarget.id == 'pptx') {
-    // updateHistory();
     return;
   }
 

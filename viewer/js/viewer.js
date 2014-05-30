@@ -13,8 +13,7 @@ function Viewer(viewerPlugin) {
         showZoomPanelTimer = null,
         bZoomPanelShowed = false,
         hideZoomPanelTimer = null,
-        fileLoaded = false,
-        loadingTimer = null;
+        fileLoaded = false;
 
     function setScale(val, resetAutoSettings, noScroll) {
         if (val === self.getZoomLevel()) {
@@ -81,7 +80,6 @@ function Viewer(viewerPlugin) {
     pdf_file.onerror = function() {
       document.getElementById('loadingFailed').classList.remove('hidden');
       parent.document.getElementById('modal-loading').classList.add('hidden');
-      parent.loaded = true;
       console.error("Error in: ", pdf_file.error.name);
     };
     pdf_file.onsuccess = function(event) {
@@ -93,12 +91,7 @@ function Viewer(viewerPlugin) {
 
             viewerPlugin.onLoad = function () {
               parseScale(kDefaultScale);
-              if (loadingTimer) {
-                clearInterval(loadingTimer);
-                loadingTimer = null;
-              }
               fileLoaded = true;
-              parent.loaded = true;
               parent.document.getElementById('modal-loading').classList.add('hidden');
 
               var db = parent.db;
@@ -153,13 +146,11 @@ function Viewer(viewerPlugin) {
           } else {
             document.getElementById('loadingFailed').classList.remove('hidden');
             parent.document.getElementById('modal-loading').classList.add('hidden');
-            parent.loaded = true;
           }
         });
       } catch (e) {
         document.getElementById('loadingFailed').classList.remove('hidden');
         parent.document.getElementById('modal-loading').classList.add('hidden');
-        parent.loaded = true;
       }
     };
   };
@@ -190,17 +181,6 @@ function Viewer(viewerPlugin) {
     parent.document.getElementById('list-container').classList.remove('hidden');
     parent.document.getElementById('container').classList.add('hidden');
     parent.document.getElementById('file-display').innerHTML = '';
-  }
-
-  function loading(baseUrl) {
-    document.getElementById('modal-loading').classList.remove('hidden');
-    var img = document.getElementById('loading-img');
-    var index = 0;
-    loadingTimer = setInterval(function() {
-      index %= 24;
-      img.src = baseUrl + index + '.png';
-      index++;
-    }, 100);
   }
 
   function init() {
