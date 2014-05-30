@@ -911,13 +911,20 @@ function ImageCopyBinary(source) {
 function unzipFile(file, callback) {
   var reader = new FileReader();
   reader.onload = function(aEvent) {
-    var zipfile = btoa(aEvent.target.result);
-    var zip = JSZip();
-    zip.load(zipfile, {
-      base64: true
-    });
-    callback(zip.files);
-  }
+    try{
+      var zipfile = btoa(aEvent.target.result);
+      var zip = JSZip();
+      zip.load(zipfile, {
+        base64: true
+      });
+      callback(zip.files);
+    } catch (e) {
+      callback(null);
+    }
+  };
+  reader.onerror = function(aEvent) {
+    callback(null);
+  };
   reader.readAsBinaryString(file);
 }
 
@@ -1471,6 +1478,10 @@ function convertoox2odf(ooxFile, callback) {
     isInIndex = false;
     fieldBegin = false;
     unzipFile(ooxFile, function(zip) {
+      if (!zip) {
+        callback(null);
+        return;
+      }
       var docx = 'docx';
       var xlsx = 'xlsx';
       var pptx = 'pptx';
