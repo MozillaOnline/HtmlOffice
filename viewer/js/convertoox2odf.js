@@ -1165,7 +1165,7 @@ function CopyPartDocx(oXMLParent) {
     }
     break;
   case "w:instrText":
-    if (oXMLParent.textContent.toUpperCase().indexOf('TOC') >= 0) {
+    if (oXMLParent.textContent.toUpperCase().indexOf('TOC') >= 0 || oXMLParent.textContent.toUpperCase().indexOf('BIBLIOGRAPHY') >= 0 || oXMLParent.textContent.toUpperCase().indexOf('INDEX') >= 0) {
       isInIndex = true;
     }
     break;
