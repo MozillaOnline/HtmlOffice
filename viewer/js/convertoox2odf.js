@@ -1397,14 +1397,12 @@ function xslTransform(xmlFile, fileType) {
   if (!xmlFile || !xslFile) {
     return null;
   }
-
   var parser = new DOMParser();
   var xmlDoc = parser.parseFromString(xmlFile, 'text/xml');
   xmlFile = '';
   if (fileType != 'pptx') {
     copyPartBeforeTransform(xmlDoc, fileType);
   }
-
   var xslStylesheet;
   var xsltProcessor = new XSLTProcessor();
   var ooxXMLHTTPRequest = new XMLHttpRequest();
@@ -1412,7 +1410,6 @@ function xslTransform(xmlFile, fileType) {
   ooxXMLHTTPRequest.send(null);
   xslStylesheet = ooxXMLHTTPRequest.responseXML;
   xsltProcessor.importStylesheet(xslStylesheet);
-
   var newDocument = xsltProcessor.transformToDocument(xmlDoc);
   if (!newDocument.childNodes || newDocument.childNodes.length == 0) {
     return null;
@@ -1480,6 +1477,7 @@ function analysisOox(fileType) {
 }
 
 var zipfiles = [];
+var MAX_XML_SIZE = 1024 * 1024;
 
 function convertoox2odf(ooxFile, callback) {
   try {
@@ -1525,7 +1523,7 @@ function convertoox2odf(ooxFile, callback) {
         xmlfile = analysisOox(fileType);
         _name2ncname = [];
         _ncname2name = [];
-        if (xmlfile) {
+        if (xmlfile && xmlfile.length < MAX_XML_SIZE) {
           var newXmlDoc = xslTransform(xmlfile, fileType);
           if (newXmlDoc) {
             output = zipFile(newXmlDoc);
