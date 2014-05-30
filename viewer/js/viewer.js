@@ -10,20 +10,11 @@ function Viewer(viewerPlugin) {
         url,
         viewerElement = document.getElementById('viewer'),
         canvasContainer = document.getElementById('canvasContainer'),
-        filename,
-        scaleChangeTimer,
-        // file,
-        currentFontSize = 14,
         showZoomPanelTimer = null,
+        bZoomPanelShowed = false,
         hideZoomPanelTimer = null,
+        fileLoaded = false,
         loadingTimer = null;
-        /*
-        document.getElementById('test').onclick = function() {
-          file = document.getElementById('input').files[0];
-          init();
-        };
-        */
-
 
     function setScale(val, resetAutoSettings, noScroll) {
         if (val === self.getZoomLevel()) {
@@ -99,10 +90,6 @@ function Viewer(viewerPlugin) {
         convertoox2odf(file, function(content) {
           if (content) {
             var url = {type: 4, files: content};
-            document.title = location;
-            var ultimo = document.title.split("/").pop();
-            var pdf = ultimo.charAt(0).toUpperCase() + ultimo.slice(1);
-            //document.getElementById('documentName').innerHTML = pdf;
 
             viewerPlugin.onLoad = function () {
               parseScale(kDefaultScale);
@@ -110,14 +97,9 @@ function Viewer(viewerPlugin) {
                 clearInterval(loadingTimer);
                 loadingTimer = null;
               }
-              //document.getElementById('modal-loading').classList.add('hidden');
+              fileLoaded = true;
               parent.loaded = true;
               parent.document.getElementById('modal-loading').classList.add('hidden');
-              var container = document.getElementById('canvasContainer');
-              if (container) {
-                container.focus();
-                container.onblur = container.focus;
-              }
 
               var db = parent.db;
               if (!db) return;
@@ -187,7 +169,6 @@ function Viewer(viewerPlugin) {
     var newScale = (zoomLevel * kDefaultScaleDelta).toFixed(2);
     newScale = Math.min(kMaxScale, newScale);
     viewerPlugin.setZoomLevel(newScale);
-    hideZoomPanel();
   }
 
   function zoomOut() {
@@ -195,18 +176,13 @@ function Viewer(viewerPlugin) {
     var newScale = (zoomLevel / kDefaultScaleDelta).toFixed(2);
     newScale = Math.max(kMinScale, newScale);
     viewerPlugin.setZoomLevel(newScale);
-    hideZoomPanel();
   }
 
   function hideZoomPanel() {
-    if (hideZoomPanelTimer) {
-      clearTimeout(hideZoomPanelTimer);
-      hideZoomPanelTimer = null;
-    }
     hideZoomPanelTimer = setTimeout(function() {
       document.getElementById('scale').classList.add('hidden');
       hideZoomPanelTimer = null;
-    }, 3000);
+    }, 20000);
   }
 
   function goBack() {
@@ -232,21 +208,24 @@ function Viewer(viewerPlugin) {
       self.initialize();
     }
 
-    //document.getElementById('goback').onclick = goBack;
     document.getElementById('return').onclick = goBack;
 
     var canvas = document.getElementById('canvas');
-    canvas.onmousedown = canvas.ontouchstart = function() {
-      //showZoomPanelTimer = setTimeout(function() {
-        document.getElementById('scale').classList.remove('hidden');
-        hideZoomPanel();
-      //}, 1000);
-    };
-    canvas.onmouseup = canvas.ontouchend = function() {
-      if (showZoomPanelTimer) {
-        clearTimeout(showZoomPanelTimer);
-        showZoomPanelTimer = null;
+    viewerElement.onclick = function(evt) {
+      console.log("clicked");
+      if (!fileLoaded) return;
+      if (bZoomPanelShowed) {
+        document.getElementById('scale').classList.add('hidden');
+        if (hideZoomPanelTimer) {
+          clearTimeout(hideZoomPanelTimer);
+          hideZoomPanelTimer = null;
+        }
+        bZoomPanelShowed = false;
+        return;
       }
+      document.getElementById('scale').classList.remove('hidden');
+      bZoomPanelShowed = true;
+      hideZoomPanel();
     };
     document.getElementById('zoom-in').onclick = zoomIn;
     document.getElementById('zoom-out').onclick = zoomOut;
@@ -257,6 +236,5 @@ function Viewer(viewerPlugin) {
     });
   }
 
-  //loading('images/loading/');
   init();
 }

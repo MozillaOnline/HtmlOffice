@@ -30,6 +30,16 @@ function loadFiles(evt) {
   $id('list-container').innerHTML = '';
   $id('empty-list').classList.add('hidden');
 
+  if (evt.target.dataset.type == 'pptx') {
+    $id('refresh').dataset.disabled = 'true';
+    $id('empty-list-header').innerHTML = 'Pptx files not support now.';
+    $id('empty-list-des').classList.add('hidden');
+    $id('empty-list-button').classList.add('hidden');
+    $id('list-container').classList.add('hidden');
+    $id('empty-list').classList.remove('hidden');
+    return;
+  }
+
   var type = currentTarget.dataset.type;
   var loaded = type + 'Loaded';
   if (filesContainer[loaded]) {
@@ -100,6 +110,12 @@ function createListItem(index, type) {
   div.classList.add('row-fluid', 'item');
   var iconDiv = document.createElement('div');
   iconDiv.classList.add('span2', 'list-title', 'doctype');
+  if (type != 'history') {
+    iconDiv.dataset.type = type;
+  } else {
+    var i = filesContainer[type][index].name.lastIndexOf('.');
+    iconDiv.dataset.type = filesContainer[type][index].name.substr(i + 1);
+  }
   div.appendChild(iconDiv);
   var infoDiv = document.createElement('div');
   infoDiv.classList.add('span10');
@@ -205,7 +221,7 @@ function loadFile(event) {
 
 function refresh() {
   if (!storage || !currentTarget) return;
-  if (currentTarget.id == 'history') {
+  if (currentTarget.id == 'history' || currentTarget.id == 'pptx') {
     // updateHistory();
     return;
   }
@@ -363,6 +379,22 @@ function init() {
   $id("fileInfo").onmouseup = $id("fileInfo").ontouchend =
   $id("deleteFile").onmouseup = $id("deleteFile").ontouchend =  function() {
     this.classList.remove('hover');
+  };
+
+  $id("refresh").onmousedown = $id("refresh").ontouchstart = function() {
+    this.classList.add('refresh-touchover');
+  };
+  $id("refresh").onmouseup = $id("refresh").ontouchend = function() {
+    this.classList.remove('refresh-touchover');
+  };
+
+  $id("goback").onmousedown = $id("goback").ontouchstart =
+  $id("quitViewer").onmousedown = $id("quitViewer").ontouchstart = function() {
+    this.classList.add('touchover');
+  };
+  $id("goback").onmouseup = $id("goback").ontouchend =
+  $id("quitViewer").onmouseup = $id("quitViewer").ontouchend = function() {
+    this.classList.remove('touchover');
   };
 
   $id('quitViewer').onclick = function() {

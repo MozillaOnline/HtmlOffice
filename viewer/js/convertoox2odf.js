@@ -98,6 +98,7 @@ function RegexReplace(input, pattern, replacement, ignoreCase, defaultValue) {
 /// If the input value is an empty node-set the current date and time are returned
 /// </summary>
 
+
 function FormatDateTime(dateTime) {
   var output;
   output = new Date(dateTime).format('yyyy-MM-ddThh:mm:ss');
@@ -111,6 +112,7 @@ function FormatDateTime(dateTime) {
 /// Formats a given date as an XSD dateTime string in the format CCYY-MM-DDThh:mm:ss
 /// If the date string cannot be parsed an empty string is returned
 /// </summary>
+
 
 function XsdDateTimeFromField(fieldInstruction, fieldValue) {
   var output;
@@ -909,20 +911,13 @@ function ImageCopyBinary(source) {
 function unzipFile(file, callback) {
   var reader = new FileReader();
   reader.onload = function(aEvent) {
-    try {
-      var zipfile = btoa(aEvent.target.result);
-      var zip = JSZip();
-      zip.load(zipfile, {
-        base64: true
-      });
-      callback(zip.files);
-    } catch (e) {
-      callback(null);
-    }
-  };
-  reader.onerror = function(aEvent) {
-    callback(null);
-  };
+    var zipfile = btoa(aEvent.target.result);
+    var zip = JSZip();
+    zip.load(zipfile, {
+      base64: true
+    });
+    callback(zip.files);
+  }
   reader.readAsBinaryString(file);
 }
 
@@ -1122,23 +1117,6 @@ function CopyPartXlsx(oXMLParent) {
 
 function CopyPartDocx(oXMLParent) {
   switch (oXMLParent.nodeName) {
-  case "w:fldChar":
-    var fldChartype = oXMLParent.getAttribute('w:fldCharType');
-    if (fldChartype) {
-      if (fldChartype == 'begin') {
-        fieldBegin = true;
-        _insideField++;
-        _fieldId++;
-      }
-      if (fldChartype == 'end') {
-        fieldBegin = false;
-        _insideField--;
-        if (_insideField == 0) {
-          isInIndex = false;
-        }
-      }
-    }
-    break;
   case "w:fldCharType":
     if (oXMLParent.nodeValue == 'begin') {
       fieldBegin = true;
@@ -1162,11 +1140,6 @@ function CopyPartDocx(oXMLParent) {
     _paraId++;
     if (isInIndex) {
       oXMLParent.setAttributeNS(ooxnamespace, indextitle, '1');
-    }
-    break;
-  case "w:instrText":
-    if (oXMLParent.textContent.toUpperCase().indexOf('TOC') >= 0 || oXMLParent.textContent.toUpperCase().indexOf('BIBLIOGRAPHY') >= 0 || oXMLParent.textContent.toUpperCase().indexOf('INDEX') >= 0) {
-      isInIndex = true;
     }
     break;
   case "w:altChunk":
@@ -1417,14 +1390,12 @@ function xslTransform(xmlFile, fileType) {
   copyPartAfterTransform(newDocument);
   return newDocument;
 }
-var OOX_DOCUMENT_RELATIONSHIP_TYPE = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
 
 function analysisOox(fileType) {
   var xmlGroup = [];
   if (!zipfiles[Content_TypesXml]) {
     return null;
   }
-  var documentjson;
   var parser = new DOMParser();
   var xmlDoc = parser.parseFromString(zipfiles[Content_TypesXml].asText(), 'text/xml');
   var tempjson = {
@@ -1463,15 +1434,8 @@ function analysisOox(fileType) {
         type: relsDoc.children[0].children[i].attributes.getNamedItem('Type').value,
         id: relsDoc.children[0].children[i].attributes.getNamedItem('Id').value
       };
-      if (tempjson.type != OOX_DOCUMENT_RELATIONSHIP_TYPE) {
-        xmlGroup.push(tempjson);
-      } else {
-        documentjson = tempjson;
-      }
+      xmlGroup.push(tempjson);
     }
-  }
-  if (documentjson) {
-    xmlGroup.push(documentjson);
   }
   return generateOdfxml(xmlGroup, fileType);
 }
@@ -1505,10 +1469,6 @@ function convertoox2odf(ooxFile, callback) {
     isInIndex = false;
     fieldBegin = false;
     unzipFile(ooxFile, function(zip) {
-      if (!zip) {
-        callback(null);
-        return;
-      }
       var docx = 'docx';
       var xlsx = 'xlsx';
       var pptx = 'pptx';

@@ -84,8 +84,16 @@ html, body {
   min-height: 60px;
 }
 
-.doctype {
+.doctype[data-type='docx'] {
   background-image: url("images/DOC.png");
+}
+
+.doctype[data-type='xlsx'] {
+  background-image: url("images/XLS.png");
+}
+
+.doctype[data-type='pptx'] {
+  background-image: url("images/PPT.png");
 }
 
 .xlstype {
@@ -170,7 +178,7 @@ html, body {
 }
 
 .content {
-  height: calc(100% - 40px);
+  height: calc(100% - 46px);
   background-color: #FFFFFF;
 }
 
@@ -344,4 +352,14 @@ html, body {
 
 .hover {
   background: rgba(0, 0, 0, 0.15);
+}
+
+.touchover {
+  background: url("images/back.png") no-repeat scroll center center rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.refresh-touchover {
+  background: rgba(255, 255, 255, 0.2) no-repeat 2px 1px url("images/refresh.png");
+  border: 1px solid rgba(255, 255, 255, 0.35);
 }
