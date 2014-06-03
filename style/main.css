@@ -159,7 +159,6 @@ html, body {
 }
 
 #file-header {
-  padding-top: 14px;
   text-align: left;
   color: #FFFFFF;
   height: 42px;
@@ -171,6 +170,7 @@ html, body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding-top: 14px;
   height: 30px;
 }
 
