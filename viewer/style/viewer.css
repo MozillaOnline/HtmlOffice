@@ -7,6 +7,10 @@ body {
   font-family: sans-serif;
 }
 
+draw:frame {
+  background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+}
+
 .header {
   background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll 0 0 rgba(0, 0, 0, 0);
   height: 35px;

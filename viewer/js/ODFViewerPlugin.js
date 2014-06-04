@@ -67,7 +67,7 @@ function ODFViewerPlugin() {
         pluginCSS = document.createElement('link');
         pluginCSS.setAttribute("rel", "stylesheet");
         pluginCSS.setAttribute("type", "text/css");
-        pluginCSS.setAttribute("href", "./ODFViewerPlugin.css");
+        pluginCSS.setAttribute("href", "../style/ODFViewerPlugin.css");
         document.head.appendChild(pluginCSS);
     }
 
