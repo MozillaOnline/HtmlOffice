@@ -92,6 +92,7 @@ draw:frame {
   padding-top: 50px;
   font-size: 26px;
   text-align: center;
+  height: 64px;
 }
 
 #loadingFailed {

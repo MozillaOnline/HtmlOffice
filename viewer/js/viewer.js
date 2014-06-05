@@ -86,6 +86,11 @@ function Viewer(viewerPlugin) {
       var file = pdf_file.result;
       try {
         convertoox2odf(file, function(content) {
+          if (content == 'FILE_IS_TOO_BIG') {
+            document.getElementById('failed-reason').innerHTML = 'File is too big, load failed.';
+            document.getElementById('loadingFailed').classList.remove('hidden');
+            parent.document.getElementById('modal-loading').classList.add('hidden');
+          }
           if (content) {
             var url = {type: 4, files: content};
 
@@ -143,7 +148,8 @@ function Viewer(viewerPlugin) {
             };
 
             viewerPlugin.initialize(canvasContainer, url);
-          } else {
+          }
+          if (!content) {
             document.getElementById('loadingFailed').classList.remove('hidden');
             parent.document.getElementById('modal-loading').classList.add('hidden');
           }
@@ -188,11 +194,12 @@ function Viewer(viewerPlugin) {
       self.initialize();
     }
 
-    document.getElementById('return').onclick = goBack;
-
     var canvas = document.getElementById('canvas');
     viewerElement.onclick = function(evt) {
-      console.log("clicked");
+      if (evt.target.id == 'return') {
+        goBack();
+        return;
+      }
       if (!fileLoaded) return;
       if (bZoomPanelShowed) {
         document.getElementById('scale').classList.add('hidden');

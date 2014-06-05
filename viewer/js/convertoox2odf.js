@@ -1526,12 +1526,15 @@ function convertoox2odf(ooxFile, callback) {
         xmlfile = analysisOox(fileType);
         _name2ncname = [];
         _ncname2name = [];
-        if (xmlfile && xmlfile.length < MAX_XML_SIZE) {
-          var newXmlDoc = xslTransform(xmlfile, fileType);
-          if (newXmlDoc) {
-            output = zipFile(newXmlDoc);
+        output = '';
+        if (xmlfile) {
+          if (xmlfile.length < MAX_XML_SIZE) {
+            var newXmlDoc = xslTransform(xmlfile, fileType);
+            if (newXmlDoc) {
+              output = zipFile(newXmlDoc);
+            }
           } else {
-            output = null;
+            output = 'FILE_IS_TOO_BIG';
           }
         }
         break;
