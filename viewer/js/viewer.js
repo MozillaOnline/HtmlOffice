@@ -6,7 +6,7 @@ function Viewer(viewerPlugin) {
         kMinScale = 0.25,
         kMaxScale = 4.0,
         kDefaultScaleDelta = 1.1,
-        kDefaultScale = 'auto',
+        kDefaultScale = 'page-width',
         url,
         viewerElement = document.getElementById('viewer'),
         canvasContainer = document.getElementById('canvasContainer'),
@@ -42,7 +42,7 @@ function Viewer(viewerPlugin) {
             return;
         }
 
-        maxWidth = canvasContainer.clientWidth - kScrollbarPadding;
+        maxWidth = canvasContainer.clientWidth;// - kScrollbarPadding;
         maxHeight = canvasContainer.clientHeight - kScrollbarPadding;
 
         switch (value) {
