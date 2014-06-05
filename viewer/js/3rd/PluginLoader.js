@@ -66,7 +66,8 @@ function loadDocument(documentUrl) {
         switch (extension) {
         case 'docx':
         case 'xlsx':
-            loadPlugin('js/ODFViewerPlugin', function () {
+        case 'pptx':
+            loadPlugin('js/3rd/ODFViewerPlugin', function () {
                 Plugin = ODFViewerPlugin;
             });
             break;
