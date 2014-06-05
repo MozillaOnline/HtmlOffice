@@ -1,8 +1,10 @@
 
+var db = null;
 var storage = null;
 var currentTarget = null;
 var bItemLongPressed = false;
 var bTouchMoved = false;
+const MAX_COUNT = 10;
 
 var filesContainer = {
   history: [],
@@ -13,10 +15,6 @@ var filesContainer = {
   xlsxLoaded: false,
   pptxLoaded: false
 };
-
-var db = null;
-
-const MAX_COUNT = 10;
 
 function loadFiles(evt) {
   if (!storage) return;
@@ -49,7 +47,7 @@ function loadFiles(evt) {
 }
 
 function searchFiles(type) {
-  loading('images/loading1/');
+  loading();
   filesContainer[type] = [];
   var reg = new RegExp(type + '$');
   var cursor = storage.enumerate('');
@@ -68,11 +66,9 @@ function searchFiles(type) {
   };
 }
 
-function loading(baseUrl) {
+function loading() {
   $id('modal-loading').classList.remove('hidden');
   $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50) + 'px';
-  var img = $id('loading-img');
-  img.src = baseUrl + '0.png';
 }
 
 function showFiles(type) {
@@ -199,21 +195,20 @@ function loadFile(event) {
   $id('list-container').classList.add('hidden');
   $id('documentName').innerHTML = extractFileName(event.target.parentNode.parentNode.dataset.filePath);
   $id('container').classList.remove('hidden');
-  loading('images/loading1/');
+  loading();
   var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + event.target.parentNode.parentNode.dataset.filePath +
                '" WIDTH=100% HEIGHT=100% FRAMEBORDER=0 scrolling="no"></IFRAME>';
   $id('file-display').innerHTML = iframe;
 }
 
 function refresh() {
-  if (!storage || !currentTarget) return;
-  if (currentTarget.id == 'history' || currentTarget.id == 'pptx') {
+  if (!storage || !currentTarget || currentTarget.id == 'history' || currentTarget.id == 'pptx') {
     return;
   }
 
   $id('list-container').innerHTML = '';
   $id('empty-list').classList.add('hidden');
-  loading('images/loading1/');
+  loading();
 
   var type = currentTarget.dataset.type;
   var loaded = type + 'Loaded';
@@ -273,7 +268,7 @@ function showFileInfo() {
     $id('list-container').classList.add('hidden');
     $id('documentName').innerHTML = extractFileName($id('file-info').dataset.name);
     $id('container').classList.remove('hidden');
-    loading('images/loading1/');
+    loading();
     var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + $id('file-info').dataset.name +
                  '" WIDTH=100% HEIGHT=100% FRAMEBORDER=0 scrolling="no"></IFRAME>';
     $id('file-display').innerHTML = iframe;
@@ -309,7 +304,7 @@ function showHistory(evt) {
   var container = $id('list-container').innerHTML = '';
   $id('empty-list').classList.add('hidden');
 
-  loading('images/loading1/');
+  loading();
   updateHistory();
 }
 
@@ -388,7 +383,7 @@ function init() {
     $id('container').classList.add('hidden');
     $id('file-display').innerHTML = '';
     if (currentTarget.id == 'history') {
-      loading('images/loading1/');
+      loading();
       updateHistory();
     }
   };
