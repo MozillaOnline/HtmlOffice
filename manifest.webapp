@@ -1,6 +1,6 @@
 {
   "name": "Document Reader",
-  "description": "office for Firefox OS.",
+  "description": "Document Reader is a simple reader which allows you to read Office documents on Firefox OS device.",
   "type": "privileged",
   "launch_path": "/index.html",
   "version": "1.0",
@@ -9,12 +9,12 @@
     "128": "/icons/icon128.png"
   },
   "developer": {
-    "name": "Mozilla Online",
-    "url": "http://firefox.com.cn/"
+    "name": "Mozilla Online Ltd.",
+    "url": "http://www.firefox.com.cn/"
   },
   "permissions": {
     "device-storage:sdcard": {
-      "description": "Pick a .docx .xlsx .pptx file from the SD card.",
+      "description": "Pick .docx .xlsx .pptx files from the SD card.",
       "access": "readwrite"
     }
   },
