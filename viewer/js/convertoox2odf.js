@@ -936,15 +936,15 @@ function zipFile(xmlDoc) {
   var namespaceHeader = 'xmlns:';
   var attrFooter = '"';
   var zipObject = {};
-  for (var i = 0; i < xmlDoc.children[0].children.length; i++) {
-    var xmlfilepath = xmlDoc.children[0].children[i].attributes.getNamedItem('pzip:target');
+  for (var i = 0; i < xmlDoc.childNodes[0].children.length; i++) {
+    var xmlfilepath = xmlDoc.childNodes[0].children[i].attributes.getNamedItem('pzip:target');
     if (!xmlfilepath) {
       continue;
     }
     xmlfilepath = xmlfilepath.value;
-    var xmlfilecontent = xmlDoc.children[0].children[i].attributes.getNamedItem('pzip:content');
+    var xmlfilecontent = xmlDoc.childNodes[0].children[i].attributes.getNamedItem('pzip:content');
     if (!xmlfilecontent) {
-      xmlfilecontent = xmlDoc.children[0].children[i].innerHTML;
+      xmlfilecontent = xmlDoc.childNodes[0].children[i].innerHTML;
       var startIndex = 0;
       var start = xmlfilecontent.indexOf(pzipElementHeader, startIndex);
       startIndex = start;
@@ -1296,7 +1296,7 @@ function generateOdfxml(xmlGroup, fileType) {
     xmlfile = xmlfile + tempheader;
     parser = new DOMParser();
     xmlDoc = parser.parseFromString(zipfile.asText(), 'text/xml');
-    xmlfile = xmlfile + xmlDoc.children[0].outerHTML;
+    xmlfile = xmlfile + xmlDoc.childNodes[0].outerHTML;
     xmlfile = xmlfile + contentfooter;
   }
   xmlfile = xmlfile + filefooter;
@@ -1432,7 +1432,7 @@ function analysisOox(fileType) {
   var xmlDoc = parser.parseFromString(zipfiles[Content_TypesXml].asText(), 'text/xml');
   var tempjson = {
     name: Content_TypesXml,
-    type: xmlDoc.children[0].attributes.getNamedItem('xmlns').value,
+    type: xmlDoc.childNodes[0].attributes.getNamedItem('xmlns').value,
     id: null
   };
   xmlGroup.push(tempjson);
@@ -1444,13 +1444,13 @@ function analysisOox(fileType) {
     var relsDoc = relsparser.parseFromString(zipfiles[filename].asText(), 'text/xml');
     tempjson = {
       name: filename,
-      type: relsDoc.children[0].attributes.getNamedItem('xmlns').value,
+      type: relsDoc.childNodes[0].attributes.getNamedItem('xmlns').value,
       id: null
     };
     xmlGroup.push(tempjson);
     var path = filename.substring(0, filename.indexOf(_rels));
-    for (var i = 0; i < relsDoc.children[0].children.length; i++) {
-      var tempname = relsDoc.children[0].children[i].attributes.getNamedItem('Target').value;
+    for (var i = 0; i < relsDoc.childNodes[0].children.length; i++) {
+      var tempname = relsDoc.childNodes[0].children[i].attributes.getNamedItem('Target').value;
       if (xml != tempname.substring(tempname.length - xml.length, tempname.length)) {
         continue;
       }
@@ -1463,8 +1463,8 @@ function analysisOox(fileType) {
       }
       tempjson = {
         name: tempname,
-        type: relsDoc.children[0].children[i].attributes.getNamedItem('Type').value,
-        id: relsDoc.children[0].children[i].attributes.getNamedItem('Id').value
+        type: relsDoc.childNodes[0].children[i].attributes.getNamedItem('Type').value,
+        id: relsDoc.childNodes[0].children[i].attributes.getNamedItem('Id').value
       };
       if (tempjson.type != OOX_DOCUMENT_RELATIONSHIP_TYPE) {
         xmlGroup.push(tempjson);
@@ -1510,6 +1510,7 @@ function convertoox2odf(ooxFile, callback) {
     unzipFile(ooxFile, function(zip) {
       if (!zip) {
         callback(null);
+        console.log('return from unzip');
         return;
       }
       var docx = 'docx';
@@ -1545,6 +1546,7 @@ function convertoox2odf(ooxFile, callback) {
       return;
     });
   } catch (e) {
+    console.log('return from catch');
     callback(null);
   }
 }
