@@ -50,6 +50,10 @@ function searchFiles(type) {
   loading();
   filesContainer[type] = [];
   var reg = new RegExp(type + '$');
+  // filter all files in trash
+  // var trashReg = new RegExp('^/sdcard/\\.Trash-\d*');
+  // filter all hidden files
+  var hiddenReg = new RegExp('/\\.');
   var cursor = storage.enumerate('');
   cursor.onsuccess = function() {
     if (cursor.result == null) {
@@ -58,7 +62,7 @@ function searchFiles(type) {
     }
     if (cursor.result) {
       var file = cursor.result;
-      if (file.name.match(reg)) {
+      if (file.name.match(reg) && !file.name.match(hiddenReg)) {
         filesContainer[type].push(file);
       }
       cursor.continue();
