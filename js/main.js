@@ -4,6 +4,7 @@ var storage = null;
 var currentTarget = null;
 var bItemLongPressed = false;
 var bTouchMoved = false;
+var bDisplayDoc = false;
 const MAX_COUNT = 10;
 
 var filesContainer = {
@@ -72,6 +73,12 @@ function searchFiles(type) {
 
 function loading() {
   $id('modal-loading').classList.remove('hidden');
+  if (bDisplayDoc) {
+    $id('modal-loading').style.marginTop = 46 + 'px';
+    $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50 - 46) + 'px';
+    return;
+  }
+  $id('modal-loading').style.marginTop = 0 + 'px';
   $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50) + 'px';
 }
 
@@ -199,9 +206,10 @@ function loadFile(event) {
   $id('list-container').classList.add('hidden');
   $id('documentName').innerHTML = extractFileName(event.target.parentNode.parentNode.dataset.filePath);
   $id('container').classList.remove('hidden');
+  bDisplayDoc = true;
   loading();
   var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + event.target.parentNode.parentNode.dataset.filePath +
-               '" WIDTH=100% HEIGHT=100% FRAMEBORDER=0 scrolling="no"></IFRAME>';
+               '" WIDTH=100% HEIGHT=100% FRAMEBORDER=0 scrolling="no" mozbrowser remote></IFRAME>';
   $id('file-display').innerHTML = iframe;
 }
 
@@ -274,7 +282,7 @@ function showFileInfo() {
     $id('container').classList.remove('hidden');
     loading();
     var iframe = '<IFRAME id="iframe" src = "viewer/index.html#' + $id('file-info').dataset.name +
-                 '" WIDTH=100% HEIGHT=100% FRAMEBORDER=0 scrolling="no"></IFRAME>';
+                 '" WIDTH=100% HEIGHT=100% FRAMEBORDER=0 scrolling="no" mozbrowser remote></IFRAME>';
     $id('file-display').innerHTML = iframe;
   };
 }
@@ -382,6 +390,8 @@ function init() {
   };
 
   $id('quitViewer').onclick = function() {
+    bDisplayDoc = false;
+    $id('modal-loading').classList.add('hidden');
     $id('list-header').classList.remove('hidden');
     $id('list-container').classList.remove('hidden');
     $id('container').classList.add('hidden');
@@ -392,7 +402,13 @@ function init() {
     }
   };
   window.onresize = function() {
-    $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50) + 'px';
+    if (bDisplayDoc) {
+      $id('modal-loading').style.marginTop = 46 + 'px';
+      $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50 - 46) + 'px';
+    } else {
+      $id('modal-loading').style.marginTop = 0 + 'px';
+      $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50) + 'px';
+    }
     $id('file-ops-container').style.marginTop = ($id('modal-file-ops').clientHeight/2 - 50) + 'px';
   };
 
