@@ -2237,7 +2237,7 @@ Copyright (c) 2007, Sonata Software Limited
                           </xsl:variable>
                           <xsl:attribute name ="fo:clip">
                             <xsl:variable name="temp">
-                              <xsl:value-of select="concat('image-props:',$var_picWidth,':',$left,':',$right,':',$top,':',$bottom)"/>
+                              <xsl:value-of select="concat('ooc-image-props-oop-',$var_picWidth,'-oop-',$left,'-oop-',$right,'-oop-',$top,'-oop-',$bottom, '-ooe')"/>
                             </xsl:variable>
                             <xsl:value-of select="$temp"/>
                           </xsl:attribute>

@@ -124,7 +124,7 @@ exclude-result-prefixes="p a r xlink rels xmlns">
 							<!--end-->						
 							<xsl:attribute name="xlink:href">
                 <xsl:value-of select="'../'"/>
-                <xsl:value-of select="concat('transFileName:',concat($FolderNameGUID,'-'),':',concat('/',$soundfilename))" />
+                <xsl:value-of select="concat('ooc-transFileName-oop-',concat($FolderNameGUID,'-'),'-oop-',concat('/',$soundfilename), '-ooe')" />
 							</xsl:attribute>
                 <xsl:if test="p:sld/p:transition/p:sndAc/p:stSnd/@loop=1">
 								<xsl:attribute name="smil:repeatCount">

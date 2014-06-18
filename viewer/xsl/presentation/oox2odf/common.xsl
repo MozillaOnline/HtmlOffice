@@ -684,7 +684,7 @@ exclude-result-prefixes="p a r xlink ">
     <xsl:param name ="Green"/>
     <xsl:param name ="Blue"/>
     <xsl:param name ="shade"/>
-    <xsl:value-of select ="concat('shade-tint:',$Red,':',$Green,':',$Blue ,':',$shade )"/>
+    <xsl:value-of select ="concat('ooc-shade-tint-oop-',$Red,'-oop-',$Green,'-oop-',$Blue ,'-oop-',$shade, '-ooe' )"/>
 	</xsl:template>
 	<!-- Converts Decimal values to RGB color -->
 	<xsl:template name ="CreateRGBColor">
@@ -915,7 +915,7 @@ exclude-result-prefixes="p a r xlink ">
             </xsl:if>
           </xsl:variable>
           <xsl:attribute name ="draw:transform">
-            <xsl:value-of select ="concat('draw-transform:',$xCord, ':',$yCord, ':',$xCenter, ':', $yCenter, ':', $var_flipH, ':', $var_flipV, ':', $angle)"/>
+            <xsl:value-of select ="concat('ooc-draw-transform-oop-',$xCord, ':',$yCord, ':',$xCenter, ':', $yCenter, ':', $var_flipH, ':', $var_flipV, ':', $angle, '-ooe')"/>
           </xsl:attribute>
         </xsl:when>
         <xsl:otherwise>
@@ -970,38 +970,38 @@ exclude-result-prefixes="p a r xlink ">
     <xsl:choose>
       <xsl:when test="$ShapeType='Line'">
         <xsl:attribute name ="svg:x2">
-          <xsl:value-of  select="concat('Group-TransformX2@',$grpCordinates,'$',$spCordinates,':Line')"/>
+          <xsl:value-of  select="concat('ooc-Group-TransformX2-oop-',$grpCordinates,'$',$spCordinates,':Line', '-ooe')"/>
         </xsl:attribute>
         <xsl:attribute name ="svg:y2">
-          <xsl:value-of  select="concat('Group-TransformY2@',$grpCordinates,'$',$spCordinates,':Line')"/>
+          <xsl:value-of  select="concat('ooc-Group-TransformY2-oop-',$grpCordinates,'$',$spCordinates,':Line', '-ooe')"/>
             </xsl:attribute>
                     <xsl:attribute name ="svg:x1">
-          <xsl:value-of  select="concat('Group-TransformX1@',$grpCordinates,'$',$spCordinates,':Line')"/>
+          <xsl:value-of  select="concat('ooc-Group-TransformX1-oop-',$grpCordinates,'$',$spCordinates,':Line', '-ooe')"/>
             </xsl:attribute>
             <xsl:attribute name ="svg:y1">
-          <xsl:value-of  select="concat('Group-TransformY1@',$grpCordinates,'$',$spCordinates,':Line')"/>
+          <xsl:value-of  select="concat('ooc-Group-TransformY1-oop-',$grpCordinates,'$',$spCordinates,':Line', '-ooe')"/>
             </xsl:attribute>
                </xsl:when>
       <xsl:otherwise>
         <xsl:attribute name ="svg:width">
-          <xsl:value-of  select="concat('Group-TransformWidth@',$grpCordinates,'$',$spCordinates)"/>
+          <xsl:value-of  select="concat('ooc-Group-TransformWidth-oop-',$grpCordinates,'$',$spCordinates, '-ooe')"/>
       </xsl:attribute>
         <xsl:attribute name ="svg:height">
-          <xsl:value-of  select="concat('Group-TransformHeight@',$grpCordinates,'$',$spCordinates)"/>
+          <xsl:value-of  select="concat('ooc-Group-TransformHeight-oop-',$grpCordinates,'$',$spCordinates, '-ooe')"/>
         </xsl:attribute>
 
       <xsl:choose>
           <xsl:when test="p:spPr/a:xfrm/@rot or contains($grpCordinates,'YESROTATION')">
           <xsl:attribute name ="draw:transform">
-              <xsl:value-of  select="concat('Group-TransformDrawTranform@',$grpCordinates,'$',$spCordinates)"/>
+              <xsl:value-of  select="concat('ooc-Group-TransformDrawTranform-oop-',$grpCordinates,'$',$spCordinates, '-ooe')"/>
           </xsl:attribute>
         </xsl:when>
         <xsl:otherwise>
           <xsl:attribute name ="svg:x">
-              <xsl:value-of  select="concat('Group-TransformSVGX@',$grpCordinates,'$',$spCordinates)"/>
+              <xsl:value-of  select="concat('ooc-Group-TransformSVGX-oop-',$grpCordinates,'$',$spCordinates, '-ooe')"/>
       </xsl:attribute>
           <xsl:attribute name ="svg:y">
-              <xsl:value-of  select="concat('Group-TransformSVGY@',$grpCordinates,'$',$spCordinates)"/>
+              <xsl:value-of  select="concat('ooc-Group-TransformSVGY-oop-',$grpCordinates,'$',$spCordinates, '-ooe')"/>
           </xsl:attribute>
         </xsl:otherwise>
       </xsl:choose>
@@ -1574,7 +1574,7 @@ exclude-result-prefixes="p a r xlink ">
 					</xsl:choose>
 				</xsl:variable>
 				<xsl:attribute name ="draw:modifiers">
-					<xsl:value-of select ="concat('Callout-AdjNotline:',$X,':',$Y,':',$CX,':',$CY,':',$FlipH,':',$FlipV,':',$Rot,':',$fmla1,':',$fmla2)"/>
+					<xsl:value-of select ="concat('ooc-Callout-AdjNotline-oop-',$X,'-oop-',$Y,'-oop-',$CX,'-oop-',$CY,'-oop-',$FlipH,'-oop-',$FlipV,'-oop-',$Rot,'-oop-',$fmla1,'-oop-',$fmla2, '-ooe')"/>
 				</xsl:attribute>
 			</xsl:when>
 			<xsl:when test="not(p:spPr/a:prstGeom/a:avLst/a:gd)">
@@ -1885,17 +1885,17 @@ exclude-result-prefixes="p a r xlink ">
 
 				<xsl:if test="p:spPr/a:prstGeom/@prst='borderCallout1'">
 					<xsl:attribute name ="draw:modifiers">
-						<xsl:value-of select ="concat('Callout-AdjLine1:',$X,':',$Y,':',$CX,':',$CY,':',$FlipH,':',$FlipV,':',$Rot,':',$fmla1,':',$fmla2,':',$fmla3,':',$fmla4)"/>
+						<xsl:value-of select ="concat('ooc-Callout-AdjLine1-oop-',$X,'-oop-',$Y,'-oop-',$CX,'-oop-',$CY,'-oop-',$FlipH,'-oop-',$FlipV,'-oop-',$Rot,'-oop-',$fmla1,'-oop-',$fmla2,'-oop-',$fmla3,'-oop-',$fmla4, '-ooe')"/>
 					</xsl:attribute>
 				</xsl:if>
 				<xsl:if test="p:spPr/a:prstGeom/@prst='borderCallout2'">
 					<xsl:attribute name ="draw:modifiers">
-						<xsl:value-of select ="concat('Callout-AdjLine2:',$X,':',$Y,':',$CX,':',$CY,':',$FlipH,':',$FlipV,':',$Rot,':',$fmla1,':',$fmla2,':',$fmla3,':',$fmla4,':',$fmla5,':',$fmla6)"/>
+						<xsl:value-of select ="concat('ooc-Callout-AdjLine2-oop-',$X,'-oop-',$Y,'-oop-',$CX,'-oop-',$CY,'-oop-',$FlipH,'-oop-',$FlipV,'-oop-',$Rot,'-oop-',$fmla1,'-oop-',$fmla2,'-oop-',$fmla3,'-oop-',$fmla4,'-oop-',$fmla5,'-oop-',$fmla6, '-ooe')"/>
 					</xsl:attribute>
 				</xsl:if>
 				<xsl:if test="p:spPr/a:prstGeom/@prst='borderCallout3'">
 					<xsl:attribute name ="draw:modifiers">
-						<xsl:value-of select ="concat('Callout-AdjLine3:',$X,':',$Y,':',$CX,':',$CY,':',$FlipH,':',$FlipV,':',$Rot,':',$fmla1,':',$fmla2,':',$fmla3,':',$fmla4,':',$fmla5,':',$fmla6,':',$fmla7,':',$fmla8)"/>
+						<xsl:value-of select ="concat('ooc-Callout-AdjLine3-oop-',$X,'-oop-',$Y,'-oop-',$CX,'-oop-',$CY,'-oop-',$FlipH,'-oop-',$FlipV,'-oop-',$Rot,'-oop-',$fmla1,'-oop-',$fmla2,'-oop-',$fmla3,'-oop-',$fmla4,'-oop-',$fmla5,'-oop-',$fmla6,'-oop-',$fmla7,'-oop-',$fmla8, '-ooe')"/>
 					</xsl:attribute>
 				</xsl:if>
 			</xsl:when>
@@ -4187,7 +4187,7 @@ exclude-result-prefixes="p a r xlink ">
       </xsl:variable>
       <xsl:attribute name ="fo:clip">
         <xsl:variable name="temp">
-          <xsl:value-of select="concat('image-props:',$var_picWidth,':',$left,':',$right,':',$top,':',$bottom)"/>
+          <xsl:value-of select="concat('ooc-image-props-oop-',$var_picWidth,'-oop-',$left,'-oop-',$right,'-oop-',$top,'-oop-',$bottom, '-ooe')"/>
         </xsl:variable>
         <xsl:value-of select="$temp"/>
       </xsl:attribute>

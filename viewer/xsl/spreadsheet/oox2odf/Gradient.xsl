@@ -477,7 +477,7 @@
     <xsl:param name ="Green"/>
     <xsl:param name ="Blue"/>
     <xsl:param name ="shade"/>
-    <xsl:value-of select ="concat('shade-tint:',$Red,':',$Green,':',$Blue ,':',$shade )"/>
+    <xsl:value-of select ="concat('ooc-shade-tint-oop-',$Red,'-oop-',$Green,'-oop-',$Blue ,'-oop-',$shade, '-ooe' )"/>
   </xsl:template>
   <!-- Converts Hexa Decimal Value to Decimal-->
   <xsl:template name="HexToDec">

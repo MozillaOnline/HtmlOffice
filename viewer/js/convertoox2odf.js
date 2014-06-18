@@ -47,6 +47,31 @@ Date.prototype.format = function(fmt) {
   return fmt;
 }
 
+function padLeft(str, width, padChar) {
+  var ret = str;
+  while (ret.length < width) {
+    if (ret.length + padChar.length < width) {
+      ret = padChar + ret;
+    } else {
+      ret = padChar.substring(0, width - ret.length) + ret;
+    }
+  }
+  return ret;
+}
+
+function indexOfAny(str, chars) {
+  if (str) {
+    for (var j = 0; j < chars.length; j++) {
+      for (var i = 0; i < str.length; i++) {
+        if (str.charAt(i) == chars[j]) return i;
+      }
+    }
+    return -1;
+  } else {
+    return -1;
+  }
+}
+
 function NumbersToChars(num) {
   var letter = '';
   num--;
@@ -263,7 +288,6 @@ function TransOoxRefToOdf(strExpresion) {
       arrContents.splice(i, 1);
     }
   }
-  //int intResult;
   for (var i = 0; i < arrContents.length; i++) {
     //if the value is string i.e. starts with ", no need to consider.
     if (strVal != "") {
@@ -289,7 +313,6 @@ function TransOoxRefToOdf(strExpresion) {
       var chrFirst = strVal[0];
       var chrLast = strVal[strVal.length - 1];
       var intCharFirst = chrFirst.charCodeAt(0);
-
       if (strVal.length <= 12 && (isLetter(strVal, 0) || strVal[0] == '$') && !isNaN(strVal.substring(0, strVal.length - 1)) && (strVal.toUpperCase() != "IMLOG10" || strVal.toUpperCase() != "IMLOG2" || strVal.toUpperCase() != "SUMX2MY2" || strVal.toUpperCase() != "SUMX2PY2" || strVal.toUpperCase() != "SUMXMY2")) {
         arlCellRef.push(strVal);
       } else {
@@ -307,7 +330,6 @@ function TransOoxRefToOdf(strExpresion) {
           }
         }
       }
-
       //chk for key word and replace with com.addin
       strVal = "";
     }
@@ -451,14 +473,13 @@ function TransOoxParmsToOdf(strExpresion) {
           }
           strOdfExpression = strOdfExpression + strValid + ";";
         }
-
       } else {
         if (IsValidString(arrParms[intComaIndex], "'")) {
           strOdfExpression = strOdfExpression + arrParms[intComaIndex] + ";";
         } else {
           var blnChk = false;
           var strValid = arrParms[intComaIndex];
-          while (!blnChk && intComaIndex < arrParms.Length - 1) {
+          while (!blnChk && intComaIndex < arrParms.length - 1) {
             intComaIndex++;
             strValid = strValid + "," + arrParms[intComaIndex];
             blnChk = IsValidString(strValid, "'");
@@ -505,13 +526,6 @@ function TransFormulaParms(strFormula) {
           intFunction = 2;
           intIndex = arrIndex[1];
         }
-        //else if (arrIndex[2] >= 0 && arrIndex[2] > arrIndex[1] && arrIndex[2] > arrIndex[0])
-        //{
-        //    strFunction = "FLOOR(";
-        //    intFunction = 3;
-        //    intIndex = arrIndex[2];
-        //}
-        //|| strFormula.Contains("CELING(") || strFormula.Contains("FLOOR("))
         var strConvertedExp = "";
         strTransFormula = strTransFormula + strFormula.substring(0, intIndex);
         strFormulaToTrans = strFormula.substring(intIndex);
@@ -703,6 +717,106 @@ function GetFormula(strOoxFormula) {
   return strFormulaToTrans;
 }
 
+function EvaltransFileName(arrVal1, arrVal2) {
+  var filename = '';
+  return arrVal1 + filename + arrVal2;
+}
+
+function EvalShadowExpression(arrVal) {
+  var x = 0;
+  if (arrVal.length == 3) {
+    var arrDist = parseFloat(arrVal[1]);
+    var arrDir = parseFloat(arrVal[2]);
+    arrDir = (arrDir / 60000) * (Math.PI / 180.0);
+    if (arrVal[0] == "shadow-offset-x") {
+      x = Math.round(Math.sin((arrDir)) * (arrDist / 360000), 3);
+    } else if (arrVal[0] == "shadow-offset-y") {
+      x = Math.round(Math.cos((arrDir)) * (arrDist / 360000), 3);
+    }
+  }
+  return x + "cm";
+}
+
+function EvalShadeExpression(arrVal) {
+  var dblRed = parseFloat(arrVal[1]);
+  var dblGreen = parseFloat(arrVal[2]);
+  var dblBlue = parseFloat(arrVal[3]);
+  var dblShade = parseFloat(arrVal[4]);
+  var sR;
+  if (dblRed < 10) {
+    sR = 2.4865 * dblRed;
+  } else {
+    sR = (Math.pow(((dblRed + 14.025) / 269.025), 2.4)) * 8192;
+  }
+  var sG;
+  if (dblGreen < 10) {
+    sG = 2.4865 * dblGreen;
+  } else {
+    sG = (Math.pow(((dblGreen + 14.025) / 269.025), 2.4)) * 8192;
+  }
+  var sB;
+  if (dblBlue < 10) {
+    sB = 2.4865 * dblBlue;
+  } else {
+    sB = (Math.pow(((dblBlue + 14.025) / 269.025), 2.4)) * 8192;
+  }
+
+  var NewRed;
+  var sRead;
+  sRead = (sR * dblShade / 100);
+
+  if (sRead < 10) {
+    NewRed = 0;
+  } else if (sRead < 24) {
+    NewRed = (12.92 * 255 * sR / 8192);
+  } else if (sRead <= 8192) {
+    NewRed = ((Math.pow(sRead / 8192, 1 / 2.4) * 1.055) - 0.055) * 255;
+  } else {
+    NewRed = 255;
+  }
+  NewRed = Math.round(NewRed);
+
+  var NewGreen;
+  var sGreen;
+  sGreen = (sG * dblShade / 100);
+
+  if (sGreen < 0) {
+    NewGreen = 0;
+  } else if (sGreen < 24) {
+    NewGreen = (12.92 * 255 * dblGreen / 8192);
+  } else if (sGreen < 8193) {
+    NewGreen = ((Math.pow(sGreen / 8192, 1 / 2.4) * 1.055) - 0.055) * 255;
+  } else {
+    NewGreen = 255;
+  }
+  NewGreen = Math.round(NewGreen);
+
+  var NewBlue;
+  var sBlue;
+  sBlue = (sB * dblShade / 100);
+
+  if (sBlue < 0) {
+    NewBlue = 0;
+  } else if (sBlue < 24) {
+    NewBlue = (12.92 * 255 * dblBlue / 8192);
+  } else if (sBlue < 8193) {
+    NewBlue = ((Math.pow(sBlue / 8192, 1 / 2.4) * 1.055) - 0.055) * 255;;
+  } else {
+    NewBlue = 255;
+  }
+  NewBlue = Math.round(NewBlue);
+
+  var intRed = NewRed;
+  var intGreen = NewGreen;
+  var intBlue = NewBlue;
+
+  var hexRed = parseInt(intRed).toString(16);
+  var hexGreen = parseInt(intGreen).toString(16);
+  var hexBlue = parseInt(intBlue).toString(16);
+
+  return ('#' + padLeft(hexRed.toUpperCase(), 2, '0') + padLeft(hexGreen.toUpperCase(), 2, '0') + padLeft(hexBlue.toUpperCase(), 2, '0'));
+}
+
 function GetChartWidth(text) {
   var textArray = text.split('|');
   var fontName = textArray[1];
@@ -765,6 +879,794 @@ function WidthToPixel(dblMaxDigitWidth, preDefinedWidth, isWidDefined) {
   }
   var colWidPx = parseInt(((256 * colWidPt + parseInt(128.0 / dblMaxDigitWidth)) / 256) * dblMaxDigitWidth);
   return colWidPx;
+}
+
+function EvalWordShapesFormula(arrPart) {
+  var strFormula = '';
+  var strShapeSize = arrPart[2].split(',');
+  var width = strShapeSize[0];
+  var height = strShapeSize[1];
+  var arrFormulaVals = arrPart[1].split(' ');
+  if (arrPart.length == 3) {
+    if (arrFormulaVals[0] == "sum") {
+      strFormula = arrFormulaVals[1] + " + " + arrFormulaVals[2] + " - " + arrFormulaVals[3];
+    } else if (arrFormulaVals[0] == "if") {
+      strFormula = "if(" + arrFormulaVals[1] + ", " + arrFormulaVals[2] + " , " + arrFormulaVals[3] + ")";
+    } else if (arrFormulaVals[0] == "prod") {
+      strFormula = arrFormulaVals[1] + " * " + arrFormulaVals[2] + " / " + arrFormulaVals[3];
+    } else if (arrFormulaVals[0] == "abs") {
+      strFormula = "abs(" + arrFormulaVals[1] + ")";
+    } else if (arrFormulaVals[0] == "val") {
+      strFormula = arrFormulaVals[1];
+    } else if (arrFormulaVals[0] == "mid") {
+      strFormula = "(" + arrFormulaVals[1] + " + " + arrFormulaVals[2] + ") / " + 2;
+    } else if (arrFormulaVals[0] == "sqrt") {
+      strFormula = "sqrt(abs(" + arrFormulaVals[1] + "))";
+    } else if (arrFormulaVals[0] == "max") {
+      strFormula = "max(" + arrFormulaVals[1] + ", " + arrFormulaVals[2] + ")";
+    } else if (arrFormulaVals[0] == "min") {
+      strFormula = "min(" + arrFormulaVals[1] + ", " + arrFormulaVals[2] + ")";
+    } else if (arrFormulaVals[0] == "cos") {
+      strFormula = arrFormulaVals[1] + " * " + "cos(" + arrFormulaVals[2] + ")";
+    } else if (arrFormulaVals[0] == "sin") {
+      strFormula = arrFormulaVals[1] + " * " + "sin(" + arrFormulaVals[2] + ")";
+    } else if (arrFormulaVals[0] == "tan") {
+      strFormula = arrFormulaVals[1] + " * " + "tan(" + arrFormulaVals[2] + ")";
+    } else if (arrFormulaVals[0] == "mod") {
+      strFormula = "sqrt(abs((" + arrFormulaVals[1] + " *" + arrFormulaVals[1] + ")+(" + arrFormulaVals[2] + " *" + arrFormulaVals[2] + ")+(" + arrFormulaVals[3] + " *" + arrFormulaVals[3] + ")))";
+    } else if (arrFormulaVals[0] == "sumangle") {
+      strFormula = arrFormulaVals[1] + " + " + arrFormulaVals[2] + " * 65536 - " + arrFormulaVals[3] + " *65536";
+    } else if (arrFormulaVals[0] == "sinatan2") {
+      strFormula = arrFormulaVals[1] + " * sin(atan2(" + arrFormulaVals[2] + "," + arrFormulaVals[3] + "))";
+    } else if (arrFormulaVals[0] == "cosatan2") {
+      strFormula = arrFormulaVals[1] + " * cos(atan2(" + arrFormulaVals[2] + "," + arrFormulaVals[3] + "))";
+    } else if (arrFormulaVals[0] == "ellipse") {
+      strFormula = arrFormulaVals[3] + " *sqrt( abs(1-((" + arrFormulaVals[1] + " *" + arrFormulaVals[1] + ")/(" + arrFormulaVals[2] + " *" + arrFormulaVals[2] + "))))";
+    } else if (arrFormulaVals[0] == "atan2") {
+      strFormula = "atan2(" + arrFormulaVals[2] + "," + arrFormulaVals[1] + ")";
+    }
+  }
+  strFormula = strFormula.replace("#", "$");
+  strFormula = strFormula.replace("pixelwidth", "width * 0.0264");
+  strFormula = strFormula.replace("pixellinewidth", "width * 0.0264");
+  strFormula = strFormula.replace("pixelheight", "height * 0.0264");
+  strFormula = strFormula.replace("pixellineheight", "height * 0.0264");
+
+  strFormula = strFormula.replace("pixelWidth", "width * 0.0264");
+  strFormula = strFormula.replace("pixellineWidth", "width * 0.0264");
+  strFormula = strFormula.replace("pixelHeight", "height * 0.0264");
+  strFormula = strFormula.replace("pixellineHeight", "height * 0.0264");
+
+  strFormula = strFormula.replace("pixelLineWidth", "width * 0.0264");
+  strFormula = strFormula.replace("pixelLineHeight", "height * 0.0264");
+  strFormula = strFormula.replace("linedrawn", "1");
+  strFormula = strFormula.replace("lineDrawn", "1");
+
+  strFormula = strFormula.replace("emuwidth", "width");
+  strFormula = strFormula.replace("emuheight", "height");
+  strFormula = strFormula.replace("emuwidth2", "width");
+  strFormula = strFormula.replace("emuheight2", "height");
+
+  strFormula = strFormula.replace("@", "?f");
+
+  return strFormula;
+}
+
+function EvalTableCord(text) {
+  try {
+    var arrPart = text.split('@');
+    var arrVal = arrPart[0].split(':');
+    var arrVal1 = arrPart[1].split(':');
+    var dblTempCell = 0.0;
+    var dblXY = 0.0;
+    var dblRetXY = 0.0;
+    var dblSUBXY = 0.0;
+    dblXY = parseFloat(arrVal1[1]);
+
+    if (arrVal1[0] == "1") {
+      dblRetXY = dblXY;
+    } else {
+      for (var intCount = 0; intCount < arrVal.length - 2; intCount++) {
+        dblTempCell = parseFloat(arrVal[intCount]);
+        dblSUBXY += dblTempCell;
+      }
+      dblRetXY = dblXY + dblSUBXY;
+    }
+    var str = dblRetXY / 360000;
+    return str + "cm";
+  } catch (e) {
+    alert(e);
+  }
+}
+
+function EvalWordModifier(arrPart) {
+  var strModf = '';
+  if (arrPart) {
+    strModf = arrPart;
+    strModf = strModf.replace(",,,,,", ",0,0,0,0,");
+    strModf = strModf.replace(",,,,", ",0,0,0,");
+    strModf = strModf.replace(",,,", ",0,0,");
+    strModf = strModf.replace(",,", ",0,");
+    strModf = strModf.replace(",", " ");
+  }
+  return strModf;
+}
+
+function TranslateRCommand(strpath) {
+  var reg = new RegExp('([-0-9]+[ ]+[-0-9]+[ ]+[RP]+[ ]+[-0-9]+[ ]+[-0-9]+[ ])', 'g');
+  var delegate = function(match) {
+    var strMatch = match;
+    var arrRValues = strMatch.split(' ');
+    var dblX = parseFloat(arrRValues[0]) + parseFloat(arrRValues[3]);
+    var dblY = parseFloat(arrRValues[1]) + parseFloat(arrRValues[4]);
+    if (strMatch.indexOf("R") >= 0) {
+      strMatch = arrRValues[0] + " " + arrRValues[1] + " L " + dblX + " " + dblY + " ";
+    } else if (strMatch.indexOf("P") >= 0) {
+      strMatch = arrRValues[0] + " " + arrRValues[1] + " M" + dblX + " " + dblY + " ";
+    }
+    return strMatch;
+  };
+  return strpath.replace(reg, delegate);
+}
+
+function TranslateVCommand(strpath) {
+  var reg = new RegExp('([-0-9]+[ ]+[-0-9]+[ ]+[E]+[ ]+[-0-9]+[ ]+[-0-9]+[ ]+[-0-9]+[ ]+[-0-9]+[ ]+[-0-9]+[ ]+[-0-9]+[ ])', 'g');
+  var delegate = function(match) {
+    var strMatch = match;
+    var arrVValues = strMatch.split(' ');
+
+    var dblX0 = parseInt(arrVValues[0]);
+    var dblY0 = parseInt(arrVValues[1]);
+    var dblX1 = parseInt(arrVValues[3]);
+    var dblY1 = parseInt(arrVValues[4]);
+    var dblX2 = parseInt(arrVValues[5]);
+    var dblY2 = parseInt(arrVValues[6]);
+    var dblX3 = parseInt(arrVValues[7]);
+    var dblY3 = parseInt(arrVValues[8]);
+    strMatch = arrVValues[0] + " " + arrVValues[1] + " C " + (dblX0 + dblX1) + " " + (dblY0 + dblY1) + " " + (dblX0 + dblX2) + " " + (dblY0 + dblY2) + " " + (dblX0 + dblX3) + " " + (dblY0 + dblY3) + " ";
+    return strMatch;
+  };
+  return strpath.replace(reg, delegate);
+}
+
+function Translate_CommandComma(strpath) {
+  var reg = new RegExp('([ABCFLMNSTUVWXYZREP]+[,])', 'g');
+  var delegate = function(match) {
+    var strMatch = match;
+    strMatch = strMatch.substring(0, strMatch.indexOf(',')) + "0,";
+    return strMatch;
+  };
+  return strpath.replace(reg, delegate);
+}
+
+function Translate_CommaCommand(strpath) {
+  var reg = new RegExp('([,]+[ABCFLMNSTUVWXYZREP])', 'g');
+  var delegate = function(match) {
+    var arrCommands = ['A', 'B', 'C', 'F', 'L', 'M', 'N', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'R', 'E', 'P'];
+    var strMatch = match;
+    strMatch = ",0 " + strMatch.substring(strMatch.indexOfAny(arrCommands), strMatch.length);
+    return strMatch;
+  };
+  return strpath.replace(reg, delegate);
+}
+
+function regexpres(strpath) {
+  var reg = new RegExp('([-0-9]+[ABCFLMNSTUVWXYZREP])', 'g');
+  var delegate = function(match) {
+    var arrCommands = ['A', 'B', 'C', 'F', 'L', 'M', 'N', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'R', 'E', 'P'];
+    var strMatch = match;
+    strMatch = strMatch.substring(0, strMatch.indexOfAny(arrCommands)) + " " + strMatch.substring(strMatch.indexOfAny(arrCommands));
+    return strMatch;
+  };
+  return strpath.replace(reg, delegate);
+}
+
+function EvalWordEnhacePath(arrPart) {
+  var strPath = '';
+  if (arrPart) {
+    strPath = arrPart;
+    strPath = strPath.replace(",,,,,", ",0,0,0,0,");
+    strPath = strPath.replace(",,,,", ",0,0,0,");
+    strPath = strPath.replace(",,,", ",0,0,");
+    strPath = strPath.replace(",,", ",0,");
+    strPath = strPath.replace("h", "");
+    strPath = strPath.replace("d", "");
+    strPath = strPath.replace("at", "A");
+    strPath = strPath.replace("ar", "B");
+    strPath = strPath.replace("v", "E");
+    strPath = strPath.replace("c", "C");
+    strPath = strPath.replace("nf", "F");
+    strPath = strPath.replace("al", "U");
+    strPath = strPath.replace("wr", "V");
+    strPath = strPath.replace("wa", "W");
+    strPath = strPath.replace("ae", "T");
+    strPath = strPath.replace("qx", "X");
+    strPath = strPath.replace("qy", "Y");
+    strPath = strPath.replace("l", "L");
+    strPath = strPath.replace("x", "Z");
+    strPath = strPath.replace("m", "M");
+    strPath = strPath.replace("ns", "S");
+    strPath = strPath.replace("e", "N");
+    strPath = strPath.replace("r", "R");
+    strPath = strPath.replace("t", "P");
+
+    strPath = Translate_CommandComma(strPath);
+    strPath = Translate_CommaCommand(strPath);
+    strPath = regexpres(strPath);
+
+    strPath = strPath.replace("@", " ?f");
+    strPath = strPath.replace("N", "N ");
+    strPath = strPath.replace("A", "A ");
+    strPath = strPath.replace("B", "B ");
+    strPath = strPath.replace("X", "X ");
+    strPath = strPath.replace("Y", "Y ");
+    strPath = strPath.replace("M", "M ");
+    strPath = strPath.replace("L", "L ");
+    strPath = strPath.replace("T", "T ");
+    strPath = strPath.replace("U", "U ");
+    strPath = strPath.replace("F", "F ");
+    strPath = strPath.replace("S", "S ");
+    strPath = strPath.replace("C", "C ");
+    strPath = strPath.replace("Z", "Z ");
+    strPath = strPath.replace("V", "V ");
+    strPath = strPath.replace("W", "W ");
+    strPath = strPath.replace("R", "R ");
+    strPath = strPath.replace("E", "E ");
+    strPath = strPath.replace("P", "P ");
+    strPath = strPath.replace(",", " ");
+
+    strPath = TranslateRCommand(strPath);
+    strPath = TranslateVCommand(strPath);
+  }
+  if (strPath.trim() == "M 10800 0 A 0 0 21600 21600 10800 0 10800 0 Z N") {
+    strPath = "M 10800 0 L 10799 0 C 4835 0 0 4835 0 10799 0 16764 4835 21600 10800 21600 16764 21600 21600 16764 21600 10800 21600 4835 16764 0 10800 0 Z N";
+  }
+  return strPath.trim();
+}
+
+function EvalRotationExpression(arrPart) {
+  var strRotate;
+  var strTranslate;
+  var arrVal = arrPart.split(':');
+  var dblRadius = 0.0;
+  var dblXf = 0.0;
+  var dblYf = 0.0;
+  var dblalpha = 0.0;
+  var dblbeta = 0.0;
+  var dblgammaDegree = 0.0;
+  var dblgammaR = 0.0;
+  var dblRotAngle = 0.0;
+  var dblX2 = 0.0;
+  var dblY2 = 0.0;
+  var centreX = 0.0;
+  var centreY = 0.0;
+
+  if (arrVal.length == 7) {
+    var arrValueX = parseFloat(arrVal[0]);
+    var arrValueY = parseFloat(arrVal[1]);
+    var arrValueCx = parseFloat(arrVal[2]);
+    var arrValueCy = parseFloat(arrVal[3]);
+    var arrValueFlipH = parseFloat(arrVal[4]);
+    var arrValueFlipV = parseFloat(arrVal[5]);
+    var arrValueRot = parseFloat(arrVal[6]);
+    if (arrVal[0].indexOf("draw-transform") >= 0) {
+      centreX = arrValueX + (arrValueCx / 2);
+      centreY = arrValueY + (arrValueCy / 2);
+      if (arrValueFlipH == 1.0) {
+        dblXf = arrValueX + ((centreX - arrValueX) * 2);
+      } else {
+        dblXf = arrValueX;
+      }
+      if (arrValueFlipV == 1.0) {
+        dblYf = arrValueY + ((centreY - arrValueY) * 2);
+      } else {
+        dblYf = arrValueY;
+      }
+      dblRadius = Math.sqrt((arrValueCx * arrValueCx) + (arrValueCy * arrValueCy)) / 2.0;
+      if ((arrValueFlipH == 0.0 && arrValueFlipV == 1.0) || (arrValueFlipH == 0.0 && arrValueFlipV == 1.0)) {
+        dblalpha = 360.00 - ((arrValueRot / 60000.00) % 360);
+      } else {
+        dblalpha = (arrValueRot / 60000.00) % 360;
+      }
+      if (dblalpha > 180.00) {
+        dblRotAngle = (360.00 - dblalpha) / 180.00 * Math.PI;
+      } else {
+        dblRotAngle = (-1.00 * dblalpha) / 180.00 * Math.PI;
+      }
+      if (Math.abs(centreY - dblYf) > 0) {
+        dblbeta = Math.atan(Math.abs(centreX - dblXf) / Math.abs(centreY - dblYf)) * (180.00 / Math.PI);
+      }
+      if (Math.abs(dblbeta - dblalpha) > 0) {
+        dblgammaDegree = ((dblbeta - dblalpha) % (((dblbeta - dblalpha) / Math.abs(dblbeta - dblalpha)) * 360)) + 90.00;
+      } else {
+        dblgammaDegree = 90.00;
+      }
+      dblgammaR = (360.00 - dblgammaDegree) / 180.00 * Math.PI;
+      dblX2 = Math.round((centreX + (dblRadius * Math.cos(dblgammaR))) / 360036.00, 3);
+      dblY2 = Math.round((centreY + (dblRadius * Math.sin(dblgammaR))) / 360036.00, 3);
+
+    }
+  }
+  strRotate = "rotate (" + dblRotAngle + ")";
+  strTranslate = "translate (" + dblX2 + "cm " + dblY2 + "cm)";
+  return strRotate + " " + strTranslate;
+}
+
+function EvalExpression(arrVal) {
+  var x = 0;
+  if (arrVal.length == 5) {
+    var arrValue1 = parseFloat(arrVal[1]);
+    var arrValue2 = parseFloat(arrVal[2]);
+    var arrValue3 = parseFloat(arrVal[3]);
+    var arrValue4 = parseFloat(arrVal[4]);
+    if (arrVal[0] == "svg-x1") {
+      x = Math.round(((arrValue1 - Math.cos(arrValue4) * arrValue2 + Math.sin(arrValue4) * arrValue3) / 360000), 2);
+    } else if (arrVal[0] == "svg-y1") {
+      x = Math.round(((arrValue1 - Math.sin(arrValue4) * arrValue2 - Math.cos(arrValue4) * arrValue3) / 360000), 2);
+    } else if (arrVal[0] == "svg-x2") {
+      x = Math.round(((arrValue1 + Math.cos(arrValue4) * arrValue2 - Math.sin(arrValue4) * arrValue3) / 360000), 2);
+    } else if (arrVal[0] == "svg-y2") {
+      x = Math.round(((arrValue1 + Math.sin(arrValue4) * arrValue2 + Math.cos(arrValue4) * arrValue3) / 360000), 2);
+    }
+  }
+  return x + "cm";
+}
+
+function EvalCalloutAdjustment(arrVal) {
+  var drawMod = "";
+  var callAdjVal = arrVal[0];
+
+  var X = parseFloat(arrVal[1]);
+  var Y = parseFloat(arrVal[2]);
+  var CX = parseFloat(arrVal[3]);
+  var CY = parseFloat(arrVal[4]);
+  var flipH = parseInt(arrVal[5]);
+  var flipV = parseInt(arrVal[6]);
+  var rot = parseFloat(arrVal[7]);
+
+  var xCenter = (X + CX / 2);
+  var yCenter = (Y + CY / 2);
+  var ang = ((rot / 60000) * (Math.PI / 180.0));
+
+  var xCtrBy2;
+  if (flipH == 1) {
+    xCtrBy2 = ((-1) * (CX / 2));
+  } else {
+    xCtrBy2 = (CX / 2);
+  }
+  var yCtrBy2;
+  if (flipV == 1) {
+    yCtrBy2 = ((-1) * (CY / 2));
+  } else {
+    yCtrBy2 = (CY / 2);
+  }
+
+  var X1;
+  X1 = (xCenter - Math.cos(ang) * xCtrBy2 + Math.sin(ang) * yCtrBy2);
+
+  var Y1;
+  Y1 = (yCenter - Math.sin(ang) * xCtrBy2 - Math.cos(ang) * yCtrBy2);
+
+  var X2;
+  X2 = (xCenter + Math.cos(ang) * xCtrBy2 - Math.sin(ang) * yCtrBy2);
+
+  var Y2;
+  Y2 = (yCenter + Math.sin(ang) * xCtrBy2 + Math.cos(ang) * yCtrBy2);
+
+  X1 = Math.round((X1 / 360000), 3);
+  Y1 = Math.round((Y1 / 360000), 3);
+  X2 = Math.round((X2 / 360000), 3);
+  Y2 = Math.round((Y2 / 360000), 3);
+
+  var width;
+  width = (X2 - X1);
+
+  var height;
+  height = (Y2 - Y1);
+
+  if (callAdjVal.trim() == "Callout-AdjNotline") {
+    var fm1 = 0.0;
+    var fm2 = 0.0;
+    if (arrVal[8] != "") {
+      fm1 = parseFloat(arrVal[8]);
+    }
+    if (arrVal[9] != "") {
+      fm2 = parseFloat(arrVal[9]);
+    }
+
+    var dxPos;
+    dxPos = (width * fm1 / 100000);
+
+    var dyPos;
+    dyPos = (height * fm2 / 100000);
+
+    var dxFinal;
+    dxFinal = ((width / 2) + dxPos);
+
+    var dyFinal;
+    dyFinal = ((height / 2) + dyPos);
+
+    var viewWidth = 21600;
+    var viewHeight = 21600;
+
+    var viewdxFinal;
+    viewdxFinal = (dxFinal / width * viewWidth);
+
+    var viewdyFinal;
+    viewdyFinal = (dyFinal / height * viewHeight);
+
+    drawMod = viewdxFinal + " " + viewdyFinal;
+  }
+
+  if ((callAdjVal.trim() == "Callout-AdjLine1") || (callAdjVal.trim() == "Callout-AdjLine2") || (callAdjVal.trim() == "Callout-AdjLine3")) {
+    var fm1 = 0.0;
+    var fm2 = 0.0;
+    var fm3 = 0.0;
+    var fm4 = 0.0;
+    var fm5 = 0.0;
+    var fm6 = 0.0;
+    var fm7 = 0.0;
+    var fm8 = 0.0;
+
+    if (callAdjVal.trim() == "Callout-AdjLine1") {
+      if (arrVal[8] != "") {
+        fm1 = parseFloat(arrVal[8]);
+      }
+      if (arrVal[9] != "") {
+        fm2 = parseFloat(arrVal[9]);
+      }
+      if (arrVal[10] != "") {
+        fm3 = parseFloat(arrVal[10]);
+      }
+      if (arrVal[11] != "") {
+        fm4 = parseFloat(arrVal[11]);
+      }
+    }
+
+    if (callAdjVal.trim() == "Callout-AdjLine2") {
+      if (arrVal[8] != "") {
+        fm1 = parseFloat(arrVal[8]);
+      }
+      if (arrVal[9] != "") {
+        fm2 = parseFloat(arrVal[9]);
+      }
+      if (arrVal[10] != "") {
+        fm3 = parseFloat(arrVal[10]);
+      }
+      if (arrVal[11] != "") {
+        fm4 = parseFloat(arrVal[11]);
+      }
+      if (arrVal[12] != "") {
+        fm5 = parseFloat(arrVal[12]);
+      }
+      if (arrVal[13] != "") {
+        fm6 = parseFloat(arrVal[13]);
+      }
+    }
+
+    if (callAdjVal.trim() == "Callout-AdjLine3") {
+      if (arrVal[8] != "") {
+        fm1 = parseFloat(arrVal[8]);
+      }
+      if (arrVal[9] != "") {
+        fm2 = parseFloat(arrVal[9]);
+      }
+      if (arrVal[10] != "") {
+        fm3 = parseFloat(arrVal[10]);
+      }
+      if (arrVal[11] != "") {
+        fm4 = parseFloat(arrVal[11]);
+      }
+      if (arrVal[12] != "") {
+        fm5 = parseFloat(arrVal[12]);
+      }
+      if (arrVal[13] != "") {
+        fm6 = parseFloat(arrVal[13]);
+      }
+      if (arrVal[14] != "") {
+        fm7 = parseFloat(arrVal[14]);
+      }
+      if (arrVal[15] != "") {
+        fm8 = parseFloat(arrVal[15]);
+      }
+    }
+
+    var viewWidth = 21600;
+    var viewHeight = 21600;
+
+    var dxPos;
+    dxPos = (width * fm1 / 100);
+    var dxFinal;
+    dxFinal = ((width / 2) + dxPos);
+    var viewdxFinal;
+    viewdxFinal = (dxFinal / width * viewWidth);
+    viewdxFinal = (viewdxFinal / 1000);
+
+    var dyPos;
+    dyPos = (height * fm2 / 100);
+    var dyFinal;
+    dyFinal = ((height / 2) + dyPos);
+    var viewdyFinal;
+    viewdyFinal = (dyFinal / height * viewHeight);
+    viewdyFinal = (viewdyFinal / 1000);
+
+    var dxPos1;
+    dxPos1 = (width * fm3 / 100);
+    var dxFinal1;
+    dxFinal1 = ((width / 2) + dxPos1);
+    var viewdxFinal1;
+    viewdxFinal1 = (dxFinal1 / width * viewWidth);
+
+    viewdxFinal1 = (viewdxFinal1 / 1000);
+
+    var dyPos1;
+    dyPos1 = (height * fm4 / 100);
+    var dyFinal1;
+    dyFinal1 = ((height / 2) + dyPos1);
+    var viewdyFinal1;
+    viewdyFinal1 = (dyFinal1 / height * viewHeight);
+
+    viewdyFinal1 = (viewdyFinal1 / 1000);
+
+    var dxPos2;
+    dxPos2 = (width * fm5 / 100);
+    var dxFinal2;
+    dxFinal2 = ((width / 2) + dxPos2);
+    var viewdxFinal2;
+    viewdxFinal2 = (dxFinal2 / width * viewWidth);
+
+    viewdxFinal2 = (viewdxFinal2 / 1000);
+
+    var dyPos2;
+    dyPos2 = (height * fm6 / 100);
+    var dyFinal2;
+    dyFinal2 = ((height / 2) + dyPos2);
+    var viewdyFinal2;
+    viewdyFinal2 = (dyFinal2 / height * viewHeight);
+
+    viewdyFinal2 = (viewdyFinal2 / 1000);
+
+    var dxPos3;
+    dxPos3 = (width * fm7 / 100);
+    var dxFinal3;
+    dxFinal3 = ((width / 2) + dxPos3);
+    var viewdxFinal3;
+    viewdxFinal3 = (dxFinal3 / width * viewWidth);
+
+    viewdxFinal3 = (viewdxFinal3 / 1000);
+
+    var dyPos3;
+    dyPos3 = (height * fm8 / 100);
+    var dyFinal3;
+    dyFinal3 = ((height / 2) + dyPos3);
+    var viewdyFinal3;
+    viewdyFinal3 = (dyFinal3 / height * viewHeight);
+
+    viewdyFinal3 = (viewdyFinal3 / 1000);
+
+    if (callAdjVal.trim() == "Callout-AdjLine1") {
+      drawMod = viewdyFinal1 + " " + viewdxFinal1 + " " + viewdyFinal + " " + viewdxFinal;
+    }
+
+    if (callAdjVal.trim() == "Callout-AdjLine2") {
+      drawMod = viewdyFinal2 + " " + viewdxFinal2 + " " + viewdyFinal1 + " " + viewdxFinal1 + " " + viewdyFinal + " " + viewdxFinal;
+    }
+
+    if (callAdjVal.trim() == "Callout-AdjLine3") {
+      drawMod = viewdyFinal3 + " " + viewdxFinal3 + " " + viewdyFinal2 + " " + viewdxFinal2 + " " + viewdyFinal1 + " " + viewdxFinal1 + " " + viewdyFinal + " " + viewdxFinal;
+    }
+  }
+  return drawMod;
+}
+
+function EvalGroupingExpression(vals) {
+  var strRet = "";
+  var strLineRet = "";
+  var strShapeCordinates = "";
+  var arrgroupShape = vals[1].split('$');
+  var arrgroup = arrgroupShape[0].split('@');
+
+  var dblgrpX;
+  var dblgrpY;
+  var dblgrpCX;
+  var dblgrpCY;
+  var dblgrpChX;
+  var dblgrpChY;
+  var dblgrpChCX;
+  var dblgrpChCY;
+  var dblgrpRot;
+  var dblgrpFlipH;
+  var dblgrpFlipV;
+
+  var dblShapeX;
+  var dblShapeY;
+  var dblShapeCX;
+  var dblShapeCY;
+  var dblShapeRot;
+  var dblShapeFlipH;
+  var dblShapeFlipV;
+
+  var arrShapeCordinates;
+  var arrInnerGroup;
+  var arrFinalRet;
+
+  var _shapes = [];
+  var TopLevelgroup;
+  var Targetgroup = new OoxTransform([5495925, 3286125, 1419225, 657225, 0, 1, 1]);
+  var shapeCord;
+  var InnerLevelgroup;
+  var Tempgroup;
+
+  if (arrgroup.length >= 3) {
+    arrInnerGroup = arrgroup[0].split(':');
+    dblgrpX = parseFloat(arrInnerGroup[0]);
+    dblgrpY = parseFloat(arrInnerGroup[1]);
+    dblgrpCX = parseFloat(arrInnerGroup[2]);
+    dblgrpCY = parseFloat(arrInnerGroup[3]);
+    dblgrpChX = parseFloat(arrInnerGroup[4]);
+    dblgrpChY = parseFloat(arrInnerGroup[5]);
+    dblgrpChCX = parseFloat(arrInnerGroup[6]);
+    dblgrpChCY = parseFloat(arrInnerGroup[7]);
+    dblgrpRot = parseFloat(arrInnerGroup[8]);
+    dblgrpFlipH = parseFloat(arrInnerGroup[9]);
+    dblgrpFlipV = parseFloat(arrInnerGroup[10]);
+
+    TopLevelgroup = new OoxTransform([dblgrpChX, dblgrpChY, dblgrpChCX, dblgrpChCY, dblgrpX, dblgrpY, dblgrpCX, dblgrpCY, dblgrpRot, 1, 1]);
+
+    for (var intCount = 1; intCount < arrgroup.length - 1; intCount++) {
+      arrInnerGroup = arrgroup[intCount].split(':');
+      Tempgroup = TopLevelgroup;
+      dblgrpX = parseFloat(arrInnerGroup[0]);
+      dblgrpY = parseFloat(arrInnerGroup[1]);
+      dblgrpCX = parseFloat(arrInnerGroup[2]);
+      dblgrpCY = parseFloat(arrInnerGroup[3]);
+      dblgrpChX = parseFloat(arrInnerGroup[4]);
+      dblgrpChY = parseFloat(arrInnerGroup[5]);
+      dblgrpChCX = parseFloat(arrInnerGroup[6]);
+      dblgrpChCY = parseFloat(arrInnerGroup[7]);
+      dblgrpRot = parseFloat(arrInnerGroup[8]);
+      dblgrpFlipH = parseFloat(arrInnerGroup[9]);
+      dblgrpFlipV = parseFloat(arrInnerGroup[10]);
+      InnerLevelgroup = new OoxTransform([dblgrpChX, dblgrpChY, dblgrpChCX, dblgrpChCY, dblgrpX, dblgrpY, dblgrpCX, dblgrpCY, dblgrpRot, 1, 1]);
+      Targetgroup = new OoxTransform(Tempgroup, InnerLevelgroup);
+      TopLevelgroup = Targetgroup;
+    }
+    arrShapeCordinates = arrgroupShape[1].split(':');
+    dblShapeX = parseFloat(arrShapeCordinates[1]);
+    dblShapeY = parseFloat(arrShapeCordinates[2]);
+    dblShapeCX = parseFloat(arrShapeCordinates[3]);
+    dblShapeCY = parseFloat(arrShapeCordinates[4]);
+    dblShapeRot = parseFloat(arrShapeCordinates[5]);
+    dblShapeFlipH = parseFloat(arrShapeCordinates[6]);
+    dblShapeFlipV = parseFloat(arrShapeCordinates[7]);
+    if (arrgroupShape[1].indexOf("Line") >= 0) {
+      if (dblShapeFlipH == 0) dblShapeFlipH = -1;
+      if (dblShapeFlipV == 0) dblShapeFlipV = -1;
+    }
+    _shapes = [];
+    if (arrgroupShape[1].IndexOf("Line") >= 0) {
+      shapeCord = OoxTransform.CreateLine(dblShapeX, dblShapeY, dblShapeCX, dblShapeCY, dblShapeRot, dblShapeFlipH, dblShapeFlipV);
+    } else {
+      shapeCord = new OoxTransform([dblShapeX, dblShapeY, dblShapeCX, dblShapeCY, dblShapeRot, 1, 1]);
+    }
+    _shapes.push(new OoxTransform([Targetgroup, shapeCord]));
+  } else if (arrgroup.length == 2) {
+    arrInnerGroup = arrgroup[0].split(':');
+    dblgrpX = parseFloat(arrInnerGroup[0]);
+    dblgrpY = parseFloat(arrInnerGroup[1]);
+    dblgrpCX = parseFloat(arrInnerGroup[2]);
+    dblgrpCY = parseFloat(arrInnerGroup[3]);
+    dblgrpChX = parseFloat(arrInnerGroup[4]);
+    dblgrpChY = parseFloat(arrInnerGroup[5]);
+    dblgrpChCX = parseFloat(arrInnerGroup[6]);
+    dblgrpChCY = parseFloat(arrInnerGroup[7]);
+    dblgrpRot = parseFloat(arrInnerGroup[8]);
+    TopLevelgroup = new OoxTransform([dblgrpChX, dblgrpChY, dblgrpChCX, dblgrpChCY, dblgrpX, dblgrpY, dblgrpCX, dblgrpCY, dblgrpRot, 1, 1]);
+    arrShapeCordinates = arrgroupShape[1].split(':');
+    dblShapeX = parseFloat(arrShapeCordinates[1]);
+    dblShapeY = parseFloat(arrShapeCordinates[2]);
+    dblShapeCX = parseFloat(arrShapeCordinates[3]);
+    dblShapeCY = parseFloat(arrShapeCordinates[4]);
+    dblShapeRot = parseFloat(arrShapeCordinates[5]);
+    dblShapeFlipH = parseFloat(arrShapeCordinates[6]);
+    dblShapeFlipV = parseFloat(arrShapeCordinates[7]);
+
+    if (arrgroupShape[1].indexOf("Line") >= 0) {
+      if (dblShapeFlipH == 0) dblShapeFlipH = -1;
+      if (dblShapeFlipV == 0) dblShapeFlipV = -1;
+    }
+    _shapes = [];
+
+    if (arrgroupShape[1].indexOf("Line") >= 0) {
+      shapeCord = OoxTransform.CreateLine(dblShapeX, dblShapeY, dblShapeCX, dblShapeCY, dblShapeRot, dblShapeFlipH, dblShapeFlipV);
+    } else {
+      shapeCord = new OoxTransform([dblShapeX, dblShapeY, dblShapeCX, dblShapeCY, dblShapeRot, 1, 1]);
+    }
+    _shapes.push(new OoxTransform([TopLevelgroup, shapeCord]));
+  }
+  _shapes.forEach(function(shape) {
+    strRet = shape.GetOdf();
+    strLineRet = shape.GetLineOdf();
+  });
+
+  if (arrgroupShape[1].indexOf("Line") >= 0) {
+    arrFinalRet = strLineRet.split('@');
+    if (vals[0].indexOf("X1") >= 0) {
+      if (arrFinalRet[1].indexOf("NaN") >= 0) {
+        strShapeCordinates = "0cm";
+      } else {
+        strShapeCordinates = arrFinalRet[0];
+      }
+    } else if (vals[0].indexOf("Y1") >= 0) {
+      if (arrFinalRet[2].indexOf("NaN") >= 0) {
+        strShapeCordinates = "0cm";
+      } else {
+        strShapeCordinates = arrFinalRet[1];
+      }
+    } else if (vals[0].indexOf("X2") >= 0) {
+      if (arrFinalRet[3].indexOf("NaN") >= 0) {
+        strShapeCordinates = "0cm";
+      } else {
+        strShapeCordinates = arrFinalRet[2];
+      }
+    } else if (vals[0].indexOf("Y2") >= 0) {
+      if (arrFinalRet[3].indexOf("NaN") >= 0) {
+        strShapeCordinates = "0cm";
+      } else {
+        strShapeCordinates = arrFinalRet[3];
+      }
+    }
+  } else {
+    arrFinalRet = strRet.split('@');
+    if (arrFinalRet[0] == "YESROT") {
+      if (vals[0].indexOf("Width") >= 0) {
+        if (arrFinalRet[1].indexOf("NaN") >= 0) {
+          strShapeCordinates = "0cm";
+        } else {
+          strShapeCordinates = arrFinalRet[1];
+        }
+      } else if (vals[0].indexOf("Height") >= 0) {
+        if (arrFinalRet[2].indexOf("NaN") >= 0) {
+          strShapeCordinates = "0cm";
+        } else {
+          strShapeCordinates = arrFinalRet[2];
+        }
+      } else if (vals[0].indexOf("DrawTranform") >= 0) {
+        if (arrFinalRet[3].indexOf("NaN") >= 0) {
+          strShapeCordinates = "0cm";
+        } else {
+          strShapeCordinates = arrFinalRet[3];
+        }
+      }
+    } else if (arrFinalRet[0] == "NOROT") {
+      if (vals[0].indexOf("Width") >= 0) {
+        if (arrFinalRet[1].indexOf("NaN") >= 0) {
+          strShapeCordinates = "0cm";
+        } else {
+          strShapeCordinates = arrFinalRet[1];
+        }
+      } else if (vals[0].indexOf("Height") >= 0) {
+        if (arrFinalRet[2].indexOf("NaN") >= 0) {
+          strShapeCordinates = "0cm";
+        } else {
+          strShapeCordinates = arrFinalRet[2];
+        }
+      } else if (vals[0].indexOf("SVGX") >= 0) {
+        if (arrFinalRet[3].indexOf("NaN") >= 0) {
+          strShapeCordinates = "0cm";
+        } else {
+          strShapeCordinates = arrFinalRet[3];
+        }
+      } else if (vals[0].indexOf("SVGY") >= 0) {
+        if (arrFinalRet[4].indexOf("NaN") >= 0) {
+          strShapeCordinates = "0cm";
+        } else {
+          strShapeCordinates = arrFinalRet[4];
+        }
+      }
+    }
+  }
+  return strShapeCordinates;
 }
 
 function linkFuncFromString(vals) {
@@ -839,7 +1741,7 @@ function linkFuncFromString(vals) {
     }
     break;
   case 'SonataAnnotation':
-    var content = vals[1].Split('|');
+    var content = vals[1].split('|');
     var style = content[content.length - 1];
     var textContent = content[0];
     if (textContent.indexOf("\n") >= 0) {
@@ -853,7 +1755,7 @@ function linkFuncFromString(vals) {
           }
         } else {
           output = '<text:span xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" text:style-name="' + style + '" >p[i]</text:span>';
-          if (i + 1 < p.Length) {
+          if (i + 1 < p.length) {
             output += '</text:p>';
             output += '<text:p xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">';
           }
@@ -874,7 +1776,6 @@ function linkFuncFromString(vals) {
     var top = parseInt(vals[4]);
     var bottom = parseInt(vals[5]);
     var imgaeValues = ImageCopyBinary(source);
-
     var arrValues = imgaeValues.split(':');
     var width = parseFloat(arrValues[0]);
     var height = parseFloat(arrValues[1]);
@@ -889,6 +1790,55 @@ function linkFuncFromString(vals) {
     break;
   case 'sonataOoxFormula':
     output = GetFormula(vals[1]);
+    break;
+  case 'transFileName':
+    output = EvaltransFileName(vals[1], vals[2]);
+    break;
+  case 'shadow-offset-x':
+  case 'shadow-offset-y':
+    output = EvalShadowExpression(vals);
+    break;
+  case 'shade-tint':
+    output = EvalShadeExpression(vals);
+    break;
+  case 'TableCord-X':
+  case 'TableCord-Y':
+    output = EvalTableCord(vals[1]);
+    break;
+  case 'WordshapesFormula':
+    output = EvalWordShapesFormula(vals);
+    break;
+  case 'Wordshapes-draw-modifier':
+    output = EvalWordModifier(vals[1]);
+    break;
+  case 'WordshapesEnhance-Path':
+    output = EvalWordEnhacePath(vals[1]);
+    break;
+  case 'draw-transform':
+    output = EvalRotationExpression(vals[1]);
+    break;
+  case 'svg-x1':
+  case 'svg-x2':
+  case 'svg-y1':
+  case 'svg-y2':
+    output = EvalExpression(vals);
+    break;
+  case 'Callout-AdjNotline':
+  case 'Callout-AdjLine1':
+  case 'Callout-AdjLine2':
+  case 'Callout-AdjLine3':
+    output = EvalCalloutAdjustment(vals);
+    break;
+  case 'Group-TransformX1':
+  case 'Group-TransformY1':
+  case 'Group-TransformX2':
+  case 'Group-TransformY2':
+  case 'Group-TransformSVGX':
+  case 'Group-TransformSVGY':
+  case 'Group-TransformWidth':
+  case 'Group-TransformHeight':
+  case 'Group-TransformDrawTranform':
+    output = EvalGroupingExpression(vals);
     break;
   default:
     break;
@@ -1399,12 +2349,14 @@ function xslTransform(xmlFile, fileType) {
   if (!xmlFile || !xslFile) {
     return null;
   }
+
   var parser = new DOMParser();
   var xmlDoc = parser.parseFromString(xmlFile, 'text/xml');
   xmlFile = '';
   if (fileType != 'pptx') {
     copyPartBeforeTransform(xmlDoc, fileType);
   }
+
   var xslStylesheet;
   var xsltProcessor = new XSLTProcessor();
   var ooxXMLHTTPRequest = new XMLHttpRequest();
@@ -1412,14 +2364,16 @@ function xslTransform(xmlFile, fileType) {
   ooxXMLHTTPRequest.send(null);
   xslStylesheet = ooxXMLHTTPRequest.responseXML;
   xsltProcessor.importStylesheet(xslStylesheet);
+
+
   var newDocument = xsltProcessor.transformToDocument(xmlDoc);
   if (!newDocument.childNodes || newDocument.childNodes.length == 0) {
     return null;
   }
   copyPartAfterTransform(newDocument);
+
   return newDocument;
 }
-
 var OOX_DOCUMENT_RELATIONSHIP_TYPE = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
 
 function analysisOox(fileType) {
@@ -1510,7 +2464,6 @@ function convertoox2odf(ooxFile, callback) {
     unzipFile(ooxFile, function(zip) {
       if (!zip) {
         callback(null);
-        console.log('return from unzip');
         return;
       }
       var docx = 'docx';
@@ -1546,7 +2499,154 @@ function convertoox2odf(ooxFile, callback) {
       return;
     });
   } catch (e) {
-    console.log('return from catch');
     callback(null);
   }
 }
+
+var OoxTransform = function OoxTransform(vals) {
+  if (vals.length == 2) {
+    this.init2(vals[0], vals[1]);
+  } else if (vals.length == 7) {
+    this.init(vals[0], vals[1], vals[2], vals[3], vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6]);
+  } else {
+    this.init(vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8], vals[9], vals[10]);
+  }
+};
+
+OoxTransform.prototype = {
+  init: function _init(xmlChx, xmlChy, xmlChcx, xmlChcy, xmlX, xmlY, xmlCx, xmlCy, xmlRot, xmlFlipH, xmlFlipV) {
+    var chx = xmlChx / 360000.0;
+    var chy = xmlChy / 360000.0;
+    var chcx = xmlChcx / 360000.0;
+    var chcy = xmlChcy / 360000.0;
+    var x = xmlX / 360000.0;
+    var y = xmlY / 360000.0;
+    var cx = xmlCx / 360000.0;
+    var cy = xmlCy / 360000.0;
+    var rot = xmlRot / 60000.0 * (Math.PI / 180.0);
+    var flipH = xmlFlipH;
+    var flipV = xmlFlipV;
+
+    this._x = chx;
+    this._y = chy;
+    this._cx = chcx;
+    this._cy = chcy;
+    this._scaleX = this.SafeScale(cx, chcx);
+    this._scaleY = this.SafeScale(cy, chcy);
+    this._rot = rot;
+    this._flipH = flipH;
+    this._flipV = flipV;
+    this.CreateMatrix(chx, chy, chcx, chcy, x, y, cx, cy, rot, this._flipH, this._flipV);
+  },
+
+  init2: function _init2(outer, inner) {
+    this._x = inner._x;
+    this._y = inner._y;
+    this._cx = inner._cx;
+    this._cy = inner._cy;
+    this._rot = this.Normalize(outer._rot + inner._rot);
+    this._flipH = outer._flipH * inner._flipH;
+    this._flipV = outer._flipV * inner._flipV;
+    this._scaleX = outer._scaleX * inner._scaleX;
+    this._scaleY = outer._scaleY * inner._scaleY;
+
+    var m = this.Multiplication(outer._transform, inner._transform);
+    var newCenterX = m[0] * (this._x + this._cx / 2.0) + m[1] * (this._y + this._cy / 2.0) + m[3];
+    var newCenterY = m[3] * (this._x + this._cx / 2.0) + m[4] * (this._y + this._cy / 2.0) + m[5];
+    var newCx = this._cx * this._scaleX;
+    var newCy = this._cy * this._scaleY;
+    var newX = newCenterX - newCx / 2.0;
+    var newY = newCenterY - newCy / 2.0;
+    this.CreateMatrix(this._x, this._y, this._cx, this._cy, newX, newY, newCx, newCy, this._rot, this._flipH, this._flipV);
+  },
+
+  SafeScale: function _SafeScale(num, denom) {
+    if (denom == 0.0) {
+      return 1;
+    } else {
+      return num / denom;
+    }
+  },
+
+  CreateMatrix: function(Bx, By, Dx, Dy, B1x, B1y, D1x, D1y, teta, Fx, Fy) {
+    var scaleTranslate = [
+    this.SafeScale(D1x, Dx), 0.0, B1x - this.SafeScale(D1x, Dx) * Bx, 0.0, this.SafeScale(D1y, Dy), B1y - this.SafeScale(D1y, Dy) * By, 0.0, 0.0, 1.0];
+    var U = [
+    1.0, 0.0, -(B1x + D1x / 2.0), 0.0, 1.0, -(B1y + D1y / 2.0), 0.0, 0.0, 1.0];
+    var U1 = [
+    1.0, 0.0, (B1x + D1x / 2.0), 0.0, 1.0, (B1y + D1y / 2.0), 0.0, 0.0, 1.0];
+    var Tmp1 = [
+    Math.cos(teta), -Math.sin(teta), 0.0, Math.sin(teta), Math.cos(teta), 0.0, 0.0, 0.0, 1.0];
+    var Tmp2 = [
+    Fx, 0.0, 0.0, 0.0, Fy, 0.0, 0.0, 0.0, 1.0];
+    this._transform = this.Multiplication(this.Multiplication(this.Multiplication(this.Multiplication(U1, Tmp1), Tmp2), U), scaleTranslate);
+  },
+
+  Normalize: function _Normalize(angle) {
+    if (angle >= 0) {
+      angle -= 2.0 * Math.PI * (angle / (2.0 * Math.PI));
+      if (angle >= Math.PI) {
+        angle -= 2.0 * Math.PI;
+      }
+    } else {
+      angle += 2.0 * Math.PI * ((-angle) / (2.0 * Math.PI));
+      if (angle < -Math.PI) {
+        angle += 2.0 * Math.PI;
+      }
+    }
+    return angle;
+  },
+
+  Multiplication: function _Multiplication(m1, m2) {
+    var matrix = [
+    m1[0] * m2[0] + m1[1] * m2[3] + m1[2] * m2[6], m1[0] * m2[1] + m1[1] * m2[4] + m1[2] * m2[7], m1[0] * m2[2] + m1[1] * m2[5] + m1[2] * m2[8], m1[3] * m2[0] + m1[4] * m2[3] + m1[5] * m2[6], m1[3] * m2[1] + m1[4] * m2[4] + m1[5] * m2[7], m1[3] * m2[2] + m1[4] * m2[5] + m1[5] * m2[8], m1[6] * m2[0] + m1[7] * m2[3] + m1[8] * m2[6], m1[6] * m2[1] + m1[7] * m2[4] + m1[8] * m2[7], m1[6] * m2[2] + m1[7] * m2[5] + m1[8] * m2[8]];
+    return matrix;
+  },
+
+  CreateLine: function _CreateLine(xmlX, xmlY, xmlCx, xmlCy, xmlRot, xmlFlipH, xmlFlipV) {
+    var vals = [xmlX, xmlY, xmlCx, xmlCy, xmlRot, xmlFlipH, xmlFlipV];
+    var tmp = new OoxTransform(vals);
+    var xy1 = tmp.Transform(tmp._x, tmp._y);
+    var xy2 = tmp.Transform(tmp._x + tmp._cx, tmp._y + tmp._cy);
+    var newX1 = xy1[0] * 360000.0;
+    var newY1 = xy1[1] * 360000.0;
+    var newX2 = xy2[0] * 360000.0;
+    var newY2 = xy2[1] * 360000.0;
+    var newFlipH = 1;
+    var newFlipV = 1;
+    if (newX1 > newX2) {
+      var tmpX = newX2;
+      newX2 = newX1;
+      newX1 = tmpX;
+      newFlipH = -1;
+    }
+    if (newY1 > newY2) {
+      var tmpY = newY2;
+      newY2 = newY1;
+      newY1 = tmpY;
+      newFlipV = -1;
+    }
+    var newVals = [newX1, newY1, newX2 - newX1, newY2 - newY1, newX1, newY1, newX2 - newX1, newY2 - newY1, 0, newFlipH, newFlipV];
+    return new OoxTransform(newVals);
+  },
+
+  Transform: function _Transform(x, y) {
+    var newXY = [this._transform[0] * x + this._transform[1] * y + this._transform[3], this._transform[3] * x + this._transform[4] * y + this._transform[5]];
+    return newXY;
+  },
+
+  GetOdf: function _GetOdf() {
+    var xy = this.Transform(this._x, this._y);
+    if (this._rot == 0.0) {
+      return "NOROT@" + this._cx * this._scaleX + "cm@" + this._cy * this._scaleY + "cm@" + xy[0] + "cm@" + xy[1] + "cm";
+    } else {
+      return "YESROT@" + this._cx * this._scaleX + "cm@" + this._cy * this._scaleY + "cm@rotate (" + -this._rot + ") translate (" + xy[0] + "cm " + xy[1] + "cm)";
+    }
+  },
+
+  GetLineOdf: function _GetLineOdf() {
+    var xy1 = this.Transform(this._x, this._y);
+    var xy2 = this.Transform(this._x + this._cx, this._y + this._cy);
+    return xy2[0] + "cm@" + xy2[1] + "cm@" + xy1[0] + "cm@" + xy1[1] + "cm";
+  },
+};

@@ -226,17 +226,17 @@
       <xsl:choose>
         <xsl:when test="@adj">
           <xsl:attribute name="draw:modifiers">
-            <xsl:value-of select="concat('Wordshapes-draw-modifier:',@adj)"/>
+            <xsl:value-of select="concat('ooc-Wordshapes-draw-modifier-oop-',@adj, '-ooe')"/>
           </xsl:attribute>
         </xsl:when>
         <xsl:when test="$pathModifier !=''">
           <xsl:attribute name="draw:modifiers">
-            <xsl:value-of select="concat('Wordshapes-draw-modifier:',$pathModifier)"/>
+            <xsl:value-of select="concat('ooc-Wordshapes-draw-modifier-oop-',$pathModifier, '-ooe')"/>
           </xsl:attribute>
         </xsl:when>
       </xsl:choose>
       <xsl:attribute name="draw:enhanced-path">
-        <xsl:value-of select="concat('WordshapesEnhance-Path:',@path)"/>
+        <xsl:value-of select="concat('ooc-WordshapesEnhance-Path-oop-',@path, '-ooe')"/>
       </xsl:attribute>
       <xsl:if test="contains($shapeStyle,'flip')">
         <xsl:variable name="var_flipH">
@@ -277,7 +277,7 @@
               <xsl:value-of select="concat('f',position()-1)"/>
             </xsl:attribute>
             <xsl:attribute name="draw:formula">
-              <xsl:value-of select="concat('WordshapesFormula:',@eqn,':',parent::node()/parent::node()/@coordsize)"/>
+              <xsl:value-of select="concat('ooc-WordshapesFormula-oop-',@eqn,'-oop-',parent::node()/parent::node()/@coordsize, '-ooe')"/>
             </xsl:attribute>
           </draw:equation>
         </xsl:for-each>
@@ -3903,7 +3903,7 @@
           </xsl:choose>
         </xsl:variable>
         <xsl:attribute name="draw:transform">
-          <xsl:value-of select="concat('draw-transform:',$xCord, ':',$yCord, ':',$xCenter, ':', $yCenter, ':', $var_flipH, ':', $var_flipV, ':', $angle)" />
+          <xsl:value-of select="concat('ooc-draw-transform-oop-',$xCord, ':',$yCord, ':',$xCenter, ':', $yCenter, ':', $var_flipH, ':', $var_flipV, ':', $angle, '-ooe')" />
         </xsl:attribute>
       </xsl:if>
     </xsl:if>
@@ -4686,34 +4686,34 @@
       </xsl:variable>
       <xsl:attribute name="svg:x1">
         <xsl:if test="($flip = 'x') or ($flip = 'x y')">
-          <xsl:value-of select="concat('svg-x2:',$xCenter, ':', $cxBy2, ':', $cyBy2, ':', $angle)" />
+          <xsl:value-of select="concat('ooc-svg-x2-oop-',$xCenter, '-oop-', $cxBy2, '-oop-', $cyBy2, '-oop-', $angle, '-ooe')" />
         </xsl:if>
         <xsl:if test="($flip != 'x') and ($flip != 'x y') ">
-          <xsl:value-of select="concat('svg-x1:',$xCenter, ':', $cxBy2, ':', $cyBy2, ':', $angle)" />
+          <xsl:value-of select="concat('ooc-svg-x1-oop-',$xCenter, '-oop-', $cxBy2, '-oop-', $cyBy2, '-oop-', $angle, '-ooe')" />
         </xsl:if>
       </xsl:attribute>
       <xsl:attribute name="svg:y1">
         <xsl:if test="($flip = 'y') or ($flip = 'x y')">
-          <xsl:value-of select="concat('svg-y2:',$yCenter, ':', $cxBy2, ':', $cyBy2, ':', $angle)" />
+          <xsl:value-of select="concat('ooc-svg-y2-oop-',$yCenter, '-oop-', $cxBy2, '-oop-', $cyBy2, '-oop-', $angle, '-ooe')" />
         </xsl:if>
         <xsl:if test="($flip != 'y') and ($flip != 'x y')">
-          <xsl:value-of select="concat('svg-y1:',$yCenter, ':', $cxBy2, ':', $cyBy2, ':', $angle)" />
+          <xsl:value-of select="concat('ooc-svg-y1-oop-',$yCenter, '-oop-', $cxBy2, '-oop-', $cyBy2, '-oop-', $angle, '-ooe')" />
         </xsl:if>
       </xsl:attribute>
       <xsl:attribute name="svg:x2">
         <xsl:if test="($flip = 'x') or ($flip = 'x y')">
-          <xsl:value-of select="concat('svg-x1:',$xCenter, ':', $cxBy2, ':', $cyBy2, ':', $angle)" />
+          <xsl:value-of select="concat('ooc-svg-x1-oop-',$xCenter, '-oop-', $cxBy2, '-oop-', $cyBy2, '-oop-', $angle, '-ooe')" />
         </xsl:if>
         <xsl:if test="($flip != 'x') and ($flip != 'x y') ">
-          <xsl:value-of select="concat('svg-x2:',$xCenter, ':', $cxBy2, ':', $cyBy2, ':', $angle)" />
+          <xsl:value-of select="concat('ooc-svg-x2-oop-',$xCenter, '-oop-', $cxBy2, '-oop-', $cyBy2, '-oop-', $angle, '-ooe')" />
         </xsl:if>
       </xsl:attribute>
       <xsl:attribute name="svg:y2">
         <xsl:if test="($flip = 'y') or ($flip = 'x y')">
-          <xsl:value-of select="concat('svg-y1:',$yCenter, ':', $cxBy2, ':', $cyBy2, ':', $angle)" />
+          <xsl:value-of select="concat('ooc-svg-y1-oop-',$yCenter, '-oop-', $cxBy2, '-oop-', $cyBy2, '-oop-', $angle, '-ooe')" />
         </xsl:if>
         <xsl:if test="($flip != 'y') and ($flip != 'x y')">
-          <xsl:value-of select="concat('svg-y2:',$yCenter, ':', $cxBy2, ':', $cyBy2, ':', $angle)" />
+          <xsl:value-of select="concat('ooc-svg-y2-oop-',$yCenter, '-oop-', $cxBy2, '-oop-', $cyBy2, '-oop-', $angle, '-ooe')" />
         </xsl:if>
       </xsl:attribute>
       <!--<xsl:attribute name="svg:x1">

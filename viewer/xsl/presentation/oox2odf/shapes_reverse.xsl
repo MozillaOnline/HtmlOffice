@@ -5219,10 +5219,10 @@ Copyright (c) 2007, Sonata Software Limited
       </xsl:for-each>
     </xsl:variable>
     <xsl:attribute name ="svg:x">
-      <xsl:value-of select="concat('TableCord-X:', $SVGX,'@',$colPosition,':',$x) "/>
+      <xsl:value-of select="concat('ooc-TableCord-X-oop-', $SVGX,'@',$colPosition,':',$x, '-ooe') "/>
     </xsl:attribute>
     <xsl:attribute name ="svg:y">
-      <xsl:value-of select="concat('TableCord-Y:', $SVGY,'@',$rowPosition,':',$y) "/>
+      <xsl:value-of select="concat('ooc-TableCord-Y-oop-', $SVGY,'@',$rowPosition,':',$y, '-ooe') "/>
     </xsl:attribute>
    
     <xsl:attribute name ="svg:width">
@@ -5337,16 +5337,16 @@ Copyright (c) 2007, Sonata Software Limited
         </xsl:if>
       </xsl:variable>
       <xsl:attribute name ="svg:x1">
-        <xsl:value-of select ="concat('svg-x1:',$xCenter, ':', $cxBy2, ':', $cyBy2, ':', $angle)"/>
+        <xsl:value-of select ="concat('ooc-svg-x1-oop-',$xCenter, '-oop-', $cxBy2, '-oop-', $cyBy2, '-oop-', $angle, '-ooe')"/>
       </xsl:attribute>
       <xsl:attribute name ="svg:y1">
-        <xsl:value-of select ="concat('svg-y1:',$yCenter, ':', $cxBy2, ':', $cyBy2, ':', $angle)"/>
+        <xsl:value-of select ="concat('ooc-svg-y1-oop-',$yCenter, '-oop-', $cxBy2, '-oop-', $cyBy2, '-oop-', $angle, '-ooe')"/>
       </xsl:attribute>
       <xsl:attribute name ="svg:x2">
-        <xsl:value-of select ="concat('svg-x2:',$xCenter, ':', $cxBy2, ':', $cyBy2, ':', $angle)"/>
+        <xsl:value-of select ="concat('ooc-svg-x2-oop-',$xCenter, '-oop-', $cxBy2, '-oop-', $cyBy2, '-oop-', $angle, '-ooe')"/>
       </xsl:attribute>
       <xsl:attribute name ="svg:y2">
-        <xsl:value-of select ="concat('svg-y2:',$yCenter, ':', $cxBy2, ':', $cyBy2, ':', $angle)"/>
+        <xsl:value-of select ="concat('ooc-svg-y2-oop-',$yCenter, '-oop-', $cxBy2, '-oop-', $cyBy2, '-oop-', $angle, '-ooe')"/>
       </xsl:attribute>
          </xsl:for-each>
       </xsl:otherwise>
@@ -6242,10 +6242,10 @@ Copyright (c) 2007, Sonata Software Limited
 			<xsl:value-of select="'visible'"/>
 		</xsl:attribute>
 				<xsl:attribute name ="draw:shadow-offset-x">
-					<xsl:value-of select ="concat('shadow-offset-y:',$distVal, ':', $dirVal)"/>
+					<xsl:value-of select ="concat('ooc-shadow-offset-y-oop-',$distVal, '-oop-', $dirVal, '-ooe')"/>
 				</xsl:attribute>
 				<xsl:attribute name ="draw:shadow-offset-y">
-					<xsl:value-of select ="concat('shadow-offset-x:',$distVal, ':', $dirVal)"/>
+					<xsl:value-of select ="concat('ooc-shadow-offset-x-oop-',$distVal, '-oop-', $dirVal, '-ooe')"/>
 				</xsl:attribute>
 			<!-- Theme Color -->
     <xsl:if test ="a:schemeClr/@val">
