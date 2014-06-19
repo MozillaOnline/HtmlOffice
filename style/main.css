@@ -178,6 +178,10 @@ html, body {
   height: 30px;
 }
 
+.pages {
+  margin-top: 14px;
+}
+
 #file-display, #container {
   width: calc(100%);
   height: calc(100%);

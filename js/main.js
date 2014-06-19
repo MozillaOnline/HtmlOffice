@@ -441,6 +441,7 @@ function init() {
 
   $id('quitViewer').onclick = function() {
     bDisplayDoc = false;
+    $id('pages').classList.add('hidden');
     $id('modal-loading').classList.add('hidden');
     $id('list-header').classList.remove('hidden');
     $id('list-container').classList.remove('hidden');

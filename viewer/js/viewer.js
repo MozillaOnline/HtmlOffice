@@ -13,7 +13,9 @@ function Viewer(viewerPlugin) {
         showZoomPanelTimer = null,
         bZoomPanelShowed = false,
         hideZoomPanelTimer = null,
-        fileLoaded = false;
+        fileLoaded = false,
+        pages = [],
+        currentPage;
 
     function setScale(val, resetAutoSettings, noScroll) {
         if (val === self.getZoomLevel()) {
@@ -67,6 +69,26 @@ function Viewer(viewerPlugin) {
         }
     }
 
+  this.showPage = function (n) {
+    if (n <= 0) {
+      n = 1;
+    } else if (n > pages.length) {
+      n = pages.length;
+    }
+
+    viewerPlugin.showPage(n);
+    currentPage = n;
+    parent.document.getElementById('pages').innerHTML = n + '/' + pages.length;
+  };
+
+  this.showNextPage = function () {
+    self.showPage(currentPage + 1);
+  };
+
+  this.showPreviousPage = function () {
+    self.showPage(currentPage - 1);
+  };
+
   this.initialize = function () {
     var location = String(document.location),
     pos = location.indexOf('#'),
@@ -93,6 +115,16 @@ function Viewer(viewerPlugin) {
             var url = {type: 4, files: content};
 
             viewerPlugin.onLoad = function () {
+              var isSlideshow = viewerPlugin.isSlideshow();
+              if (isSlideshow) {
+                parent.document.getElementById('pages').classList.remove('hidden');
+              } else {
+                parent.document.getElementById('pages').classList.add('hidden');
+              }
+
+              pages = viewerPlugin.getPages();
+              self.showPage(1);
+              parent.document.getElementById('pages').innerHTML = 1 + '/' + pages.length;
               parseScale(kDefaultScale);
               fileLoaded = true;
               kMinScale = (Math.min(canvasContainer.clientWidth, canvasContainer.clientHeight) * viewerPlugin.getZoomLevel()) / viewerPlugin.getElement().offsetWidth;
@@ -242,6 +274,18 @@ function Viewer(viewerPlugin) {
     window.addEventListener('resize', function (evt) {
       parseScale(kDefaultScale);
       console.log('resize');
+    });
+    var gd = new GestureDetector(viewerElement, {holdEvents:true, panThreshold:5, mousePanThreshold:5});
+    gd.startDetecting();
+    viewerElement.addEventListener('swipe', function(evt) {
+      switch (evt.detail.direction) {
+        case 'left':
+          self.showNextPage();
+          break;
+        case 'right':
+          self.showPreviousPage();
+          break;
+      }
     });
   }
 
