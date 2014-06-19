@@ -118,6 +118,10 @@ html, body {
   font-size: 12px;
 }
 
+#empty-list {
+  height: calc(100% - 90px);
+}
+
 .empty-title {
   font-size: 18px;
   padding-top: 40px;

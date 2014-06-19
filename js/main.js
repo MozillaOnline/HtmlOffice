@@ -23,6 +23,10 @@ function loadFiles(evt) {
   $id('refresh').dataset.disabled = 'false';
 
   currentTarget = evt.target;
+  loadingFiles();
+}
+
+function loadingFiles() {
   select(currentTarget);
   $id('list-container').innerHTML = '';
   $id('empty-list').classList.add('hidden');
@@ -337,6 +341,62 @@ function updateHistory() {
   };
 }
 
+function swipe(evt) {
+  switch (evt.detail.direction) {
+    case 'right':
+      switch (currentTarget.id) {
+        case 'docx':
+          if (!db) return;
+          currentTarget = $id('history');
+          $id('refresh').dataset.disabled = 'true';
+
+          select(currentTarget);
+          var container = $id('list-container').innerHTML = '';
+          $id('empty-list').classList.add('hidden');
+
+          loading();
+          updateHistory();
+          break;
+        case 'xlsx':
+          if (!storage) return;
+          $id('refresh').dataset.disabled = 'false';
+          currentTarget = $id('docx');
+          loadingFiles();
+          break;
+        case 'pptx':
+          if (!storage) return;
+          $id('refresh').dataset.disabled = 'false';
+          currentTarget = $id('xlsx');
+          loadingFiles();
+          break;
+      }
+      break;
+    case 'left':
+      switch (currentTarget.id) {
+        case 'history':
+          if (!storage) return;
+          $id('refresh').dataset.disabled = 'false';
+          currentTarget = $id('docx');
+          loadingFiles();
+          break;
+        case 'docx':
+          if (!storage) return;
+          $id('refresh').dataset.disabled = 'false';
+          currentTarget = $id('xlsx');
+          loadingFiles();
+          break;
+        case 'xlsx':
+          if (!storage) return;
+          $id('refresh').dataset.disabled = 'false';
+          currentTarget = $id('pptx');
+          loadingFiles();
+          break;
+      }
+      break;
+  }
+  console.log('swipe:' + evt.detail.direction);
+}
+
 function init() {
   storage = navigator.getDeviceStorage("sdcard");
   $id("history").onclick = showHistory;
@@ -416,17 +476,20 @@ function init() {
     console.log('open indexedDB successfully');
   };
 
-  $id('list-container').ontouchstart = function(evt) {
-    console.log('touch start');
-  };
-  $id('list-container').ontouchmove = function(evt) {
-    bTouchMoved = true;
-    console.log('touch move');
-  };
-  $id('list-container').ontouchend = function(evt) {
-    console.log('touch end');
-  };
+  var gd = new GestureDetector($id('list-container'), {holdEvents:true, panThreshold:5, mousePanThreshold:5});
+  var gd2 = new GestureDetector($id('empty-list'), {holdEvents:true, panThreshold:5, mousePanThreshold:5});
+  gd.startDetecting();
+  gd2.startDetecting();
 
+  $id('list-container').addEventListener('tap', function(evt) {
+    console.log('tap');
+  });
+  $id('list-container').addEventListener('swipe', swipe);
+  $id('empty-list').addEventListener('swipe', swipe);
+  $id('list-container').addEventListener('pan', function(evt) {
+    console.log('pan');
+    bTouchMoved = true;
+  });
   $id('docx').click();
 }
 
