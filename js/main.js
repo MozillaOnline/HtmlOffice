@@ -27,16 +27,6 @@ function loadFiles(evt) {
   $id('list-container').innerHTML = '';
   $id('empty-list').classList.add('hidden');
 
-  if (evt.target.dataset.type == 'pptx') {
-    $id('refresh').dataset.disabled = 'true';
-    $id('empty-list-header').innerHTML = 'Pptx files not support now.';
-    $id('empty-list-des').classList.add('hidden');
-    $id('empty-list-button').classList.add('hidden');
-    $id('list-container').classList.add('hidden');
-    $id('empty-list').classList.remove('hidden');
-    return;
-  }
-
   var type = currentTarget.dataset.type;
   var loaded = type + 'Loaded';
   if (filesContainer[loaded]) {
@@ -214,7 +204,7 @@ function loadFile(event) {
 }
 
 function refresh() {
-  if (!storage || !currentTarget || currentTarget.id == 'history' || currentTarget.id == 'pptx') {
+  if (!storage || !currentTarget || currentTarget.id == 'history') {
     return;
   }
 
