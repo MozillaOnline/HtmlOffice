@@ -3,8 +3,8 @@ function Viewer(viewerPlugin) {
 
     var self = this,
         kScrollbarPadding = 40,
-        kMinScale = 0.25,
-        kMaxScale = 4.0,
+        kMinScale = 0.4,
+        kMaxScale = 1.0,
         kDefaultScaleDelta = 1.1,
         kDefaultScale = 'page-width',
         url,
@@ -36,7 +36,6 @@ function Viewer(viewerPlugin) {
             maxHeight;
 
             scale = parseFloat(value);
-
         if (scale) {
             setScale(scale, true, noScroll);
             return;
@@ -68,7 +67,6 @@ function Viewer(viewerPlugin) {
         }
     }
 
-
   this.initialize = function () {
     var location = String(document.location),
     pos = location.indexOf('#'),
@@ -97,8 +95,10 @@ function Viewer(viewerPlugin) {
             viewerPlugin.onLoad = function () {
               parseScale(kDefaultScale);
               fileLoaded = true;
+              kMinScale = (Math.min(canvasContainer.clientWidth, canvasContainer.clientHeight) * viewerPlugin.getZoomLevel()) / viewerPlugin.getElement().offsetWidth;
               parent.document.getElementById('modal-loading').classList.add('hidden');
-
+              document.getElementById('scale').classList.remove('hidden');
+              bZoomPanelShowed = true;
               var db = parent.db;
               if (!db) return;
 
@@ -165,6 +165,10 @@ function Viewer(viewerPlugin) {
     var zoomLevel = viewerPlugin.getZoomLevel();
     var newScale = (zoomLevel * kDefaultScaleDelta).toFixed(2);
     newScale = Math.min(kMaxScale, newScale);
+    if (newScale != kMinScale && newScale != kMaxScale) {
+      document.getElementById('zoom-size-selector').selectedIndex = 2;
+      document.getElementById('zoom-size-customor').textContent = Math.round(newScale * 100) + '%';
+    }
     viewerPlugin.setZoomLevel(newScale);
   }
 
@@ -172,6 +176,10 @@ function Viewer(viewerPlugin) {
     var zoomLevel = viewerPlugin.getZoomLevel();
     var newScale = (zoomLevel / kDefaultScaleDelta).toFixed(2);
     newScale = Math.max(kMinScale, newScale);
+    if (newScale != kMinScale && newScale != kMaxScale) {
+      document.getElementById('zoom-size-selector').selectedIndex = 2;
+      document.getElementById('zoom-size-customor').textContent = Math.round(newScale * 100) + '%';
+    }
     viewerPlugin.setZoomLevel(newScale);
   }
 
@@ -214,6 +222,20 @@ function Viewer(viewerPlugin) {
       bZoomPanelShowed = true;
       hideZoomPanel();
     };
+    document.getElementById('zoom-size-selector').addEventListener('change', function (evt) {
+      var settingItem = evt.target;
+      switch (settingItem.value) {
+        case '0':
+            parseScale('page-width');
+            break;
+        case '1':
+            parseScale('page-actual');
+            break;
+        case '2':
+            parseScale(parseInt(settingItem.textContent) / 100);
+            break;
+      }
+    });
     document.getElementById('zoom-in').onclick = zoomIn;
     document.getElementById('zoom-out').onclick = zoomOut;
 

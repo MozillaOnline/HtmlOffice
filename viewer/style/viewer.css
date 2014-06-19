@@ -46,6 +46,7 @@ draw:frame {
   background-image: url("images/plus.png");
   background-color: rgba(255, 255, 255, 0.45);
   background-position: center center;
+  float: left;
   margin-left: 11px;
   margin-top: 4px;
   border: 1px solid rgba(255,255, 255, 0.6);
@@ -58,8 +59,20 @@ draw:frame {
   background-image: url("images/minus.png");
   background-color: rgba(255, 255, 255, 0.45);
   background-position: center center;
+  float: left;
   margin-top: 4px;
   border: 1px solid rgba(255,255, 255, 0.6);
+}
+
+.zoom-menu {
+  width: 40%;
+  height: 35px;
+  background-color: rgba(255, 255, 255, 0.45);
+  background-position: center center;
+  float: left;
+  margin-top: 4px;
+  border: 1px solid rgba(255,255, 255, 0.6);
+  font-size: medium;
 }
 
 .hidden {

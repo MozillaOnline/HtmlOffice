@@ -120,7 +120,7 @@ function ODFViewerPlugin() {
                     eventManager.subscribe("mousemove", hyperlinkTooltipView.showTooltip);
                     eventManager.subscribe("mouseout", hyperlinkTooltipView.hideTooltip);
 
-                    var op = new ops.OpAddMember();
+                    /*var op = new ops.OpAddMember();
                     op.init({
                         memberid: localMemberId,
                         setProperties: {
@@ -129,7 +129,7 @@ function ODFViewerPlugin() {
                         }
                     });
                     session.enqueue([op]);
-                    sessionController.insertLocalCursor();
+                    sessionController.insertLocalCursor();*/
                 }
 
                 self.onLoad();
@@ -170,6 +170,10 @@ function ODFViewerPlugin() {
 
     this.getZoomLevel = function () {
         return odfCanvas.getZoomLevel();
+    };
+
+    this.getElement = function () {
+        return odfCanvas.getElement();
     };
 
     this.setZoomLevel = function (value) {
