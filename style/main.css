@@ -178,7 +178,7 @@ html, body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding-top: 14px;
+  padding-top: 10px;
   height: 30px;
 }
 

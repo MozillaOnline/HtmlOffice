@@ -50,9 +50,9 @@ draw:frame {
 }
 
 .zoom-out {
-  background-position: right 50%;
+  background-position: center 50%;
   background-repeat: no-repeat;
-  background-size: 60%;
+  background-size: 46px 46px;
   background-origin: content-box;
   border-right: 1px solid rgba(255, 255, 255, 0.5);
   width: 100%;
@@ -73,9 +73,9 @@ draw:frame {
 }
 
 .zoom-in {
-  background-position: left 50%;
+  background-position: center 50%;
   background-repeat: no-repeat;
-  background-size: 60%;
+  background-size: 46px 46px;
   background-origin: content-box;
   border-left: 1px solid rgba(255, 255, 255, 0.5);
   width: 100%;
