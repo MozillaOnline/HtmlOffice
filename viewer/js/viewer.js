@@ -97,6 +97,7 @@ function Viewer(viewerPlugin) {
     location = decodeURIComponent(location)
     var storage = navigator.getDeviceStorage('sdcard');
     var pdf_file = storage.get(location);
+    
     pdf_file.onerror = function() {
       document.getElementById('loadingFailed').classList.remove('hidden');
       parent.document.getElementById('modal-loading').classList.add('hidden');
@@ -234,26 +235,18 @@ function Viewer(viewerPlugin) {
       self.initialize();
     }
 
-    var canvas = document.getElementById('canvas');
-    viewerElement.onclick = function(evt) {
-      if (evt.target.id == 'return') {
-        goBack();
-        return;
-      }
-      if (!fileLoaded) return;
-      if (bZoomPanelShowed) {
-        document.getElementById('scale').classList.add('hidden');
-        if (hideZoomPanelTimer) {
-          clearTimeout(hideZoomPanelTimer);
-          hideZoomPanelTimer = null;
-        }
-        bZoomPanelShowed = false;
-        return;
-      }
-      document.getElementById('scale').classList.remove('hidden');
-      bZoomPanelShowed = true;
-      hideZoomPanel();
+    document.getElementById('empty-list-return').onmousedown = document.getElementById('empty-list-return').ontouchstart =
+    document.getElementById('zoom-out').onmousedown = document.getElementById('zoom-out').ontouchstart =
+    document.getElementById('zoom-in').onmousedown = document.getElementById('zoom-in').ontouchstart = function() {
+      this.classList.add('touchover');
     };
+    document.getElementById('empty-list-return').onmouseup = document.getElementById('empty-list-return').ontouchend =
+    document.getElementById('zoom-out').onmouseup = document.getElementById('zoom-out').ontouchend =
+    document.getElementById('zoom-in').onmouseup = document.getElementById('zoom-in').ontouchend = function() {
+      this.classList.remove('touchover');
+    };
+    document.getElementById('empty-list-return').onclick = goBack;
+
     document.getElementById('zoom-size-selector').addEventListener('change', function (evt) {
       var settingItem = evt.target;
       switch (settingItem.value) {
@@ -270,7 +263,6 @@ function Viewer(viewerPlugin) {
     });
     document.getElementById('zoom-in').onclick = zoomIn;
     document.getElementById('zoom-out').onclick = zoomOut;
-
     window.addEventListener('resize', function (evt) {
       parseScale(kDefaultScale);
       console.log('resize');

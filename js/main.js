@@ -422,18 +422,16 @@ function init() {
   $id("deleteFile").onmouseup = $id("deleteFile").ontouchend =  function() {
     this.classList.remove('hover');
   };
-
-  $id("refresh").onmousedown = $id("refresh").ontouchstart = function() {
-    this.classList.add('refresh-touchover');
-  };
-  $id("refresh").onmouseup = $id("refresh").ontouchend = function() {
-    this.classList.remove('refresh-touchover');
-  };
-
+  document.getElementById('empty-list-open').onmousedown = document.getElementById('empty-list-open').ontouchstart =
+  document.getElementById('empty-list-refresh').onmousedown = document.getElementById('empty-list-refresh').ontouchstart =
+  $id("refresh").onmousedown = $id("refresh").ontouchstart =
   $id("goback").onmousedown = $id("goback").ontouchstart =
   $id("quitViewer").onmousedown = $id("quitViewer").ontouchstart = function() {
     this.classList.add('touchover');
   };
+  document.getElementById('empty-list-open').onmouseup = document.getElementById('empty-list-open').ontouchend =
+  document.getElementById('empty-list-refresh').onmouseup = document.getElementById('empty-list-refresh').ontouchend =
+  $id("refresh").onmouseup = $id("refresh").ontouchend =
   $id("goback").onmouseup = $id("goback").ontouchend =
   $id("quitViewer").onmouseup = $id("quitViewer").ontouchend = function() {
     this.classList.remove('touchover');

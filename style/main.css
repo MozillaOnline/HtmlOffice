@@ -9,17 +9,14 @@ html, body {
 }
 
 .main {
-  background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+  background-color: #FFFFFF;
   width: 100%;
   color: #FFFFFF;
 }
 
 .nav1 {
   height: 46px;
-}
-
-.header {
-  height: 46px;
+  background-color: #51c5d4;
 }
 
 .title {
@@ -30,26 +27,21 @@ html, body {
 }
 
 .refresh {
-  width: 35px;
-  height: 35px;
-  border-radius: 17.5px;
-  margin-top: 5px;
-  background: rgba(255, 255, 255, 0.45) no-repeat 2px 1px url("images/refresh.png");
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  float: right;
+  background-image: url("images/refresh.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  width: 50px;
+  height: 46px;
 }
 
 .refresh[data-disabled="true"] {
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
   background-image: url("images/refresh-disabled.png");
-  background-position: center;
-  margin-top: 5px;
-  background-color: rgba(0, 0, 0, .15);
 }
 
 .nav2 {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: #e8f0f2;
+  color: #1cdae6;
   border-top: 2px solid rgba(255, 255, 255, 0.5);
   border-bottom: 2px solid rgba(255, 255, 255, 0.5);
   font-size: 16px;
@@ -63,7 +55,7 @@ html, body {
 }
 
 .selected {
-  border-bottom: 4px solid #FFC0CB;
+  border-bottom: 4px solid #1cdae6;
 }
 
 #list-container {
@@ -72,7 +64,7 @@ html, body {
 }
 
 .item {
-  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 2px solid #e5e5e5;
 }
 
 .item: hover {
@@ -80,9 +72,12 @@ html, body {
 }
 
 .item > .list-title {
+  background-position: 50% 50%;
   background-repeat: no-repeat;
-  background-position: center;
+  background-size: 80%;
+  background-origin: content-box;
   min-height: 60px;
+  width: 40px;
 }
 
 .doctype[data-type='docx'] {
@@ -114,7 +109,7 @@ html, body {
 
 .item .detail {
   margin-left: 0;
-  color: rgba(255, 255, 255, 0.5);
+  color: #868a8b;
   font-size: 12px;
 }
 
@@ -126,12 +121,14 @@ html, body {
   font-size: 18px;
   padding-top: 40px;
   text-align: center;
+  color: #5f6366;
 }
 
 .empty-subtitle {
   font-size: 16px;
   margin-top: 20px;
   text-align: center;
+  color: #868a8b;
 }
 
 .circle {
@@ -151,15 +148,22 @@ html, body {
 }
 
 .refresh-btn {
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  background-color: #51c5d4;
+}
+
+.header {
+  height: 46px;
+  background-color: #51c5d4;
 }
 
 .back {
-  width: 35px;
-  height: 35px;
-  border-radius: 17.5px;
-  margin: 5.5px 0 0 11px;
-  background: url("images/back.png") no-repeat scroll center center rgba(255, 255, 255, 0.5);
+  width: 46px;
+  height: 46px;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-origin: content-box;
+  background-image: url("images/back.png");
 }
 
 #file-header {
@@ -192,27 +196,6 @@ html, body {
   background-color: #FFFFFF;
 }
 
-.zoom-in {
-  width: 26px;
-  height: 26px;
-  border-radius: 13px;
-  background-image: url("images/plus.png");
-  background-color: rgba(255, 255, 255, 0.5);
-  background-position: center center;
-  margin-left: 11px;
-  margin-top: 2px;
-}
-
-.zoom-out {
-  width: 26px;
-  height: 26px;
-  border-radius: 13px;
-  background-image: url("images/minus.png");
-  background-color: rgba(255, 255, 255, 0.5);
-  background-position: center center;
-  margin-top: 2px;
-}
-
 #loadingFailed {
   min-height: 360px;
   background-color: #FFFFFF;
@@ -220,14 +203,8 @@ html, body {
 }
 
 .open-btn {
-  color: #FFFFFF;
-  background-color: #8ED1FC;
-  border: 1px solid #77C6F7;
-}
-
-.return-btn {
-  color: #FFFFFF;
-  background-color: #8ED2FF;
+  color: #FFF;
+  background-color: #51c5d4;
 }
 
 .modal {
@@ -267,7 +244,7 @@ html, body {
 
 .info-title {
   height: 30px;
-  background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll 0px 0px transparent;
+  background-color: #51c5d4;
 }
 
 #delete-confirm {
@@ -276,25 +253,29 @@ html, body {
 .confirm-header {
   height: 4px;
   width: 100%;
-  background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll 0px 0px transparent;
+  background: #51c5d4;
 }
 
 #deleteFileName {
-  margin-top: 22px;
+  margin-top: 15px;
   padding-left: 20px;
   height: 40px;
   border-bottom: 1px solid rgba(42, 42, 42, 0.1);
+  color: #5f6366;
+  text-overflow: ellipsis;
 }
 
 #confirm {
   text-align: center;
   padding: 14px 0;
-  background: rgba(0, 0, 0, 0.15);
+  background: #51c5d4;
+  color: #5f6366;
 }
 
 #cancel {
   text-align: center;
   padding: 14px 0;
+  color: #5f6366;
 }
 
 #fileName {
@@ -340,18 +321,20 @@ html, body {
   width: 90%;
   margin: 0 calc(5%);
   padding-top: 10px;
-  color: #444444;
+  color: #5f6366;
 }
 
 .value {
   width: 90%;
   margin: 0 calc(5%);
+  color: #868a8b;
 }
 
 .nameInfo {
   width: 90%;
   padding: 10px calc(5%) 0;
   border-bottom: 1px solid rgba(42, 42, 42, 0.1);
+  color: #5f6366;
 }
 
 .bottom {
@@ -365,13 +348,7 @@ html, body {
 }
 
 .touchover {
-  background: url("images/back.png") no-repeat scroll center center rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-}
-
-.refresh-touchover {
-  background: rgba(255, 255, 255, 0.2) no-repeat 2px 1px url("images/refresh.png");
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  background-color: #43a4b0;
 }
 
 .loading {

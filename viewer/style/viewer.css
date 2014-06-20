@@ -1,29 +1,39 @@
+/**
+ * Copyright (C) 2013-2014 KO GmbH <copyright@kogmbh.com>
+ *
+ * @licstart
+ * This file is part of WebODF.
+ *
+ * WebODF is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License (GNU AGPL)
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * WebODF is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with WebODF.  If not, see <http://www.gnu.org/licenses/>.
+ * @licend
+ *
+ * @source: http://www.webodf.org/
+ * @source: https://github.com/kogmbh/WebODF/
+ */
+
 * {
     padding: 0;
     margin: 0;
 }
 
-body {
+html > body {
   font-family: sans-serif;
+  overflow: hidden;
 }
 
 draw:frame {
   background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll 0 0 rgba(0, 0, 0, 0);
-}
-
-.header {
-  background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll 0 0 rgba(0, 0, 0, 0);
-  height: 35px;
-}
-
-.back {
-  width: 26px;
-  height: 26px;
-  border-radius: 13px;
-  background-color: rgba(255, 255, 255, 0.5);
-  background-image: url("images/back.png");
-  background-position: center center;
-  margin: 5px 0 0 11px;
 }
 
 #file-header {
@@ -33,46 +43,44 @@ draw:frame {
 }
 
 #scale {
-  background: -moz-linear-gradient(315deg, #0062CF, #24CCCC) no-repeat scroll 0 0 rgba(255, 255, 255, 0.5);
+  background: #51c5d4;
   position: fixed;
   height: 46px;
   bottom: 0px;
 }
 
-.zoom-in {
-  width: 35px;
-  height: 35px;
-  border-radius: 17.5px;
-  background-image: url("images/plus.png");
-  background-color: rgba(255, 255, 255, 0.45);
-  background-position: center center;
-  float: left;
-  margin-left: 11px;
-  margin-top: 4px;
-  border: 1px solid rgba(255,255, 255, 0.6);
-}
-
 .zoom-out {
-  width: 35px;
-  height: 35px;
-  border-radius: 17.5px;
+  background-position: right 50%;
+  background-repeat: no-repeat;
+  background-size: 60%;
+  background-origin: content-box;
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
+  width: 100%;
+  height: 46px;
   background-image: url("images/minus.png");
-  background-color: rgba(255, 255, 255, 0.45);
-  background-position: center center;
   float: left;
-  margin-top: 4px;
-  border: 1px solid rgba(255,255, 255, 0.6);
 }
 
 .zoom-menu {
-  width: 40%;
-  height: 35px;
+  width: 100%;
+  height: 36px;
   background-color: rgba(255, 255, 255, 0.45);
   background-position: center center;
   float: left;
-  margin-top: 4px;
-  border: 1px solid rgba(255,255, 255, 0.6);
+  margin-top: 5px;
   font-size: medium;
+}
+
+.zoom-in {
+  background-position: left 50%;
+  background-repeat: no-repeat;
+  background-size: 60%;
+  background-origin: content-box;
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  width: 100%;
+  height: 46px;
+  background-image: url("images/plus.png");
+  float: left;
 }
 
 .hidden {
@@ -83,12 +91,14 @@ draw:frame {
   font-size: 18px;
   padding-top: 40px;
   text-align: center;
+  color: #5f6366;
 }
 
 .empty-subtitle {
   font-size: 16px;
   margin-top: 20px;
   text-align: center;
+  color: #868a8b;
 }
 
 .circle {
@@ -105,20 +115,22 @@ draw:frame {
   padding-top: 50px;
   font-size: 26px;
   text-align: center;
-  height: 64px;
+}
+
+.return-btn {
+  background-color: #51c5d4;
+  color: #FFF;
+}
+
+.touchover {
+  background-color: #43a4b0;
 }
 
 #loadingFailed {
   min-height: 360px;
   background-color: #FFFFFF;
   color: #919394;
-  height: calc(100% - 25px);
-}
-
-.return-btn {
-  color: #FFFFFF;
-  background-color: #5ABDFB;
-  border: 1px solid #5AABDB;
+  height: 100%;
 }
 
 .modal {
@@ -164,7 +176,7 @@ select {
     -webkit-box-shadow: 0px 1px 3px rgba(50, 50, 50, 0.75);
     -moz-box-shadow:    0px 1px 3px rgba(50, 50, 50, 0.75);
     box-shadow:         0px 1px 3px rgba(50, 50, 50, 0.75);
-    
+
     background-image: url(images/texture.png), linear-gradient(rgba(69, 69, 69, .95), rgba(82, 82, 82, .99));
     background-image: url(images/texture.png), -webkit-linear-gradient(rgba(69, 69, 69, .95), rgba(82, 82, 82, .99));
     background-image: url(images/texture.png), -moz-linear-gradient(rgba(69, 69, 69, .95), rgba(82, 82, 82, .99));
@@ -377,7 +389,9 @@ html[dir='rtl'] .dropdownToolbarButton {
 .splitToolbarButton > .toolbarButton:focus,
 .dropdownToolbarButton:hover,
 .toolbarButton.textButton:hover,
-.toolbarButton.textButton:focus { background-color: hsla(0,0%,0%,.2); box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
+.toolbarButton.textButton:focus {
+      background-color: hsla(0,0%,0%,.2);
+        box-shadow: 0 1px 0 hsla(0,0%,100%,.05) inset,
                     0 0 1px hsla(0,0%,100%,.15) inset,
                     0 0 1px hsla(0,0%,0%,.05);
                     z-index: 199;
@@ -682,18 +696,33 @@ html[dir='rtl'] .dropdownToolbarButton {
 
 #canvasContainer {
     overflow: auto;
-    -webkit-overflow-scrolling: touch;
 
-    padding-top: 0px;
+    padding-top: 6px;
     padding-bottom: 6px;
     position: absolute;
-    top: 0;
+    top: 32px;
     right: 0;
-    bottom: 0px;
+    bottom: 32px;
     left: 0;
 
     text-align: center;
+    
+    background-color: #FFF;
     background-image: url(images/texture.png);
+}
+
+#canvasContainer.slideshow {
+    padding: 0;
+    overflow: hidden;
+}
+
+#canvasContainer.slideshow > * {
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .presentationMode {
@@ -704,12 +733,18 @@ html[dir='rtl'] .dropdownToolbarButton {
 }
 
 #canvas {
-    overflow: hidden;
     box-shadow:         0px 0px 7px rgba(0, 0, 0, 0.75);
     -webkit-box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.75);
     -moz-box-shadow:    0px 0px 7px rgba(0, 0, 0, 0.75);
     -ms-box-shadow:    0px 0px 7px rgba(0, 0, 0, 0.75);
     -o-box-shadow:    0px 0px 7px rgba(0, 0, 0, 0.75);
+
+    /*
+     * Hide the canvas overflow because otherwise the CSS-scaled 'sizer' child
+     * of the canvas will still advertise the original size in Firefox, causing
+     * strange scrollbar behavior.
+     */
+    overflow: hidden;
 }
 
 #sliderContainer {
@@ -822,20 +857,46 @@ html[dir='rtl'] .dropdownToolbarButton {
     opacity: 0.5;
 }
 
-@media only screen and (max-width: 600px) and (max-height: 1000px) {
+@media only screen and (max-device-width: 800px) and (max-device-height: 800px) {
     #canvasContainer {
         top: 0;
         bottom: 0;
     }
+
+    #overlayNavigator {
+        height: 100px;
+        pointer-events: none;
+    }
+    #nextPage, #previousPage {
+        pointer-events: all;
+    }
+
     #titlebar, #toolbarContainer {
         background-color: rgba(0, 0, 0, 0.6);
         background-image: none;
+        -webkit-transition: all 0.5s;
+        -moz-transition: all 0.5s;
+        transition: all 0.5s;
     }
-    #overlayNavigator.touched {
+
+    #titlebar {
+        top: -32px;
+    }
+    #titlebar.viewer-touched {
+        top: 0px;
+    }
+    #toolbarContainer {
+        bottom: -32px;
+    }
+    #toolbarContainer.viewer-touched {
+        bottom: 0px;
+    }
+
+    .viewer-touched {
         display: block;
-        opacity: 1;
-        height: 100px;
+        opacity: 1 !important;
     }
+
     #next, #previous {
         display: none;
     }
