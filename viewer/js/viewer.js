@@ -262,7 +262,7 @@ function Viewer(viewerPlugin) {
             parseScale('page-width');
             break;
         case '1':
-            parseScale('page-actual');
+            viewerPlugin.setZoomLevel(kMaxScale);
             break;
         case '2':
             parseScale(parseInt(settingItem.textContent) / 100);
