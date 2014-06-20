@@ -198,7 +198,11 @@ function Viewer(viewerPlugin) {
     var zoomLevel = viewerPlugin.getZoomLevel();
     var newScale = (zoomLevel * kDefaultScaleDelta).toFixed(2);
     newScale = Math.min(kMaxScale, newScale);
-    if (newScale != kMinScale && newScale != kMaxScale) {
+    if (newScale == kMinScale) {
+      document.getElementById('zoom-size-selector').selectedIndex = 0;
+    } else if (newScale == kMaxScale) {
+      document.getElementById('zoom-size-selector').selectedIndex = 1;
+    } else {
       document.getElementById('zoom-size-selector').selectedIndex = 2;
       document.getElementById('zoom-size-customor').textContent = Math.round(newScale * 100) + '%';
     }
@@ -209,7 +213,11 @@ function Viewer(viewerPlugin) {
     var zoomLevel = viewerPlugin.getZoomLevel();
     var newScale = (zoomLevel / kDefaultScaleDelta).toFixed(2);
     newScale = Math.max(kMinScale, newScale);
-    if (newScale != kMinScale && newScale != kMaxScale) {
+    if (newScale == kMinScale) {
+      document.getElementById('zoom-size-selector').selectedIndex = 0;
+    } else if (newScale == kMaxScale) {
+      document.getElementById('zoom-size-selector').selectedIndex = 1;
+    } else {
       document.getElementById('zoom-size-selector').selectedIndex = 2;
       document.getElementById('zoom-size-customor').textContent = Math.round(newScale * 100) + '%';
     }
