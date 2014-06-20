@@ -127,6 +127,7 @@ function Viewer(viewerPlugin) {
               self.showPage(1);
               parent.document.getElementById('pages').innerHTML = 1 + '/' + pages.length;
               parseScale(kDefaultScale);
+              document.getElementById('zoom-size-selector').selectedIndex = 0;
               fileLoaded = true;
               kMinScale = (Math.min(canvasContainer.clientWidth, canvasContainer.clientHeight) * viewerPlugin.getZoomLevel()) / viewerPlugin.getElement().offsetWidth;
               parent.document.getElementById('modal-loading').classList.add('hidden');
@@ -259,7 +260,7 @@ function Viewer(viewerPlugin) {
       var settingItem = evt.target;
       switch (settingItem.value) {
         case '0':
-            parseScale('page-width');
+            viewerPlugin.setZoomLevel(kMinScale);
             break;
         case '1':
             viewerPlugin.setZoomLevel(kMaxScale);
@@ -273,6 +274,7 @@ function Viewer(viewerPlugin) {
     document.getElementById('zoom-out').onclick = zoomOut;
     window.addEventListener('resize', function (evt) {
       parseScale(kDefaultScale);
+      document.getElementById('zoom-size-selector').selectedIndex = 0;
       console.log('resize');
     });
     var gd = new GestureDetector(viewerElement, {holdEvents:true, panThreshold:5, mousePanThreshold:5});
