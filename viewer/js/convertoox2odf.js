@@ -1886,15 +1886,16 @@ function zipFile(xmlDoc) {
   var namespaceHeader = 'xmlns:';
   var attrFooter = '"';
   var zipObject = {};
-  for (var i = 0; i < xmlDoc.childNodes[0].children.length; i++) {
-    var xmlfilepath = xmlDoc.childNodes[0].children[i].attributes.getNamedItem('pzip:target');
+  for (var i = 0; i < xmlDoc.childNodes[0].childNodes.length; i++) {
+    var xmlfilepath = xmlDoc.childNodes[0].childNodes[i].attributes.getNamedItem('pzip:target');
     if (!xmlfilepath) {
       continue;
     }
     xmlfilepath = xmlfilepath.value;
-    var xmlfilecontent = xmlDoc.childNodes[0].children[i].attributes.getNamedItem('pzip:content');
+    var xmlfilecontent = xmlDoc.childNodes[0].childNodes[i].attributes.getNamedItem('pzip:content');
     if (!xmlfilecontent) {
-      xmlfilecontent = xmlDoc.childNodes[0].children[i].innerHTML;
+      var oSerializer = new XMLSerializer();
+      xmlfilecontent = oSerializer.serializeToString(xmlDoc.childNodes[0].childNodes[i].childNodes[0]);
       var startIndex = 0;
       var start = xmlfilecontent.indexOf(pzipElementHeader, startIndex);
       startIndex = start;
@@ -2259,14 +2260,16 @@ function copyPartAfterTransform(oXMLParent) {
   if (oXMLParent.hasChildNodes()) {
     for (var nItem = 0; nItem < oXMLParent.childNodes.length; nItem++) {
       if (oXMLParent.childNodes.item(nItem).nodeName == 'pxsi:v') {
-        var num = oXMLParent.childNodes.item(nItem).innerHTML;
+        var oSerializer = new XMLSerializer();
+        var num = oSerializer.serializeToString(oXMLParent.childNodes.item(nItem).childNodes[0]);
         oXMLParent.removeChild(oXMLParent.childNodes.item(nItem));
         oXMLParent.textContent = pxsi[num];
         //nItem--;
       } else {
         if (oXMLParent.childNodes.item(nItem).nodeName == 'pxsi:si') {
           var numberAttr = oXMLParent.childNodes.item(nItem).getAttribute('pxsi:number');
-          pxsi[numberAttr] = oXMLParent.childNodes.item(nItem).innerHTML;
+          var oSerializer = new XMLSerializer();
+          pxsi[numberAttr] = oSerializer.serializeToString(oXMLParent.childNodes.item(nItem).childNodes[0]);
         }
         if (oXMLParent.childNodes.item(nItem).nodeType === 1) {
           copyPartAfterTransform(oXMLParent.childNodes.item(nItem));
@@ -2403,8 +2406,8 @@ function analysisOox(fileType) {
     };
     xmlGroup.push(tempjson);
     var path = filename.substring(0, filename.indexOf(_rels));
-    for (var i = 0; i < relsDoc.childNodes[0].children.length; i++) {
-      var tempname = relsDoc.childNodes[0].children[i].attributes.getNamedItem('Target').value;
+    for (var i = 0; i < relsDoc.childNodes[0].childNodes.length; i++) {
+      var tempname = relsDoc.childNodes[0].childNodes[i].attributes.getNamedItem('Target').value;
       if (xml != tempname.substring(tempname.length - xml.length, tempname.length)) {
         continue;
       }
@@ -2417,8 +2420,8 @@ function analysisOox(fileType) {
       }
       tempjson = {
         name: tempname,
-        type: relsDoc.childNodes[0].children[i].attributes.getNamedItem('Type').value,
-        id: relsDoc.childNodes[0].children[i].attributes.getNamedItem('Id').value
+        type: relsDoc.childNodes[0].childNodes[i].attributes.getNamedItem('Type').value,
+        id: relsDoc.childNodes[0].childNodes[i].attributes.getNamedItem('Id').value
       };
       if (tempjson.type != OOX_DOCUMENT_RELATIONSHIP_TYPE) {
         xmlGroup.push(tempjson);
