@@ -3,10 +3,13 @@
   "description": "Document Reader is a simple reader which allows you to read Office documents on Firefox OS device.",
   "type": "privileged",
   "launch_path": "/index.html",
-  "version": "1.0",
+  "version": "2.0",
   "icons": {
     "60": "/icons/icon60.png",
-    "128": "/icons/icon128.png"
+    "90": "/icons/icon90.png",
+    "120": "/icons/icon120.png",
+    "128": "/icons/icon128.png",
+    "135": "/icons/icon135.png"
   },
   "developer": {
     "name": "Mozilla Online Ltd.",
