@@ -244,6 +244,21 @@ function Viewer(viewerPlugin) {
       self.initialize();
     }
 
+    viewerElement.onclick = function(evt) {
+      if (fileLoaded && bZoomPanelShowed) {
+        document.getElementById('scale').classList.add('hidden');
+        if (hideZoomPanelTimer) {
+          clearTimeout(hideZoomPanelTimer);
+          hideZoomPanelTimer = null;
+        }
+        bZoomPanelShowed = false;
+      } else {
+        document.getElementById('scale').classList.remove('hidden');
+        bZoomPanelShowed = true;
+        hideZoomPanel();
+      }
+      return;
+    }
     document.getElementById('empty-list-return').onmousedown = document.getElementById('empty-list-return').ontouchstart =
     document.getElementById('zoom-out').onmousedown = document.getElementById('zoom-out').ontouchstart =
     document.getElementById('zoom-in').onmousedown = document.getElementById('zoom-in').ontouchstart = function() {
