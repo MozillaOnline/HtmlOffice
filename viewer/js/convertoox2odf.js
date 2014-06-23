@@ -1887,12 +1887,16 @@ function zipFile(xmlDoc) {
   var attrFooter = '"';
   var zipObject = {};
   for (var i = 0; i < xmlDoc.childNodes[0].childNodes.length; i++) {
-    var xmlfilepath = xmlDoc.childNodes[0].childNodes[i].attributes.getNamedItem('pzip:target');
+    var attributes = xmlDoc.childNodes[0].childNodes[i].attributes;
+    if (!attributes) {
+      continue;
+    }
+    var xmlfilepath = attributes.getNamedItem('pzip:target');
     if (!xmlfilepath) {
       continue;
     }
     xmlfilepath = xmlfilepath.value;
-    var xmlfilecontent = xmlDoc.childNodes[0].childNodes[i].attributes.getNamedItem('pzip:content');
+    var xmlfilecontent = attributes.getNamedItem('pzip:content');
     if (!xmlfilecontent) {
       var oSerializer = new XMLSerializer();
       xmlfilecontent = oSerializer.serializeToString(xmlDoc.childNodes[0].childNodes[i].childNodes[0]);
@@ -2387,9 +2391,13 @@ function analysisOox(fileType) {
   var documentjson;
   var parser = new DOMParser();
   var xmlDoc = parser.parseFromString(zipfiles[Content_TypesXml].asText(), 'text/xml');
+  var attributes = xmlDoc.childNodes[0].attributes;
+  if (!attributes) {
+    return null;
+  }
   var tempjson = {
     name: Content_TypesXml,
-    type: xmlDoc.childNodes[0].attributes.getNamedItem('xmlns').value,
+    type: attributes.getNamedItem('xmlns').value,
     id: null
   };
   xmlGroup.push(tempjson);
@@ -2399,15 +2407,23 @@ function analysisOox(fileType) {
     }
     var relsparser = new DOMParser();
     var relsDoc = relsparser.parseFromString(zipfiles[filename].asText(), 'text/xml');
+    attributes = relsDoc.childNodes[0].attributes;
+    if (!attributes) {
+      continue;
+    }
     tempjson = {
       name: filename,
-      type: relsDoc.childNodes[0].attributes.getNamedItem('xmlns').value,
+      type: attributes.getNamedItem('xmlns').value,
       id: null
     };
     xmlGroup.push(tempjson);
     var path = filename.substring(0, filename.indexOf(_rels));
     for (var i = 0; i < relsDoc.childNodes[0].childNodes.length; i++) {
-      var tempname = relsDoc.childNodes[0].childNodes[i].attributes.getNamedItem('Target').value;
+      attributes = relsDoc.childNodes[0].childNodes[i].attributes;
+      if (!attributes) {
+        continue;
+      }
+      var tempname = attributes.getNamedItem('Target').value;
       if (xml != tempname.substring(tempname.length - xml.length, tempname.length)) {
         continue;
       }
@@ -2420,8 +2436,8 @@ function analysisOox(fileType) {
       }
       tempjson = {
         name: tempname,
-        type: relsDoc.childNodes[0].childNodes[i].attributes.getNamedItem('Type').value,
-        id: relsDoc.childNodes[0].childNodes[i].attributes.getNamedItem('Id').value
+        type: attributes.getNamedItem('Type').value,
+        id: attributes.getNamedItem('Id').value
       };
       if (tempjson.type != OOX_DOCUMENT_RELATIONSHIP_TYPE) {
         xmlGroup.push(tempjson);
