@@ -22,7 +22,7 @@ html, body {
 .title {
   text-align: center;
   font-size: 24px;
-  margin-top: 12px;
+  margin-top: 8px;
   font-style: italic;
 }
 
@@ -178,7 +178,7 @@ html, body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding-top: 10px;
+  padding-top: 6px;
   height: 30px;
 }
 
