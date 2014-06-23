@@ -21,5 +21,15 @@
       "access": "readwrite"
     }
   },
+  "locales": {
+    "en-US": {
+      "name": "Document Reader",
+      "description": "Document Reader is a simple reader which allows you to read Office documents on Firefox OS device."
+    },
+    "zh-CN": {
+      "name": "阅读器",
+      "description": "在Firefox OS设备上打开 Office 文档。"
+    }
+  },
   "default_locale": "en-US"
 }

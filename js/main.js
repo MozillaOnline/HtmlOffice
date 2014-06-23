@@ -135,7 +135,7 @@ function createListItem(index, type) {
       if (bTouchMoved) return;
       $id('file-ops-dlg').classList.remove('hidden');
       $id('fileName').innerHTML = extractFileName(filesContainer[type][self.dataset.index].name);
-      $id('deleteFileName').innerHTML = 'Delete ' + extractFileName(filesContainer[type][self.dataset.index].name) + '?';
+      $id('deleteFileName').innerHTML = navigator.mozL10n.get('delete') + ' ' + extractFileName(filesContainer[type][self.dataset.index].name) + ' ?';
       $id('delete-confirm').classList.add('hidden');
       $id('modal-file-ops').classList.remove('hidden');
       $id('file-ops-container').style.marginTop = ($id('modal-file-ops').clientHeight/2 - 60) + 'px';
@@ -232,11 +232,11 @@ function select(target) {
 
 function showEmptyList(type) {
   if (type == 'history') {
-    $id('empty-list-header').innerHTML = 'No recent files found.';
+    $id('empty-list-header').innerHTML = navigator.mozL10n.get('no_recent_files_found');
     $id('empty-list-des').classList.add('hidden');
     $id('empty-list-button').classList.add('hidden');
   } else {
-    $id('empty-list-header').innerHTML = 'No ' + type + ' files found.';
+    $id('empty-list-header').innerHTML = navigator.mozL10n.get('files_not_found');
     $id('empty-list-des').classList.remove('hidden');
     $id('empty-list-button').classList.remove('hidden');
   }
