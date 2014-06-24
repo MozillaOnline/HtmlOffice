@@ -94,9 +94,12 @@ function showFiles(type) {
 
 function createListItem(index, type) {
   var div = document.createElement('div');
-  div.classList.add('row-fluid', 'item');
+  div.classList.add('row-fluid');
+  div.classList.add('item');
   var iconDiv = document.createElement('div');
-  iconDiv.classList.add('span2', 'list-title', 'doctype');
+  iconDiv.classList.add('span2');
+  iconDiv.classList.add('list-title');
+  iconDiv.classList.add('doctype');
   if (type != 'history') {
     iconDiv.dataset.type = type;
   } else {
@@ -109,10 +112,12 @@ function createListItem(index, type) {
   var infoRowDiv = document.createElement('div');
   infoRowDiv.classList.add('row-fluid');
   var infoNameDiv = document.createElement('div');
-  infoNameDiv.classList.add('span12', 'name');
+  infoNameDiv.classList.add('name');
+  infoNameDiv.classList.add('span12');
   infoNameDiv.innerHTML = extractFileName(filesContainer[type][index].name);
   var infoDetailDiv = document.createElement('div');
-  infoDetailDiv.classList.add('span12', 'detail');
+  infoDetailDiv.classList.add('span12');
+  infoDetailDiv.classList.add('detail');
   infoDetailDiv.innerHTML = formatDate(filesContainer[type][index].lastModifiedDate) + '  ' + formatFileSize(filesContainer[type][index].size);
 
   infoRowDiv.appendChild(infoNameDiv);

@@ -2251,7 +2251,8 @@ function generateOdfxml(xmlGroup, fileType) {
     xmlfile = xmlfile + tempheader;
     parser = new DOMParser();
     xmlDoc = parser.parseFromString(zipfile.asText(), 'text/xml');
-    xmlfile = xmlfile + xmlDoc.childNodes[0].outerHTML;
+    var oSerializer = new XMLSerializer();
+    xmlfile = xmlfile + oSerializer.serializeToString(xmlDoc.childNodes[0]);
     xmlfile = xmlfile + contentfooter;
   }
   xmlfile = xmlfile + filefooter;
