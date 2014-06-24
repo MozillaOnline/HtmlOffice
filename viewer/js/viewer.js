@@ -6,7 +6,6 @@ function Viewer(viewerPlugin) {
         kMinScale = 0.4,
         kMaxScale = 1.0,
         kDefaultScaleDelta = 1.1,
-        kDefaultScale = 'page-width',
         url,
         viewerElement = document.getElementById('viewer'),
         canvasContainer = document.getElementById('canvasContainer'),
@@ -16,58 +15,6 @@ function Viewer(viewerPlugin) {
         fileLoaded = false,
         pages = [],
         currentPage;
-
-    function setScale(val, resetAutoSettings, noScroll) {
-        if (val === self.getZoomLevel()) {
-            return;
-        }
-
-        self.setZoomLevel(val);
-
-        var event = document.createEvent('UIEvents');
-        event.initUIEvent('scalechange', false, false, window, 0);
-        event.scale = val;
-        event.resetAutoSettings = resetAutoSettings;
-        window.dispatchEvent(event);
-    }
-
-
-    function parseScale(value, resetAutoSettings, noScroll) {
-        var scale,
-            maxWidth,
-            maxHeight;
-
-            scale = parseFloat(value);
-        if (scale) {
-            setScale(scale, true, noScroll);
-            return;
-        }
-
-        maxWidth = canvasContainer.clientWidth;// - kScrollbarPadding;
-        maxHeight = canvasContainer.clientHeight - kScrollbarPadding;
-
-        switch (value) {
-        case 'page-actual':
-            setScale(1, resetAutoSettings, noScroll);
-            break;
-        case 'page-width':
-            viewerPlugin.fitToWidth(maxWidth);
-            break;
-        case 'page-height':
-            viewerPlugin.fitToHeight(maxHeight);
-            break;
-        case 'page-fit':
-            viewerPlugin.fitToPage(maxWidth, maxHeight);
-            break;
-        case 'auto':
-            if (viewerPlugin.isSlideshow()) {
-                viewerPlugin.fitToPage(maxWidth + kScrollbarPadding, maxHeight + kScrollbarPadding);
-            } else {
-                viewerPlugin.fitSmart(maxWidth);
-            }
-            break;
-        }
-    }
 
   this.showPage = function (n) {
     if (n <= 0) {
@@ -122,14 +69,15 @@ function Viewer(viewerPlugin) {
               } else {
                 parent.document.getElementById('pages').classList.add('hidden');
               }
-
               pages = viewerPlugin.getPages();
               self.showPage(1);
               parent.document.getElementById('pages').innerHTML = 1 + '/' + pages.length;
-              parseScale(kDefaultScale);
               document.getElementById('zoom-size-selector').selectedIndex = 0;
               fileLoaded = true;
-              kMinScale = (Math.min(canvasContainer.clientWidth, canvasContainer.clientHeight) * viewerPlugin.getZoomLevel()) / viewerPlugin.getElement().offsetWidth;
+              var widthZoomLevel = canvasContainer.clientWidth  * viewerPlugin.getZoomLevel() / viewerPlugin.getElement().offsetWidth;
+              kMinScale = Math.min(widthZoomLevel, 1.0);
+              kMaxScale = Math.max(widthZoomLevel, 1.0);
+              setScale(kMinScale);
               parent.document.getElementById('modal-loading').classList.add('hidden');
               document.getElementById('scale').classList.remove('hidden');
               bZoomPanelShowed = true;
@@ -198,31 +146,33 @@ function Viewer(viewerPlugin) {
   function zoomIn() {
     var zoomLevel = viewerPlugin.getZoomLevel();
     var newScale = (zoomLevel * kDefaultScaleDelta).toFixed(2);
-    newScale = Math.min(kMaxScale, newScale);
-    if (newScale == kMinScale) {
-      document.getElementById('zoom-size-selector').selectedIndex = 0;
-    } else if (newScale == kMaxScale) {
-      document.getElementById('zoom-size-selector').selectedIndex = 1;
-    } else {
+    if (newScale > kMinScale && newScale < kMaxScale) {
       document.getElementById('zoom-size-selector').selectedIndex = 2;
       document.getElementById('zoom-size-customor').textContent = Math.round(newScale * 100) + '%';
+    } else if (newScale <= kMinScale) {
+      newScale = kMinScale;
+      document.getElementById('zoom-size-selector').selectedIndex = 0;
+    } else {
+      newScale = kMaxScale;
+      document.getElementById('zoom-size-selector').selectedIndex = 1;
     }
-    viewerPlugin.setZoomLevel(newScale);
+    setScale(newScale);
   }
 
   function zoomOut() {
     var zoomLevel = viewerPlugin.getZoomLevel();
     var newScale = (zoomLevel / kDefaultScaleDelta).toFixed(2);
-    newScale = Math.max(kMinScale, newScale);
-    if (newScale == kMinScale) {
-      document.getElementById('zoom-size-selector').selectedIndex = 0;
-    } else if (newScale == kMaxScale) {
-      document.getElementById('zoom-size-selector').selectedIndex = 1;
-    } else {
+    if (newScale > kMinScale && newScale < kMaxScale) {
       document.getElementById('zoom-size-selector').selectedIndex = 2;
       document.getElementById('zoom-size-customor').textContent = Math.round(newScale * 100) + '%';
+    } else if (newScale <= kMinScale) {
+      newScale = kMinScale;
+      document.getElementById('zoom-size-selector').selectedIndex = 0;
+    } else {
+      newScale = kMaxScale;
+      document.getElementById('zoom-size-selector').selectedIndex = 1;
     }
-    viewerPlugin.setZoomLevel(newScale);
+    setScale(newScale);
   }
 
   function hideZoomPanel() {
@@ -237,6 +187,13 @@ function Viewer(viewerPlugin) {
     parent.document.getElementById('list-container').classList.remove('hidden');
     parent.document.getElementById('container').classList.add('hidden');
     parent.document.getElementById('file-display').innerHTML = '';
+  }
+
+  function setScale(value) {
+    if (value === viewerPlugin.getZoomLevel()) {
+      return;
+    }
+    viewerPlugin.setZoomLevel(value);
   }
 
   function init() {
@@ -275,21 +232,22 @@ function Viewer(viewerPlugin) {
       var settingItem = evt.target;
       switch (settingItem.value) {
         case '0':
-            viewerPlugin.setZoomLevel(kMinScale);
+            setScale(kMinScale);
             break;
         case '1':
-            viewerPlugin.setZoomLevel(kMaxScale);
+            setScale(kMaxScale);
             break;
         case '2':
-            parseScale(parseInt(settingItem.textContent) / 100);
+            setScale(parseInt(settingItem.textContent) / 100);
             break;
       }
+
     });
     document.getElementById('zoom-in').onclick = zoomIn;
     document.getElementById('zoom-out').onclick = zoomOut;
     window.addEventListener('resize', function (evt) {
-      parseScale(kDefaultScale);
-      document.getElementById('zoom-size-selector').selectedIndex = 0;
+      //setScale(kMinScale);
+      //document.getElementById('zoom-size-selector').selectedIndex = 0;
       console.log('resize');
     });
     var gd = new GestureDetector(viewerElement, {holdEvents:true, panThreshold:5, mousePanThreshold:5});
