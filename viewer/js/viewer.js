@@ -6,15 +6,17 @@ function Viewer(viewerPlugin) {
         kMinScale = 0.4,
         kMaxScale = 1.0,
         kDefaultScaleDelta = 1.1,
+        isSlideshow = false,
         url,
         viewerElement = document.getElementById('viewer'),
         canvasContainer = document.getElementById('canvasContainer'),
+        overlayNavigator = document.getElementById('overlayNavigator'),
         showZoomPanelTimer = null,
         bZoomPanelShowed = false,
-        hideZoomPanelTimer = null,
         fileLoaded = false,
         pages = [],
-        currentPage;
+        currentPage,
+        touchTimer;
 
   this.showPage = function (n) {
     if (n <= 0) {
@@ -63,7 +65,7 @@ function Viewer(viewerPlugin) {
             var url = {type: 4, files: content};
 
             viewerPlugin.onLoad = function () {
-              var isSlideshow = viewerPlugin.isSlideshow();
+              isSlideshow = viewerPlugin.isSlideshow();
               if (isSlideshow) {
                 parent.document.getElementById('pages').classList.remove('hidden');
               } else {
@@ -175,13 +177,6 @@ function Viewer(viewerPlugin) {
     setScale(newScale);
   }
 
-  function hideZoomPanel() {
-    hideZoomPanelTimer = setTimeout(function() {
-      document.getElementById('scale').classList.add('hidden');
-      hideZoomPanelTimer = null;
-    }, 20000);
-  }
-
   function goBack() {
     parent.document.getElementById('list-header').classList.remove('hidden');
     parent.document.getElementById('list-container').classList.remove('hidden');
@@ -196,25 +191,38 @@ function Viewer(viewerPlugin) {
     viewerPlugin.setZoomLevel(value);
   }
 
+  function showOverlayNavigator() {
+    if (isSlideshow) {
+      overlayNavigator.className = 'touched';
+      window.clearTimeout(touchTimer);
+        touchTimer = window.setTimeout(function () {
+        overlayNavigator.className = '';
+      }, 2000);
+    }
+  }
+
   function init() {
     if (viewerPlugin) {
       self.initialize();
     }
 
     viewerElement.onclick = function(evt) {
+      showOverlayNavigator();
+      if (evt.target.id == 'previousPage') {
+        self.showPreviousPage();
+        return;
+      }
+      if (evt.target.id == 'nextPage') {
+        self.showNextPage();
+        return;
+      }
       if (fileLoaded && bZoomPanelShowed) {
         document.getElementById('scale').classList.add('hidden');
-        if (hideZoomPanelTimer) {
-          clearTimeout(hideZoomPanelTimer);
-          hideZoomPanelTimer = null;
-        }
         bZoomPanelShowed = false;
       } else {
         document.getElementById('scale').classList.remove('hidden');
         bZoomPanelShowed = true;
-        hideZoomPanel();
       }
-      return;
     }
     document.getElementById('empty-list-return').onmousedown = document.getElementById('empty-list-return').ontouchstart =
     document.getElementById('zoom-out').onmousedown = document.getElementById('zoom-out').ontouchstart =
@@ -226,6 +234,7 @@ function Viewer(viewerPlugin) {
     document.getElementById('zoom-in').onmouseup = document.getElementById('zoom-in').ontouchend = function() {
       this.classList.remove('touchover');
     };
+
     document.getElementById('empty-list-return').onclick = goBack;
 
     document.getElementById('zoom-size-selector').addEventListener('change', function (evt) {
@@ -246,21 +255,7 @@ function Viewer(viewerPlugin) {
     document.getElementById('zoom-in').onclick = zoomIn;
     document.getElementById('zoom-out').onclick = zoomOut;
     window.addEventListener('resize', function (evt) {
-      //setScale(kMinScale);
-      //document.getElementById('zoom-size-selector').selectedIndex = 0;
       console.log('resize');
-    });
-    var gd = new GestureDetector(viewerElement, {holdEvents:true, panThreshold:5, mousePanThreshold:5});
-    gd.startDetecting();
-    viewerElement.addEventListener('swipe', function(evt) {
-      switch (evt.detail.direction) {
-        case 'left':
-          self.showNextPage();
-          break;
-        case 'right':
-          self.showPreviousPage();
-          break;
-      }
     });
   }
 

@@ -774,7 +774,7 @@ html[dir='rtl'] .dropdownToolbarButton {
     height: 0;
     top: calc(50% - 50px);
     background-color: rgba(0, 0, 0, 0);
-    z-index: 3;
+    z-index: 1001;
     opacity: 0;
     -webkit-transition: opacity 1s ease-out;
     -moz-transition: opacity 1s ease-out;
@@ -880,10 +880,12 @@ html[dir='rtl'] .dropdownToolbarButton {
         bottom: 0;
     }
 
-    #overlayNavigator {
+    #overlayNavigator.touched {
+        display: block;
+        opacity: 1;
         height: 100px;
-        pointer-events: none;
     }
+
     #nextPage, #previousPage {
         pointer-events: all;
     }
