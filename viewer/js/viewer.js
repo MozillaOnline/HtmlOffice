@@ -66,6 +66,7 @@ function Viewer(viewerPlugin) {
             viewerPlugin.onLoad = function () {
               isSlideshow = viewerPlugin.isSlideshow();
               if (isSlideshow) {
+                overlayNavigator.style.display = 'block';
                 parent.document.getElementById('pages').classList.remove('hidden');
               } else {
                 parent.document.getElementById('pages').classList.add('hidden');
@@ -81,7 +82,6 @@ function Viewer(viewerPlugin) {
               setScale(kMinScale);
               parent.document.getElementById('modal-loading').classList.add('hidden');
               document.getElementById('scale').classList.remove('hidden');
-              overlayNavigator.classList.add('touched');
               bZoomPanelShowed = true;
               var db = parent.db;
               if (!db) return;
