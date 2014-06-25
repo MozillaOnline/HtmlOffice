@@ -42,6 +42,23 @@ draw:frame {
   color: #FFFFFF;
 }
 
+.dimmer {
+  position: fixed;
+  border-radius: 0;
+  background-color: transparent;
+  height: calc(100% - 46px);
+  display: block;
+  width: 100%;
+  opacity: 1;
+  top: 0px;
+  left: 0px;
+  text-align: center;
+  vertical-align: middle;
+  -moz-user-select: none;
+  -moz-box-sizing: boder-box;
+  z-index: 1000;
+}
+
 #scale {
   background: #51c5d4;
   position: fixed;
