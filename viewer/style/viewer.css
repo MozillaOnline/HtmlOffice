@@ -789,7 +789,7 @@ html[dir='rtl'] .dropdownToolbarButton {
     border-bottom: 50px solid transparent; 
     border-right: 50px solid black;
 
-    opacity: 0.5;
+    opacity: 0.3;
 }
 #nextPage {
     float: right;
@@ -800,7 +800,7 @@ html[dir='rtl'] .dropdownToolbarButton {
     border-bottom: 50px solid transparent; 
     border-left: 50px solid black;
 
-    opacity: 0.5;
+    opacity: 0.3;
 }
 #previousPage:active {
     opacity: 0.8;

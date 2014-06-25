@@ -15,8 +15,7 @@ function Viewer(viewerPlugin) {
         bZoomPanelShowed = false,
         fileLoaded = false,
         pages = [],
-        currentPage,
-        touchTimer;
+        currentPage;
 
   this.showPage = function (n) {
     if (n <= 0) {
@@ -46,7 +45,7 @@ function Viewer(viewerPlugin) {
     location = decodeURIComponent(location)
     var storage = navigator.getDeviceStorage('sdcard');
     var pdf_file = storage.get(location);
-    
+
     pdf_file.onerror = function() {
       document.getElementById('loadingFailed').classList.remove('hidden');
       parent.document.getElementById('modal-loading').classList.add('hidden');
@@ -82,6 +81,7 @@ function Viewer(viewerPlugin) {
               setScale(kMinScale);
               parent.document.getElementById('modal-loading').classList.add('hidden');
               document.getElementById('scale').classList.remove('hidden');
+              overlayNavigator.classList.add('touched');
               bZoomPanelShowed = true;
               var db = parent.db;
               if (!db) return;
@@ -191,23 +191,12 @@ function Viewer(viewerPlugin) {
     viewerPlugin.setZoomLevel(value);
   }
 
-  function showOverlayNavigator() {
-    if (isSlideshow) {
-      overlayNavigator.className = 'touched';
-      window.clearTimeout(touchTimer);
-        touchTimer = window.setTimeout(function () {
-        overlayNavigator.className = '';
-      }, 2000);
-    }
-  }
-
   function init() {
     if (viewerPlugin) {
       self.initialize();
     }
 
     viewerElement.onclick = function(evt) {
-      showOverlayNavigator();
       if (evt.target.id == 'previousPage') {
         self.showPreviousPage();
         return;
@@ -218,9 +207,15 @@ function Viewer(viewerPlugin) {
       }
       if (fileLoaded && bZoomPanelShowed) {
         document.getElementById('scale').classList.add('hidden');
+        if (isSlideshow) {
+          overlayNavigator.style.display = 'none';
+        }
         bZoomPanelShowed = false;
       } else {
         document.getElementById('scale').classList.remove('hidden');
+        if (isSlideshow) {
+          overlayNavigator.style.display = 'block';
+        }
         bZoomPanelShowed = true;
       }
     }
