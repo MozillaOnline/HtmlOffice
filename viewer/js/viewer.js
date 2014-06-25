@@ -76,7 +76,7 @@ function Viewer(viewerPlugin) {
               parent.document.getElementById('pages').innerHTML = 1 + '/' + pages.length;
               document.getElementById('zoom-size-selector').selectedIndex = 0;
               fileLoaded = true;
-              var widthZoomLevel = canvasContainer.clientWidth  * viewerPlugin.getZoomLevel() / viewerPlugin.getElement().offsetWidth;
+              var widthZoomLevel = Math.min(canvasContainer.clientWidth, canvasContainer.clientHeight) * viewerPlugin.getZoomLevel() / viewerPlugin.getElement().offsetWidth;
               kMinScale = Math.min(widthZoomLevel, 1.0);
               kMaxScale = Math.max(widthZoomLevel, 1.0);
               setScale(kMinScale);
