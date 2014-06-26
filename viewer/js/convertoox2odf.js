@@ -1545,7 +1545,7 @@ function EvalGroupingExpression(vals) {
     }
     _shapes = [];
     if (arrgroupShape[1].IndexOf("Line") >= 0) {
-      shapeCord = OoxTransform.CreateLine(dblShapeX, dblShapeY, dblShapeCX, dblShapeCY, dblShapeRot, dblShapeFlipH, dblShapeFlipV);
+      shapeCord = CreateLine(dblShapeX, dblShapeY, dblShapeCX, dblShapeCY, dblShapeRot, dblShapeFlipH, dblShapeFlipV);
     } else {
       shapeCord = new OoxTransform([dblShapeX, dblShapeY, dblShapeCX, dblShapeCY, dblShapeRot, 1, 1]);
     }
@@ -1578,7 +1578,7 @@ function EvalGroupingExpression(vals) {
     _shapes = [];
 
     if (arrgroupShape[1].indexOf("Line") >= 0) {
-      shapeCord = OoxTransform.CreateLine(dblShapeX, dblShapeY, dblShapeCX, dblShapeCY, dblShapeRot, dblShapeFlipH, dblShapeFlipV);
+      shapeCord = CreateLine(dblShapeX, dblShapeY, dblShapeCX, dblShapeCY, dblShapeRot, dblShapeFlipH, dblShapeFlipV);
     } else {
       shapeCord = new OoxTransform([dblShapeX, dblShapeY, dblShapeCX, dblShapeCY, dblShapeRot, 1, 1]);
     }
@@ -2265,16 +2265,14 @@ function copyPartAfterTransform(oXMLParent) {
   if (oXMLParent.hasChildNodes()) {
     for (var nItem = 0; nItem < oXMLParent.childNodes.length; nItem++) {
       if (oXMLParent.childNodes.item(nItem).nodeName == 'pxsi:v') {
-        var oSerializer = new XMLSerializer();
-        var num = oSerializer.serializeToString(oXMLParent.childNodes.item(nItem).childNodes[0]);
+        var num = oXMLParent.childNodes.item(nItem).textContent;
         oXMLParent.removeChild(oXMLParent.childNodes.item(nItem));
         oXMLParent.textContent = pxsi[num];
         //nItem--;
       } else {
         if (oXMLParent.childNodes.item(nItem).nodeName == 'pxsi:si') {
           var numberAttr = oXMLParent.childNodes.item(nItem).getAttribute('pxsi:number');
-          var oSerializer = new XMLSerializer();
-          pxsi[numberAttr] = oSerializer.serializeToString(oXMLParent.childNodes.item(nItem).childNodes[0]);
+          pxsi[numberAttr] = oXMLParent.childNodes.item(nItem).textContent;
         }
         if (oXMLParent.childNodes.item(nItem).nodeType === 1) {
           copyPartAfterTransform(oXMLParent.childNodes.item(nItem));
@@ -2357,14 +2355,12 @@ function xslTransform(xmlFile, fileType) {
   if (!xmlFile || !xslFile) {
     return null;
   }
-
   var parser = new DOMParser();
   var xmlDoc = parser.parseFromString(xmlFile, 'text/xml');
   xmlFile = '';
   if (fileType != 'pptx') {
     copyPartBeforeTransform(xmlDoc, fileType);
   }
-
   var xslStylesheet;
   var xsltProcessor = new XSLTProcessor();
   var ooxXMLHTTPRequest = new XMLHttpRequest();
@@ -2373,13 +2369,11 @@ function xslTransform(xmlFile, fileType) {
   xslStylesheet = ooxXMLHTTPRequest.responseXML;
   xsltProcessor.importStylesheet(xslStylesheet);
 
-
   var newDocument = xsltProcessor.transformToDocument(xmlDoc);
   if (!newDocument.childNodes || newDocument.childNodes.length == 0) {
     return null;
   }
   copyPartAfterTransform(newDocument);
-
   return newDocument;
 }
 var OOX_DOCUMENT_RELATIONSHIP_TYPE = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
@@ -2523,6 +2517,33 @@ function convertoox2odf(ooxFile, callback) {
   }
 }
 
+function CreateLine(xmlX, xmlY, xmlCx, xmlCy, xmlRot, xmlFlipH, xmlFlipV) {
+  var vals = [xmlX, xmlY, xmlCx, xmlCy, xmlRot, xmlFlipH, xmlFlipV];
+  var tmp = new OoxTransform(vals);
+  var xy1 = tmp.Transform(tmp._x, tmp._y);
+  var xy2 = tmp.Transform(tmp._x + tmp._cx, tmp._y + tmp._cy);
+  var newX1 = xy1[0] * 360000.0;
+  var newY1 = xy1[1] * 360000.0;
+  var newX2 = xy2[0] * 360000.0;
+  var newY2 = xy2[1] * 360000.0;
+  var newFlipH = 1;
+  var newFlipV = 1;
+  if (newX1 > newX2) {
+    var tmpX = newX2;
+    newX2 = newX1;
+    newX1 = tmpX;
+    newFlipH = -1;
+  }
+  if (newY1 > newY2) {
+    var tmpY = newY2;
+    newY2 = newY1;
+    newY1 = tmpY;
+    newFlipV = -1;
+  }
+  var newVals = [newX1, newY1, newX2 - newX1, newY2 - newY1, newX1, newY1, newX2 - newX1, newY2 - newY1, 0, newFlipH, newFlipV];
+  return new OoxTransform(newVals);
+}
+
 var OoxTransform = function OoxTransform(vals) {
   if (vals.length == 2) {
     this.init2(vals[0], vals[1]);
@@ -2621,33 +2642,6 @@ OoxTransform.prototype = {
     var matrix = [
     m1[0] * m2[0] + m1[1] * m2[3] + m1[2] * m2[6], m1[0] * m2[1] + m1[1] * m2[4] + m1[2] * m2[7], m1[0] * m2[2] + m1[1] * m2[5] + m1[2] * m2[8], m1[3] * m2[0] + m1[4] * m2[3] + m1[5] * m2[6], m1[3] * m2[1] + m1[4] * m2[4] + m1[5] * m2[7], m1[3] * m2[2] + m1[4] * m2[5] + m1[5] * m2[8], m1[6] * m2[0] + m1[7] * m2[3] + m1[8] * m2[6], m1[6] * m2[1] + m1[7] * m2[4] + m1[8] * m2[7], m1[6] * m2[2] + m1[7] * m2[5] + m1[8] * m2[8]];
     return matrix;
-  },
-
-  CreateLine: function _CreateLine(xmlX, xmlY, xmlCx, xmlCy, xmlRot, xmlFlipH, xmlFlipV) {
-    var vals = [xmlX, xmlY, xmlCx, xmlCy, xmlRot, xmlFlipH, xmlFlipV];
-    var tmp = new OoxTransform(vals);
-    var xy1 = tmp.Transform(tmp._x, tmp._y);
-    var xy2 = tmp.Transform(tmp._x + tmp._cx, tmp._y + tmp._cy);
-    var newX1 = xy1[0] * 360000.0;
-    var newY1 = xy1[1] * 360000.0;
-    var newX2 = xy2[0] * 360000.0;
-    var newY2 = xy2[1] * 360000.0;
-    var newFlipH = 1;
-    var newFlipV = 1;
-    if (newX1 > newX2) {
-      var tmpX = newX2;
-      newX2 = newX1;
-      newX1 = tmpX;
-      newFlipH = -1;
-    }
-    if (newY1 > newY2) {
-      var tmpY = newY2;
-      newY2 = newY1;
-      newY1 = tmpY;
-      newFlipV = -1;
-    }
-    var newVals = [newX1, newY1, newX2 - newX1, newY2 - newY1, newX1, newY1, newX2 - newX1, newY2 - newY1, 0, newFlipH, newFlipV];
-    return new OoxTransform(newVals);
   },
 
   Transform: function _Transform(x, y) {

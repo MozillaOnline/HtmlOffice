@@ -59,8 +59,7 @@ function Viewer(viewerPlugin) {
             document.getElementById('failed-reason').innerHTML = 'File is too big, load failed.';
             document.getElementById('loadingFailed').classList.remove('hidden');
             parent.document.getElementById('modal-loading').classList.add('hidden');
-          }
-          if (content) {
+          } else if (content) {
             var url = {type: 4, files: content};
 
             viewerPlugin.onLoad = function () {
@@ -77,6 +76,7 @@ function Viewer(viewerPlugin) {
               parent.document.getElementById('pages').innerHTML = 1 + '/' + pages.length;
               document.getElementById('zoom-size-selector').selectedIndex = 0;
               fileLoaded = true;
+              window.confirm(viewerPlugin.getElement().offsetWidth);
               var widthZoomLevel = Math.min(canvasContainer.clientWidth, canvasContainer.clientHeight) * viewerPlugin.getZoomLevel() / viewerPlugin.getElement().offsetWidth;
               kMinScale = Math.min(widthZoomLevel, 1.0);
               kMaxScale = Math.max(widthZoomLevel, 1.0);
@@ -133,8 +133,7 @@ function Viewer(viewerPlugin) {
             };
 
             viewerPlugin.initialize(canvasContainer, url);
-          }
-          if (!content) {
+          } else {
             document.getElementById('loadingFailed').classList.remove('hidden');
             parent.document.getElementById('modal-loading').classList.add('hidden');
           }
@@ -206,18 +205,24 @@ function Viewer(viewerPlugin) {
         self.showNextPage();
         return;
       }
-      if (fileLoaded && bZoomPanelShowed) {
-        document.getElementById('scale').classList.add('hidden');
-        if (isSlideshow) {
-          overlayNavigator.style.display = 'none';
+      if (fileLoaded) {
+        if (bZoomPanelShowed) {
+          document.getElementById('scale').classList.add('hidden');
+          bZoomPanelShowed = false;
+          if (isSlideshow) {
+            overlayNavigator.style.display = 'none';
+          }
+        } else {
+          document.getElementById('scale').classList.remove('hidden');
+          bZoomPanelShowed = true;
+          if (isSlideshow) {
+            overlayNavigator.style.display = 'block';
+          }
         }
-        bZoomPanelShowed = false;
       } else {
-        document.getElementById('scale').classList.remove('hidden');
-        if (isSlideshow) {
-          overlayNavigator.style.display = 'block';
+        if (evt.target.id == 'empty-list-return') {
+          goBack();
         }
-        bZoomPanelShowed = true;
       }
     }
     document.getElementById('empty-list-return').onmousedown = document.getElementById('empty-list-return').ontouchstart =
@@ -230,7 +235,6 @@ function Viewer(viewerPlugin) {
     document.getElementById('zoom-in').onmouseup = document.getElementById('zoom-in').ontouchend = function() {
       this.classList.remove('touchover');
     };
-
     document.getElementById('empty-list-return').onclick = goBack;
 
     document.getElementById('zoom-size-selector').addEventListener('change', function (evt) {
