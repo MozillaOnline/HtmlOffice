@@ -444,6 +444,7 @@ function init() {
 
   $id('quitViewer').onclick = function() {
     bDisplayDoc = false;
+    screen.mozUnlockOrientation();
     $id('pages').classList.add('hidden');
     $id('modal-loading').classList.add('hidden');
     $id('list-header').classList.remove('hidden');

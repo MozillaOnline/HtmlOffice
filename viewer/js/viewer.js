@@ -66,6 +66,7 @@ function Viewer(viewerPlugin) {
             viewerPlugin.onLoad = function () {
               isSlideshow = viewerPlugin.isSlideshow();
               if (isSlideshow) {
+                parent.window.screen.mozLockOrientation('landscape');
                 overlayNavigator.style.display = 'block';
                 parent.document.getElementById('pages').classList.remove('hidden');
               } else {
