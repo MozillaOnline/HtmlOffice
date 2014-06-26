@@ -42,7 +42,7 @@ draw:frame {
   color: #FFFFFF;
 }
 
-.dimmer {
+#dimmer {
   position: fixed;
   border-radius: 0;
   background-color: transparent;
@@ -98,10 +98,6 @@ draw:frame {
   height: 46px;
   background-image: url("images/plus.png");
   float: left;
-}
-
-.hidden {
-  display: none;
 }
 
 .empty-title {
@@ -921,4 +917,8 @@ html[dir='rtl'] .dropdownToolbarButton {
     #next, #previous {
         display: none;
     }
+}
+
+.hidden {
+  display: none;
 }

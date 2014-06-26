@@ -48,6 +48,7 @@ function Viewer(viewerPlugin) {
 
     pdf_file.onerror = function() {
       document.getElementById('loadingFailed').classList.remove('hidden');
+      document.getElementById('dimmer').style.display = 'none';
       parent.document.getElementById('modal-loading').classList.add('hidden');
       console.error("Error in: ", pdf_file.error.name);
     };
@@ -58,6 +59,7 @@ function Viewer(viewerPlugin) {
           if (content == 'FILE_IS_TOO_BIG') {
             document.getElementById('failed-reason').innerHTML = 'File is too big, load failed.';
             document.getElementById('loadingFailed').classList.remove('hidden');
+            document.getElementById('dimmer').style.display = 'none';
             parent.document.getElementById('modal-loading').classList.add('hidden');
           } else if (content) {
             var url = {type: 4, files: content};
@@ -80,6 +82,8 @@ function Viewer(viewerPlugin) {
               kMinScale = Math.min(widthZoomLevel, 1.0);
               kMaxScale = Math.max(widthZoomLevel, 1.0);
               setScale(kMinScale);
+              document.getElementById('loadingFailed').classList.add('hidden');
+              document.getElementById('dimmer').style.display = 'block';
               parent.document.getElementById('modal-loading').classList.add('hidden');
               document.getElementById('scale').classList.remove('hidden');
               bZoomPanelShowed = true;
@@ -134,11 +138,13 @@ function Viewer(viewerPlugin) {
             viewerPlugin.initialize(canvasContainer, url);
           } else {
             document.getElementById('loadingFailed').classList.remove('hidden');
+            document.getElementById('dimmer').style.display = 'block';
             parent.document.getElementById('modal-loading').classList.add('hidden');
           }
         });
       } catch (e) {
         document.getElementById('loadingFailed').classList.remove('hidden');
+        document.getElementById('dimmer').style.display = 'block';
         parent.document.getElementById('modal-loading').classList.add('hidden');
       }
     };
