@@ -56,8 +56,12 @@ function Viewer(viewerPlugin) {
       var file = pdf_file.result;
       try {
         convertoox2odf(file, function(content) {
+          document.getElementById('failed-reason').innerHTML = navigator.mozL10n.get('loading_failed');
+          document.getElementById('choose-file').innerHTML = navigator.mozL10n.get('choose_another_file');
+          document.getElementById('return').innerHTML = navigator.mozL10n.get('return');
+          document.getElementById('full-width').innerHTML = navigator.mozL10n.get('full-width');
+          document.getElementById('actual-size').innerHTML = navigator.mozL10n.get('actual-size');
           if (content == 'FILE_IS_TOO_BIG') {
-            document.getElementById('failed-reason').innerHTML = 'File is too big, load failed.';
             document.getElementById('loadingFailed').classList.remove('hidden');
             document.getElementById('dimmer').style.display = 'none';
             parent.document.getElementById('modal-loading').classList.add('hidden');

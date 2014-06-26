@@ -5,20 +5,20 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" type="text/css" href="style/viewer.css" media="screen"/>
+    <link rel="resource" type="application/l10n" href="../locales/locales.ini">
     <script src="js/viewer.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/3rd/PluginLoader.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/3rd/jszip.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/convertoox2odf.js" type="text/javascript" charset="utf-8"></script>
+    <script defer src="../js/3rd/l10n.js"></script>
   </head>
   <body>
     <div id = "viewer">
       <div id="canvasContainer" tabindex="-1" style="">
         <div>
           <div id="loadingFailed" class="hidden">
-            <div id="failed-reason" class="row-fluid empty-title" data-l10-id="loading_failed">Oops,
-            failed to load.</div>
-            <div class="row-fluid empty-subtitle"
-            data-l10n-id="choose_another_file">Please go back to choose another file.</div>
+            <div id="failed-reason" class="row-fluid empty-title" data-l10-id="loading_failed"></div>
+            <div id="choose-file" class="row-fluid empty-subtitle" data-l10n-id="choose_another_file"></div>
             <div class="row-fluid">
               <div id="empty-list-return" class="circle return-btn">
                 <span id="return" data-l10n-id="return">Return</span>
@@ -40,8 +40,8 @@
       </div>
       <div class="span6">
         <select class="zoom-menu" id="zoom-size-selector" name="zoomlevel" data-value-type="integer">
-          <option value="0"  data-l10n-id="zoom-menu-full-width" selected>Full Width</option>
-          <option value="1" data-l10n-id="zoom-menu-actual">Actual Size</option>
+          <option id="full-width" value="0"  data-l10n-id="zoom-menu-full-width" selected>Full Width</option>
+          <option id="actual-size" value="1" data-l10n-id="zoom-menu-actual">Actual Size</option>
           <option id="zoom-size-customor" value="2">100%</option>
         </select>
       </div>
