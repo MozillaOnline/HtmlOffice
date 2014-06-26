@@ -274,6 +274,7 @@ function showFileInfo() {
   $id('lastModify').innerHTML = formatDate(file.lastModifiedDate);
   $id('file-info').classList.remove('hidden');
   $id('open').onclick = function() {
+    bDisplayDoc = true;
     $id('file-info').classList.add('hidden');
     $id('list-header').classList.add('hidden');
     $id('list-container').classList.add('hidden');
