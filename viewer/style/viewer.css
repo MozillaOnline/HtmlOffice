@@ -66,10 +66,18 @@ draw:frame {
   bottom: 0px;
 }
 
+.select-container {
+  width: 100px;
+  height: 46px;
+  margin-left :calc(50% - 50px);
+  overflow-x: hidden;
+  border-radius: 5px;
+}
+
 .zoom-out {
   background-position: center 50%;
   background-repeat: no-repeat;
-  background-size: 46px 46px;
+  background-size: 32px 32px;
   background-origin: content-box;
   border-right: 1px solid rgba(255, 255, 255, 0.5);
   width: 100%;
@@ -79,7 +87,7 @@ draw:frame {
 }
 
 .zoom-menu {
-  width: 120px;
+  width: 132px;
   margin-left: calc(50% - 60px);
   height: 36px;
   background-position: center center;
@@ -88,7 +96,6 @@ draw:frame {
   font-size: medium;
   text-align: center;
   padding-top: 7px;
-  border-radius: 5px;
   background-color: #51C5D4;
   color: #FFFFFF;
 }
@@ -96,7 +103,7 @@ draw:frame {
 .zoom-in {
   background-position: center 50%;
   background-repeat: no-repeat;
-  background-size: 46px 46px;
+  background-size: 32px 32px;
   background-origin: content-box;
   border-left: 1px solid rgba(255, 255, 255, 0.5);
   width: 100%;
@@ -772,7 +779,7 @@ html[dir='rtl'] .dropdownToolbarButton {
 #overlayNavigator {
     position: absolute;
     width: 100%;
-    height: 86px;
+    height: 57px;
     top: calc(50% - 43px);
     background-color: rgba(0, 0, 0, 0);
     z-index: 1001;
@@ -787,15 +794,17 @@ html[dir='rtl'] .dropdownToolbarButton {
   float: left;
   margin-left: 10px;
   background-image: url("images/page-up.png");
-  width: 85px;
-  height: 85px;
+  width: 57px;
+  height: 57px;
+  background-size: 57px 57px;
 }
 #nextPage {
   float: right;
   margin-right: 10px;
   background-image: url("images/page-down.png");
-  width: 85px;
-  height: 85px;
+  width: 57px;
+  height: 57px;
+  background-size: 57px 57px;
 }
 #previousPage:active {
     opacity: 0.8;

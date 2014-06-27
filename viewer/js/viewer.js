@@ -219,15 +219,9 @@ function Viewer(viewerPlugin) {
         if (bZoomPanelShowed) {
           document.getElementById('scale').classList.add('hidden');
           bZoomPanelShowed = false;
-          if (isSlideshow) {
-            overlayNavigator.style.display = 'none';
-          }
         } else {
           document.getElementById('scale').classList.remove('hidden');
           bZoomPanelShowed = true;
-          if (isSlideshow) {
-            overlayNavigator.style.display = 'block';
-          }
         }
       } else {
         if (evt.target.id == 'empty-list-return') {
