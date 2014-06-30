@@ -143,7 +143,7 @@ function Viewer(viewerPlugin) {
             viewerPlugin.initialize(canvasContainer, url);
           } else {
             document.getElementById('loadingFailed').classList.remove('hidden');
-            document.getElementById('dimmer').style.display = 'block';
+            document.getElementById('dimmer').style.display = 'none';
             parent.document.getElementById('modal-loading').classList.add('hidden');
           }
         });
