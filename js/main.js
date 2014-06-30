@@ -330,20 +330,17 @@ function updateHistory() {
   var index = store.index('lastAccessDate');
   index.openCursor(null, 'prev').onsuccess = function(event) {
     var cursor = event.target.result;
-    if (cursor) {
-      count++;
-      if (count < MAX_COUNT) {
-        filesContainer.history.push({
-          name: cursor.value.name,
-          size: cursor.value.size,
-          lastModifiedDate: cursor.value.lastModifiedDate
-        });
-      } else {
-        // TODO remove all the other entries
-      }
-      cursor.continue();
+    if (!cursor || count >= MAX_COUNT) {
+      showFiles('history');
+      return;
     }
-    showFiles('history');
+    count++;
+    filesContainer.history.push({
+      name: cursor.value.name,
+      size: cursor.value.size,
+      lastModifiedDate: cursor.value.lastModifiedDate
+    });
+    cursor.continue();
   };
 }
 
