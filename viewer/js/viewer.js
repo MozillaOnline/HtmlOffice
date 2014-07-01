@@ -72,7 +72,6 @@ function Viewer(viewerPlugin) {
             viewerPlugin.onLoad = function () {
               isSlideshow = viewerPlugin.isSlideshow();
               if (isSlideshow) {
-                parent.window.screen.mozLockOrientation('landscape');
                 overlayNavigator.style.display = 'block';
                 parent.document.getElementById('pages').classList.remove('hidden');
               } else {
@@ -251,7 +250,8 @@ function Viewer(viewerPlugin) {
             setScale(kMaxScale);
             break;
         case '2':
-            setScale(parseInt(settingItem.textContent) / 100);
+            var zoomSize = document.getElementById('zoom-size-customor').textContent;
+            setScale(parseInt(zoomSize) / 100);
             break;
       }
 
@@ -260,6 +260,9 @@ function Viewer(viewerPlugin) {
     document.getElementById('zoom-out').onclick = zoomOut;
     window.addEventListener('resize', function (evt) {
       console.log('resize');
+      /*if (isSlideshow) {
+        parent.window.screen.mozLockOrientation('landscape');
+      }*/
     });
   }
 

@@ -1544,7 +1544,7 @@ function EvalGroupingExpression(vals) {
       if (dblShapeFlipV == 0) dblShapeFlipV = -1;
     }
     _shapes = [];
-    if (arrgroupShape[1].IndexOf("Line") >= 0) {
+    if (arrgroupShape[1].indexOf("Line") >= 0) {
       shapeCord = CreateLine(dblShapeX, dblShapeY, dblShapeCX, dblShapeCY, dblShapeRot, dblShapeFlipH, dblShapeFlipV);
     } else {
       shapeCord = new OoxTransform([dblShapeX, dblShapeY, dblShapeCX, dblShapeCY, dblShapeRot, 1, 1]);
