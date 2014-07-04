@@ -1044,7 +1044,7 @@ function Translate_CommaCommand(strpath) {
   var delegate = function(match) {
     var arrCommands = ['A', 'B', 'C', 'F', 'L', 'M', 'N', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'R', 'E', 'P'];
     var strMatch = match;
-    strMatch = ",0 " + strMatch.substring(strMatch.indexOfAny(arrCommands), strMatch.length);
+    strMatch = ",0 " + strMatch.substring(indexOfAny(strMatch, arrCommands), strMatch.length);
     return strMatch;
   };
   return strpath.replace(reg, delegate);
@@ -1055,7 +1055,7 @@ function regexpres(strpath) {
   var delegate = function(match) {
     var arrCommands = ['A', 'B', 'C', 'F', 'L', 'M', 'N', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'R', 'E', 'P'];
     var strMatch = match;
-    strMatch = strMatch.substring(0, strMatch.indexOfAny(arrCommands)) + " " + strMatch.substring(strMatch.indexOfAny(arrCommands));
+    strMatch = strMatch.substring(0, indexOfAny(strMatch, arrCommands)) + " " + strMatch.substring(indexOfAny(strMatch, arrCommands));
     return strMatch;
   };
   return strpath.replace(reg, delegate);
