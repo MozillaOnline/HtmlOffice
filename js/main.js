@@ -63,6 +63,10 @@ function searchFiles(type) {
       cursor.continue();
     }
   };
+  cursor.onerror = function() {
+    //window.confirm(this.error.name);
+    showFiles(type);
+  };
 }
 
 function loading() {
