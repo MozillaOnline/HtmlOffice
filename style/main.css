@@ -6,6 +6,11 @@
 html, body {
   height: 100%;
   overflow-y: hidden;
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem;
 }
 
 .main {
@@ -15,14 +20,14 @@ html, body {
 }
 
 .nav1 {
-  height: 46px;
+  height: 4.6rem;
   background-color: #51c5d4;
 }
 
 .title {
   text-align: center;
-  font-size: 24px;
-  margin-top: 8px;
+  font-size: 2.4rem;
+  margin-top: .8rem;
   font-style: italic;
 }
 
@@ -31,8 +36,8 @@ html, body {
   background-image: url("images/refresh.png");
   background-position: center center;
   background-repeat: no-repeat;
-  width: 50px;
-  height: 46px;
+  width: 5rem;
+  height: 4.6rem;
 }
 
 .refresh[data-disabled="true"] {
@@ -42,29 +47,40 @@ html, body {
 .nav2 {
   background-color: #e8f0f2;
   color: #1cdae6;
-  border-top: 2px solid rgba(255, 255, 255, 0.5);
-  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
-  font-size: 16px;
-  height: 40px;
+  border-top: .2rem solid rgba(255, 255, 255, 0.5);
+  border-bottom: .2rem solid rgba(255, 255, 255, 0.5);
+  font-size: 1.6rem;
+  height: 4rem;
 }
 
 .types {
   text-align: center;
-  padding-top: 10px;
-  height: 40px;
+  padding-top: 1rem;
+  height: 4rem;
 }
 
 .selected {
-  border-bottom: 4px solid #1cdae6;
+  border-bottom: .4rem solid #1cdae6;
 }
 
 #list-container {
-  height: calc(100% - 96px);
+  height: calc(100% - 9.6rem);
   overflow-y: scroll;
 }
 
+.row-header {
+  background-color: rgba(168, 162, 162, 1);
+  height: 2.5rem;
+}
+
+.row-header span {
+  font-size: 2rem;
+  text-align: center;
+  margin-left: 1rem;
+}
+
 .item {
-  border-bottom: 2px solid #e5e5e5;
+  border-bottom: .2rem solid #e5e5e5;
 }
 
 .item: hover {
@@ -76,8 +92,8 @@ html, body {
   background-repeat: no-repeat;
   background-size: 80%;
   background-origin: content-box;
-  min-height: 60px;
-  width: 40px;
+  min-height: 6rem;
+  width: 4rem;
 }
 
 .doctype[data-type='docx'] {
@@ -101,7 +117,7 @@ html, body {
 }
 
 .item .name{
-  padding-top: 10px;
+  padding-top: 1rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -110,40 +126,40 @@ html, body {
 .item .detail {
   margin-left: 0;
   color: #868a8b;
-  font-size: 12px;
+  font-size: 1.2rem;
 }
 
 #empty-list {
-  height: calc(100% - 90px);
+  height: calc(100% - 9rem);
 }
 
 .empty-title {
-  font-size: 18px;
-  padding-top: 40px;
+  font-size: 1.8rem;
+  padding-top: 4rem;
   text-align: center;
   color: #5f6366;
 }
 
 .empty-subtitle {
-  font-size: 16px;
-  margin-top: 20px;
+  font-size: 1.6rem;
+  margin-top: 2rem;
   text-align: center;
   color: #868a8b;
 }
 
 .circle {
-  margin-left: calc(50% - 62px);
-  margin-top: 30px;
-  width: 124px;
-  height: 124px;
-  border-radius: 62px;
+  margin-left: calc(50% - 6.2rem);
+  margin-top: 3rem;
+  width: 12.4rem;
+  height: 12.4rem;
+  border-radius: 6.2rem;
   background-color: rgba(255, 255, 255, 0.5);
 }
 
 .circle span {
   display: block;
-  padding-top: 50px;
-  font-size: 26px;
+  padding-top: 5rem;
+  font-size: 2.6rem;
   text-align: center;
 }
 
@@ -152,13 +168,13 @@ html, body {
 }
 
 .header {
-  height: 46px;
+  height: 4.6rem;
   background-color: #51c5d4;
 }
 
 .back {
-  width: 46px;
-  height: 46px;
+  width: 4.6rem;
+  height: 4.6rem;
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: 50%;
@@ -169,21 +185,21 @@ html, body {
 #file-header {
   text-align: left;
   color: #FFFFFF;
-  height: 42px;
+  height: 4.2rem;
 }
 
 #file-header span {
   display: block;
-  font-size: 24px;
+  font-size: 2.4rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding-top: 6px;
-  height: 30px;
+  padding-top: .6rem;
+  height: 3rem;
 }
 
 .pages {
-  margin-top: 14px;
+  margin-top: 1.4rem;
 }
 
 #file-display, #container {
@@ -192,12 +208,12 @@ html, body {
 }
 
 .content {
-  height: calc(100% - 46px);
+  height: calc(100% - 4.6rem);
   background-color: #FFFFFF;
 }
 
 #loadingFailed {
-  min-height: 360px;
+  min-height: 36rem;
   background-color: #FFFFFF;
   color: #919394;
 }
@@ -216,19 +232,19 @@ html, body {
   background-color: rgba(42, 42, 42, 0.4);
   margin-left: 0;
   border: none;
-  border-radius: 0px;
+  border-radius: 0rem;
 }
 
 .loading-container {
-  margin: 180px calc(50% - 50px) 0;
-  height: 100px;
-  width: 100px;
+  margin: 18rem calc(50% - 5rem) 0;
+  height: 10rem;
+  width: 10rem;
   background-color: rgba(42, 186, 204, 0.7);
-  border-radius: 10px;
+  border-radius: 1rem;
 }
 
 #loading-img {
-  margin: 27px;
+  margin: 2.7rem;
 }
 
 .hidden {
@@ -237,13 +253,13 @@ html, body {
 
 .file-ops {
   color: black;
-  margin: 160px calc(10%) 0;
+  margin: 16rem calc(10%) 0;
   background-color: #FFFFFF;
   width: 80%;
 }
 
 .info-title {
-  height: 30px;
+  height: 3rem;
   background-color: #51c5d4;
 }
 
@@ -251,30 +267,30 @@ html, body {
 }
 
 .confirm-header {
-  height: 4px;
+  height: .4rem;
   width: 100%;
   background: #51c5d4;
 }
 
 #deleteFileName {
-  margin-top: 15px;
-  padding-left: 20px;
-  height: 40px;
-  border-bottom: 1px solid rgba(42, 42, 42, 0.1);
+  margin-top: 1.5rem;
+  padding-left: 2rem;
+  height: 4rem;
+  border-bottom: 1rem solid rgba(42, 42, 42, 0.1);
   color: #5f6366;
   text-overflow: ellipsis;
 }
 
 #confirm {
   text-align: center;
-  padding: 14px 0;
+  padding: 1.4rem 0;
   background: #51c5d4;
   color: #5f6366;
 }
 
 #cancel {
   text-align: center;
-  padding: 14px 0;
+  padding: 1.4rem 0;
   color: #5f6366;
 }
 
@@ -282,45 +298,45 @@ html, body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding-top: 5px;
-  padding-left: 10px;
+  padding-top: .5rem;
+  padding-left: 1rem;
   color: #FFFFFF;
 }
 
 .fileInfo {
-  padding-top: 10px;
-  padding-left: 10px;
-  border-bottom: 1px solid rgba(42, 42, 42, 0.1);
+  padding-top: 1rem;
+  padding-left: 1rem;
+  border-bottom: .1rem solid rgba(42, 42, 42, 0.1);
   color: #444444;
-  height: 40px;
+  height: 4rem;
 }
 
 .deleteFile {
-  padding-top: 10px;
-  padding-left: 10px;
+  padding-top: 1rem;
+  padding-left: 1rem;
   color: #444444;
-  height: 40px;
+  height: 4rem;
 }
 
 #file-info {
-  height: calc(100% - 20px);
+  height: calc(100% - 2rem);
 }
 
 .file-info-title {
-  padding-top: 8px;
-  font-size: 24px;
+  padding-top: .8rem;
+  font-size: 2.4rem;
 }
 
 .file-info-detail{
   background-color: #FFFFFF;
-  height: calc(100% - 20px);
+  height: calc(100% - 2rem);
   color: #000000;
 }
 
 .name {
   width: 90%;
   margin: 0 calc(5%);
-  padding-top: 10px;
+  padding-top: 1rem;
   color: #5f6366;
 }
 
@@ -332,8 +348,8 @@ html, body {
 
 .nameInfo {
   width: 90%;
-  padding: 10px calc(5%) 0;
-  border-bottom: 1px solid rgba(42, 42, 42, 0.1);
+  padding: 1rem calc(5%) 0;
+  border-bottom: .1rem solid rgba(42, 42, 42, 0.1);
   color: #5f6366;
 }
 

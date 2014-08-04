@@ -7,6 +7,8 @@
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link rel="resource" type="application/l10n" href="locales/locales.ini">
     <link href="style/main.css" rel="stylesheet" media="screen">
+    <link href="style/action_menu.css" rel="stylesheet" media="screen">
+    <link href="style/confirm.css" rel="stylesheet" media="screen">
     <script defer src="js/utils.js"></script>
     <script defer src="js/main.js"></script>
     <script defer src="js/3rd/gesture_detector.js"></script>
@@ -38,59 +40,39 @@
       </div>
     </div>
   </section>
-  <section id="file-info" class="hidden">
-    <div class="row-fluid nav1 ">
-      <div class="span2">
-        <div id="goback" class="back"></div>
-      </div>
-      <div class="span10 file-info-title">
-        <span data-l10n-id="file_info">File Info</span>
-      </div>
-    </div>
-    <div class="file-info-detail">
-      <div id="name" class="nameInfo"></div>
-      <div class="name" data-l10n-id="size">Size</div>
-      <div id="size" class="value"></div>
-      <div class="name" data-l10n-id="directory">directory</div>
-      <div id="dir" class="value"></div>
-      <div class="name" data-l10n-id="lastModifiedTime">Last Modification Time</div>
-      <div id="lastModify" class="value"></div>
-      <div class="row-fluid">
-        <div id="empty-list-open" class="circle open-btn">
-          <span id="open" data-l10n-id="open">Open</span>
-        </div>
-      </div>
-    </div>
-  </section>
   <section id="modal-loading" class="modal hidden">
     <div id="loading-container" class="loading-container">
       <img id="loading-img" src="style/images/loading.png" class="loading"/>
     </div>
   </section>
-  <section id="modal-file-ops" class="modal hidden">
-    <div id="file-ops-container" class="file-ops row-fluid">
-      <div id="file-ops-dlg">
-        <div class="row-fluid info-title">
-          <div id="fileName" class="span12"></div>
-        </div>
-        <div class="row-fluid">
-          <div id="fileInfo" class="span12 fileInfo" data-l10n-id="file_info"> File Info.</div>
-        </div>
-        <div class="row-fluid">
-          <div id="deleteFile" class="span12 deleteFile" data-l10n-id="delete_file"> Delete this file </div>
-        </div>
-      </div>
-      <div id="delete-confirm" class="row-fluid">
-        <div class="confirm-header"></div>
-        <div id="deleteFileName" class="row-fluid">
-          <div class="span12"></div>
-        </div>
-        <div class="row-fluid">
-          <div id="confirm" data-l10n-id="confirm" class="span6">OK</div>
-          <div id="cancel" data-l10n-id="cancel" class="span6">Cancel</div>
-        </div>
-      </div>
-    </div>
+  <section id="file-action" class="hidden">
+    <form id="file-action-form" role="dialog" data-type="action">
+      <header id="file-action-header"></header>
+      <menu>
+        <button id="open-button" data-l10n-id="Open">Open</button>
+        <button id="details-button" data-l10n-id="Details">Details</button>
+        <button id="delete-button" data-l10n-id="Delete">Delete</button>
+        <button id="cancel-button" data-l10n-id="cancel">Cancel</button>
+      </menu>
+    </form>
+  </section>
+  <section id="details" class="hidden">
+    <form role="dialog" data-type="confirm">
+      <section>
+        <h1 id="file-name"></h1>
+        <p>
+          <span data-l10n-id="size">Size</span><br />
+          <strong><span id="file-size"></span></strong><br />
+          <span data-l10n-id="absolute-path">Absolute path</span><br />
+          <strong><span id="absolute-path"></span></strong><br />
+          <span data-l10n-id="last-updated">Last updated</span><br />
+          <strong><span id="file-modified"></span></strong><br />
+        </p>
+      </section>
+      <menu>
+        <button id="close-button" type="button" data-l10n-id="close">Close</button>
+      </menu>
+    </form>
   </section>
   <section id="container" class="hidden">
     <div class="row-fluid header">

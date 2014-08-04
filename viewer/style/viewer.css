@@ -27,6 +27,10 @@
     margin: 0;
 }
 
+html {
+  font-size: 62.5%;
+}
+
 html > body {
   font-family: sans-serif;
   overflow: hidden;

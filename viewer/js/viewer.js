@@ -47,25 +47,22 @@ function Viewer(viewerPlugin) {
     var pdf_file = storage.get(location);
 
     pdf_file.onerror = function() {
-      document.getElementById('loadingFailed').classList.remove('hidden');
       document.getElementById('dimmer').style.display = 'none';
       parent.document.getElementById('modal-loading').classList.add('hidden');
-      console.error("Error in: ", pdf_file.error.name);
+      window.alert(navigator.mozL10n.get('loading_failed'));
+      goBack();
     };
     pdf_file.onsuccess = function(event) {
       var file = pdf_file.result;
       try {
         convertoox2odf(file, function(content) {
-          document.getElementById('failed-reason').innerHTML = navigator.mozL10n.get('loading_failed');
-          document.getElementById('choose-file').innerHTML = navigator.mozL10n.get('choose_another_file');
-          document.getElementById('return').innerHTML = navigator.mozL10n.get('return');
           document.getElementById('full-width').innerHTML = navigator.mozL10n.get('full-width');
           document.getElementById('actual-size').innerHTML = navigator.mozL10n.get('actual-size');
           if (content == 'FILE_IS_TOO_BIG') {
-            document.getElementById('failed-reason').innerHTML = navigator.mozL10n.get('file-is-too-big');
-            document.getElementById('loadingFailed').classList.remove('hidden');
             document.getElementById('dimmer').style.display = 'none';
             parent.document.getElementById('modal-loading').classList.add('hidden');
+            window.alert(navigator.mozL10n.get('file-is-too-big'));
+            goBack();
           } else if (content) {
             var url = {type: 4, files: content};
 
@@ -86,7 +83,6 @@ function Viewer(viewerPlugin) {
               kMinScale = Math.min(widthZoomLevel, 1.0);
               kMaxScale = Math.max(widthZoomLevel, 1.0);
               setScale(kMinScale);
-              document.getElementById('loadingFailed').classList.add('hidden');
               document.getElementById('dimmer').style.display = 'block';
               parent.document.getElementById('modal-loading').classList.add('hidden');
               document.getElementById('scale').classList.remove('hidden');
@@ -141,15 +137,17 @@ function Viewer(viewerPlugin) {
 
             viewerPlugin.initialize(canvasContainer, url);
           } else {
-            document.getElementById('loadingFailed').classList.remove('hidden');
             document.getElementById('dimmer').style.display = 'none';
             parent.document.getElementById('modal-loading').classList.add('hidden');
+            window.alert(navigator.mozL10n.get('loading_failed'));
+            goBack();
           }
         });
       } catch (e) {
-        document.getElementById('loadingFailed').classList.remove('hidden');
-        document.getElementById('dimmer').style.display = 'block';
+        document.getElementById('dimmer').style.display = 'none';
         parent.document.getElementById('modal-loading').classList.add('hidden');
+        window.alert(navigator.mozL10n.get('loading_failed'));
+        goBack();
       }
     };
   };
@@ -222,23 +220,16 @@ function Viewer(viewerPlugin) {
           document.getElementById('scale').classList.remove('hidden');
           bZoomPanelShowed = true;
         }
-      } else {
-        if (evt.target.id == 'empty-list-return') {
-          goBack();
-        }
       }
     }
-    document.getElementById('empty-list-return').onmousedown = document.getElementById('empty-list-return').ontouchstart =
     document.getElementById('zoom-out').onmousedown = document.getElementById('zoom-out').ontouchstart =
     document.getElementById('zoom-in').onmousedown = document.getElementById('zoom-in').ontouchstart = function() {
       this.classList.add('touchover');
     };
-    document.getElementById('empty-list-return').onmouseup = document.getElementById('empty-list-return').ontouchend =
     document.getElementById('zoom-out').onmouseup = document.getElementById('zoom-out').ontouchend =
     document.getElementById('zoom-in').onmouseup = document.getElementById('zoom-in').ontouchend = function() {
       this.classList.remove('touchover');
     };
-    document.getElementById('empty-list-return').onclick = goBack;
 
     document.getElementById('zoom-size-selector').addEventListener('change', function (evt) {
       var settingItem = evt.target;

@@ -1,9 +1,9 @@
 {
-  "name": "Document Reader",
-  "description": "Document Reader is a simple reader which allows you to read Office documents on Firefox OS device.",
+  "name": "Document Viewer",
+  "description": "Document Viewer is a simple reader which allows you to read Office documents on Firefox OS device.",
   "type": "privileged",
   "launch_path": "/index.html",
-  "version": "2.0",
+  "version": "3.0",
   "icons": {
     "48": "/icons/icon48.png",
     "60": "/icons/icon60.png",
@@ -25,11 +25,11 @@
   },
   "locales": {
     "en-US": {
-      "name": "Document Reader",
-      "description": "Document Reader is a simple reader which allows you to read Office documents on Firefox OS device."
+      "name": "Document Viewer",
+      "description": "Document Viewer is a simple reader which allows you to read Office documents on Firefox OS device."
     },
     "zh-CN": {
-      "name": "阅读器",
+      "name": "文档阅读器",
       "description": "在Firefox OS设备上打开 Office 文档。"
     }
   },
