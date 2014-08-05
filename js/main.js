@@ -206,6 +206,7 @@ function createListItem(index, storage, type) {
     if (this.dataset.type == 'history') {
       $id('delete-button').classList.add('hidden');
     } else {
+      $id('delete-button').classList.remove('hidden');
       $id('delete-button').onclick = function() {
         $id('file-action').classList.add('hidden');
         if (window.confirm(navigator.mozL10n.get('sure-delete') + $id('file-action-header').textContent + '?')) {
@@ -322,7 +323,6 @@ function deleteFile() {
         }
       }
       var headers = container.querySelectorAll('.storage');
-      window.confirm(headers.length);
       for (var i = 0; i < headers.length; i++) {
         if (headers[i].dataset.storageName == filesContainer[type][index].storageName) {
           for (var j = 0; j < filesContainer[type][index]['storageFiles'].length; j++) {
