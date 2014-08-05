@@ -122,13 +122,14 @@ function showFiles(type) {
 
   for (var i=0;i<filesContainer[type].length;i++){
     var files = filesContainer[type][i];
+    if (files['storageFiles'].length == 0)
+      continue;
     if (type != 'history') {
       container.appendChild(createHeadItem(files['storageName']));
     }
-    if (files['storageFiles'].length == 0)
-      continue;
     for (var j = 0; j < files['storageFiles'].length; j++) {
-      container.appendChild(createListItem(i, j, type));
+      if (files['storageFiles'][j])
+        container.appendChild(createListItem(i, j, type));
     }
   }
 
@@ -139,6 +140,7 @@ function showFiles(type) {
 function createHeadItem(storageName) {
   var div = document.createElement('div');
   div.classList.add('row-header');
+  div.classList.add('storage');
   div.dataset.storageName = storageName;
   var span = document.createElement('span');
   span.textContent = storageName;
@@ -201,12 +203,17 @@ function createListItem(index, storage, type) {
       $id('file-action').classList.add('hidden');
       showFileInfo();
     };
-    $id('delete-button').onclick = function() {
-      $id('file-action').classList.add('hidden');
-      if (window.confirm(navigator.mozL10n.get('sure-delete') + $id('file-action-header').textContent + '?')) {
-        deleteFile();
-      }
-    };
+    if (this.dataset.type == 'history') {
+      $id('delete-button').classList.add('hidden');
+    } else {
+      $id('delete-button').onclick = function() {
+        $id('file-action').classList.add('hidden');
+        if (window.confirm(navigator.mozL10n.get('sure-delete') + $id('file-action-header').textContent + '?')) {
+          deleteFile();
+        }
+      };
+    }
+
     $id('cancel-button').onclick = function() {
       $id('file-action').classList.add('hidden');
     };
@@ -310,7 +317,20 @@ function deleteFile() {
       for (var i = 0; i < items.length; i++) {
         if (items[i].lastChild.dataset.index == index && items[i].lastChild.dataset.storage == storage) {
           container.removeChild(items[i]);
+          delete filesContainer[type][index]['storageFiles'][storage];
           break;
+        }
+      }
+      var headers = container.querySelectorAll('.storage');
+      window.confirm(headers.length);
+      for (var i = 0; i < headers.length; i++) {
+        if (headers[i].dataset.storageName == filesContainer[type][index].storageName) {
+          for (var j = 0; j < filesContainer[type][index]['storageFiles'].length; j++) {
+            if (filesContainer[type][index]['storageFiles'][j])
+              return;
+          }
+          container.removeChild(headers[i]);
+          return;
         }
       }
     };
