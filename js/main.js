@@ -113,13 +113,8 @@ function loading() {
 function showFiles(type) {
   var container = $id('list-container');
   container.innerHTML = '';
-  if (filesContainer[type].length == 0) {
-    showEmptyList(type);
-    $id('modal-loading').classList.add('hidden');
-    return;
-  }
+  var isEmpty = true;
   container.classList.remove('hidden');
-
   for (var i=0;i<filesContainer[type].length;i++){
     var files = filesContainer[type][i];
     if (files['storageFiles'].length == 0)
@@ -128,13 +123,21 @@ function showFiles(type) {
       container.appendChild(createHeadItem(files['storageName']));
     }
     for (var j = 0; j < files['storageFiles'].length; j++) {
-      if (files['storageFiles'][j])
-        container.appendChild(createListItem(i, j, type));
+      if (!files['storageFiles'][j])
+        continue;
+      isEmpty = false;
+      container.appendChild(createListItem(i, j, type));
     }
   }
 
+  if(isEmpty) {
+    showEmptyList(type);
+  } else {
+    $id('empty-list').classList.add('hidden');
+  }
+
   $id('modal-loading').classList.add('hidden');
-  $id('empty-list').classList.add('hidden');
+  return;
 }
 
 function createHeadItem(storageName) {
