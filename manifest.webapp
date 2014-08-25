@@ -28,6 +28,10 @@
       "name": "Document Viewer",
       "description": "Document Viewer is a simple reader which allows you to read Office documents on Firefox OS device."
     },
+    "ja": {
+      "name": "文書ビューア",
+      "description": "文書ビューアは Firefox OS でオフィス文書を表示するためのサンプルリーダアプリです。"
+    },
     "zh-CN": {
       "name": "文档阅读器",
       "description": "在Firefox OS设备上打开 Office 文档。"
