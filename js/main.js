@@ -1,3 +1,4 @@
+'use strict';
 
 var db = null;
 var storages = null;
@@ -60,7 +61,7 @@ function searchFiles(type) {
     return;
   }
   filesContainer[loaded] = false;
-  for (var i=0; i<storages.length; i++) {
+  for (var i = 0; i < storages.length; i++) {
     searchStorage(storages[i], type);
   }
 }
@@ -77,7 +78,7 @@ function searchStorage(storage, type) {
   cursor.onsuccess = function() {
     if (cursor.result == null) {
       filesContainer[type].push(storagesContainer);
-      if(filesContainer[type].length == storages.length) {
+      if (filesContainer[type].length == storages.length) {
         filesContainer[loaded] = true;
         showFiles(type);
       }
@@ -91,7 +92,7 @@ function searchStorage(storage, type) {
   };
   cursor.onerror = function() {
     filesContainer[type].push(storagesContainer);
-    if(filesContainer[type].length == storages.length) {
+    if (filesContainer[type].length == storages.length) {
       filesContainer[loaded] = true;
       showFiles(type);
     }
@@ -102,12 +103,14 @@ function searchStorage(storage, type) {
 function loading() {
   $id('modal-loading').classList.remove('hidden');
   if (bDisplayDoc) {
-    $id('modal-loading').style.marginTop = 46 + 'px';
-    $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50 - 46) + 'px';
+    $id('modal-loading').style.marginTop = '46px';
+    $id('loading-container').style.marginTop =
+      ($id('modal-loading').clientHeight / 2 - 50 - 46) + 'px';
     return;
   }
-  $id('modal-loading').style.marginTop = 0 + 'px';
-  $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50) + 'px';
+  $id('modal-loading').style.marginTop = '0px';
+  $id('loading-container').style.marginTop =
+    ($id('modal-loading').clientHeight / 2 - 50) + 'px';
 }
 
 function showFiles(type) {
@@ -115,7 +118,7 @@ function showFiles(type) {
   container.innerHTML = '';
   var isEmpty = true;
   container.classList.remove('hidden');
-  for (var i=0;i<filesContainer[type].length;i++){
+  for (var i = 0; i < filesContainer[type].length; i++) {
     var files = filesContainer[type][i];
     if (files['storageFiles'].length == 0)
       continue;
@@ -130,7 +133,7 @@ function showFiles(type) {
     }
   }
 
-  if(isEmpty) {
+  if (isEmpty) {
     showEmptyList(type);
   } else {
     $id('empty-list').classList.add('hidden');
@@ -152,6 +155,7 @@ function createHeadItem(storageName) {
 }
 
 function createListItem(index, storage, type) {
+  var storage = storage;
   var div = document.createElement('div');
   div.classList.add('row-fluid');
   div.classList.add('item');
@@ -162,8 +166,8 @@ function createListItem(index, storage, type) {
   if (type != 'history') {
     iconDiv.dataset.type = type;
   } else {
-    var i = filesContainer[type][index]['storageFiles'][storage].name.lastIndexOf('.');
-    iconDiv.dataset.type = filesContainer[type][index]['storageFiles'][storage].name.substr(i + 1);
+    var i = storage.name.lastIndexOf('.');
+    iconDiv.dataset.type = storage.name.substr(i + 1);
   }
   div.appendChild(iconDiv);
   var infoDiv = document.createElement('div');
@@ -173,31 +177,33 @@ function createListItem(index, storage, type) {
   var infoNameDiv = document.createElement('div');
   infoNameDiv.classList.add('name');
   infoNameDiv.classList.add('span12');
-  infoNameDiv.innerHTML = extractFileName(filesContainer[type][index]['storageFiles'][storage].name);
+  infoNameDiv.innerHTML = extractFileName(storage.name);
   var infoDetailDiv = document.createElement('div');
   infoDetailDiv.classList.add('span12');
   infoDetailDiv.classList.add('detail');
-  infoDetailDiv.innerHTML = formatDate(filesContainer[type][index]['storageFiles'][storage].lastModifiedDate) + '  ' + formatFileSize(filesContainer[type][index]['storageFiles'][storage].size);
+  infoDetailDiv.innerHTML = formatDate(storage.lastModifiedDate) + '  ' +
+                            formatFileSize(storage.size);
 
   infoRowDiv.appendChild(infoNameDiv);
   infoRowDiv.appendChild(infoDetailDiv);
   infoDiv.appendChild(infoRowDiv);
   div.appendChild(iconDiv);
   div.appendChild(infoDiv);
-  infoDiv.dataset.filePath = filesContainer[type][index]['storageFiles'][storage].name;
+  infoDiv.dataset.filePath = storage.name;
   infoDiv.dataset.storage = storage;
   infoDiv.dataset.index = index;
   infoDiv.dataset.type = type;
   infoDiv.onclick = function() {
     $id('file-action').classList.remove('hidden');
-    $id('file-action-form').onsubmit=function() {
+    $id('file-action-form').onsubmit = function() {
       return false;
     };
     $id('file-action').dataset.storage = this.dataset.storage;
     $id('file-action').dataset.index = this.dataset.index;
     $id('file-action').dataset.type = this.dataset.type;
     $id('file-action').dataset.filePath = this.dataset.filePath;
-    $id('file-action-header').textContent = extractFileName(this.dataset.filePath);;
+    $id('file-action-header').textContent =
+      extractFileName(this.dataset.filePath);
     $id('open-button').onclick = function() {
       $id('file-action').classList.add('hidden');
       loadFile($id('file-action').dataset.filePath);
@@ -212,7 +218,8 @@ function createListItem(index, storage, type) {
       $id('delete-button').classList.remove('hidden');
       $id('delete-button').onclick = function() {
         $id('file-action').classList.add('hidden');
-        if (window.confirm(navigator.mozL10n.get('sure-delete') + $id('file-action-header').textContent + '?')) {
+        if (window.confirm(navigator.mozL10n.get('sure-delete') +
+            $id('file-action-header').textContent + '?')) {
           deleteFile();
         }
       };
@@ -247,7 +254,8 @@ function loadFile(filePath) {
 }
 
 function refresh() {
-  if (!storages || storages.length == 0 || !currentTarget || currentTarget.id == 'history') {
+  if (!storages || storages.length == 0 || !currentTarget ||
+      currentTarget.id == 'history') {
     return;
   }
 
@@ -270,11 +278,13 @@ function select(target) {
 
 function showEmptyList(type) {
   if (type == 'history') {
-    $id('empty-list-header').innerHTML = navigator.mozL10n.get('no_recent_files_found');
+    $id('empty-list-header').innerHTML =
+      navigator.mozL10n.get('no_recent_files_found');
     $id('empty-list-des').classList.add('hidden');
     $id('empty-list-button').classList.add('hidden');
   } else {
-    $id('empty-list-header').innerHTML = navigator.mozL10n.get('files_not_found');
+    $id('empty-list-header').innerHTML =
+      navigator.mozL10n.get('files_not_found');
     $id('empty-list-des').classList.remove('hidden');
     $id('empty-list-button').classList.remove('hidden');
   }
@@ -294,7 +304,7 @@ function showFileInfo() {
   var index = parseInt($id('file-action').dataset.index);
   var type = $id('file-action').dataset.type;
   var filePath = $id('file-action').dataset.filePath;
-  var file = filesContainer[type][index]['storageFiles'][storage];
+  var file = storage;
   $id('absolute-path').textContent = file.name;
   $id('file-size').textContent = formatFileSize(file.size);
   $id('file-name').textContent = extractFileName(file.name);
@@ -310,26 +320,29 @@ function deleteFile() {
   var storage = parseInt($id('file-action').dataset.storage);
   var index = parseInt($id('file-action').dataset.index);
   var type = $id('file-action').dataset.type;
-  for (var i=0; i<storages.length; i++) {
+  for (var i = 0; i < storages.length; i++) {
     if (storages[i].storageName != filesContainer[type][index].storageName) {
       continue;
     }
-    var req =  storages[i].delete(filesContainer[type][index]['storageFiles'][storage].name);
+    var req = storages[i]. delete(storage.name);
     req.onsuccess = function() {
       var container = $id('list-container');
       var items = container.querySelectorAll('.item');
       for (var i = 0; i < items.length; i++) {
-        if (items[i].lastChild.dataset.index == index && items[i].lastChild.dataset.storage == storage) {
+        if (items[i].lastChild.dataset.index == index &&
+            items[i].lastChild.dataset.storage == storage) {
           container.removeChild(items[i]);
-          delete filesContainer[type][index]['storageFiles'][storage];
+          delete storage;
           break;
         }
       }
       var headers = container.querySelectorAll('.storage');
       for (var i = 0; i < headers.length; i++) {
-        if (headers[i].dataset.storageName == filesContainer[type][index].storageName) {
-          for (var j = 0; j < filesContainer[type][index]['storageFiles'].length; j++) {
-            if (filesContainer[type][index]['storageFiles'][j])
+        if (headers[i].dataset.storageName ==
+            filesContainer[type][index].storageName) {
+          var files = filesContainer[type][index]['storageFiles'];
+          for (var j = 0; j < files.length; j++) {
+            if (files[j])
               return;
           }
           container.removeChild(headers[i]);
@@ -364,8 +377,8 @@ function updateHistory() {
 
   filesContainer.history = [];
   var count = 0;
-  var tx = db.transaction(["files"], "readwrite");
-  var store = tx.objectStore("files");
+  var tx = db.transaction(['files'], 'readwrite');
+  var store = tx.objectStore('files');
   var index = store.index('lastAccessDate');
   var storagesContainer = {
     storageName: 'history',
@@ -437,40 +450,41 @@ function swipe(evt) {
 }
 
 function init() {
-  storages = navigator.getDeviceStorages("sdcard");
+  storages = navigator.getDeviceStorages('sdcard');
   if (!storages) {
-    var storage = navigator.getDeviceStorage("sdcard");
+    var storage = navigator.getDeviceStorage('sdcard');
     if (storage) {
       storages.push(storage);
     }
   }
 
-  $id("history").onclick = showHistory;
+  $id('history').onclick = showHistory;
   $id('docx').onclick = loadFiles;
   $id('xlsx').onclick = loadFiles;
   $id('pptx').onclick = loadFiles;
   $id('refresh').onclick = $id('empty-list-button').onclick = refresh;
 
-  $id("history").onmousedown = $id("history").ontouchstart =
-  $id("docx").onmousedown = $id("docx").ontouchstart =
-  $id("xlsx").onmousedown = $id("xlsx").ontouchstart =
-  $id("pptx").onmousedown = $id("pptx").ontouchstart = function() {
+  $id('history').onmousedown = $id('history').ontouchstart =
+  $id('docx').onmousedown = $id('docx').ontouchstart =
+  $id('xlsx').onmousedown = $id('xlsx').ontouchstart =
+  $id('pptx').onmousedown = $id('pptx').ontouchstart = function() {
     this.classList.add('hover');
   };
-  $id("history").onmouseup = $id("history").ontouchend =
-  $id("docx").onmouseup = $id("docx").ontouchend =
-  $id("xlsx").onmouseup = $id("xlsx").ontouchend =
-  $id("pptx").onmouseup = $id("pptx").ontouchend = function() {
+  $id('history').onmouseup = $id('history').ontouchend =
+  $id('docx').onmouseup = $id('docx').ontouchend =
+  $id('xlsx').onmouseup = $id('xlsx').ontouchend =
+  $id('pptx').onmouseup = $id('pptx').ontouchend = function() {
     this.classList.remove('hover');
   };
-  document.getElementById('empty-list-refresh').onmousedown = document.getElementById('empty-list-refresh').ontouchstart =
-  $id("refresh").onmousedown = $id("refresh").ontouchstart =
-  $id("quitViewer").onmousedown = $id("quitViewer").ontouchstart = function() {
+  $id('empty-list-refresh').onmousedown =
+  $id('empty-list-refresh').ontouchstart =
+  $id('refresh').onmousedown = $id('refresh').ontouchstart =
+  $id('quitViewer').onmousedown = $id('quitViewer').ontouchstart = function() {
     this.classList.add('touchover');
   };
-  document.getElementById('empty-list-refresh').onmouseup = document.getElementById('empty-list-refresh').ontouchend =
-  $id("refresh").onmouseup = $id("refresh").ontouchend =
-  $id("quitViewer").onmouseup = $id("quitViewer").ontouchend = function() {
+  $id('empty-list-refresh').onmouseup = $id('empty-list-refresh').ontouchend =
+  $id('refresh').onmouseup = $id('refresh').ontouchend =
+  $id('quitViewer').onmouseup = $id('quitViewer').ontouchend = function() {
     this.classList.remove('touchover');
   };
 
@@ -491,30 +505,41 @@ function init() {
   window.onresize = function() {
     if (bDisplayDoc) {
       $id('modal-loading').style.marginTop = 46 + 'px';
-      $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50 - 46) + 'px';
+      $id('loading-container').style.marginTop =
+        ($id('modal-loading').clientHeight / 2 - 50 - 46) + 'px';
     } else {
       $id('modal-loading').style.marginTop = 0 + 'px';
-      $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50) + 'px';
+      $id('loading-container').style.marginTop =
+        ($id('modal-loading').clientHeight / 2 - 50) + 'px';
     }
-    $id('file-ops-container').style.marginTop = ($id('file-action').clientHeight/2 - 50) + 'px';
+    $id('file-ops-container').style.marginTop =
+      ($id('file-action').clientHeight / 2 - 50) + 'px';
   };
 
-  var request = indexedDB.open("history");
+  var request = indexedDB.open('history');
 
   request.onupgradeneeded = function(event) {
     db = event.target.result;
-    var store = db.createObjectStore("files", { keyPath: "name" });
+    var store = db.createObjectStore('files', { keyPath: 'name' });
     store.createIndex('lastAccessDate', 'lastAccessDate', { unique: true });
-    console.log("indexedDB upgraded");
-  }
+    console.log('indexedDB upgraded');
+  };
 
   request.onsuccess = function(event) {
     db = event.target.result;
     console.log('open indexedDB successfully');
   };
 
-  var gd = new GestureDetector($id('list-container'), {holdEvents:true, panThreshold:5, mousePanThreshold:5});
-  var gd2 = new GestureDetector($id('empty-list'), {holdEvents:true, panThreshold:5, mousePanThreshold:5});
+  var gd = new GestureDetector($id('list-container'), {
+    holdEvents: true,
+    panThreshold: 5,
+    mousePanThreshold: 5
+  });
+  var gd2 = new GestureDetector($id('empty-list'), {
+    holdEvents: true,
+    panThreshold: 5,
+    mousePanThreshold: 5
+  });
   gd.startDetecting();
   gd2.startDetecting();
 
@@ -530,4 +555,4 @@ function init() {
   $id('docx').click();
 }
 
-window.addEventListener("load", init, false);
+window.addEventListener('load', init, false);
