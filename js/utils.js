@@ -28,13 +28,16 @@ function formatDate(dt) {
   return strDate;
 }
 
+// Format byte size to KBs or MBs and round it to at most two decimal places.
 function formatFileSize(size) {
-  var tmp = parseInt(size /1024 /1024);
-  if (tmp > 0) {
-    return (parseInt(size /1024 /10.24) /100 + 'M');
+  function toFixed(num) {
+    return Math.round(num * 100) / 100;
   }
-
-  return (parseInt(size /10.24) /100 + 'K');
+  var kbs = toFixed(size / 1024);
+  if (kbs < 1024) {
+    return kbs + 'K';
+  }
+  return toFixed(kbs / 1024) + 'M';
 }
 
 function extractFileName(path) {
