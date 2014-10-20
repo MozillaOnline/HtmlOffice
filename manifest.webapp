@@ -15,7 +15,7 @@
   },
   "developer": {
     "name": "Mozilla Online Ltd.",
-    "url": "http://www.firefox.com.cn/"
+    "url": "https://github.com/MozillaOnline/HtmlOffice"
   },
   "permissions": {
     "device-storage:sdcard": {

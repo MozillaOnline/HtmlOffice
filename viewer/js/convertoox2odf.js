@@ -1964,7 +1964,7 @@ var ooxnamespace = 'urn:oox';
 
 function CopyPartXlsx(oXMLParent) {
   var nAttrLen = 0;
-  if (oXMLParent.hasAttributes()) {
+  if (oXMLParent.hasAttributes && oXMLParent.hasAttributes()) {
     var oAttrib;
     var s;
     for (nAttrLen; nAttrLen < oXMLParent.attributes.length; nAttrLen++) {
@@ -2286,7 +2286,7 @@ function copyPartAfterTransform(oXMLParent) {
   }
   var nAttrLen = 0;
   var xmlString;
-  if (oXMLParent.hasAttributes()) {
+  if (oXMLParent.hasAttributes && oXMLParent.hasAttributes()) {
     var oAttrib;
     var s;
     for (nAttrLen; nAttrLen < oXMLParent.attributes.length; nAttrLen++) {
@@ -2368,7 +2368,6 @@ function xslTransform(xmlFile, fileType) {
   ooxXMLHTTPRequest.send(null);
   xslStylesheet = ooxXMLHTTPRequest.responseXML;
   xsltProcessor.importStylesheet(xslStylesheet);
-
   var newDocument = xsltProcessor.transformToDocument(xmlDoc);
   if (!newDocument.childNodes || newDocument.childNodes.length == 0) {
     return null;

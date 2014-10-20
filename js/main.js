@@ -260,6 +260,13 @@ function refresh() {
   searchFiles(type);
 }
 
+function about() {
+  $id('about-dialog').classList.remove('hidden');
+  $id('close-about').onclick = function() {
+    $id('about-dialog').classList.add('hidden');
+  };
+}
+
 function select(target) {
   $id('history').classList.remove('selected');
   $id('docx').classList.remove('selected');
@@ -450,6 +457,7 @@ function init() {
   $id('xlsx').onclick = loadFiles;
   $id('pptx').onclick = loadFiles;
   $id('refresh').onclick = $id('empty-list-button').onclick = refresh;
+  $id('about').onclick = about;
 
   $id("history").onmousedown = $id("history").ontouchstart =
   $id("docx").onmousedown = $id("docx").ontouchstart =
@@ -465,11 +473,13 @@ function init() {
   };
   document.getElementById('empty-list-refresh').onmousedown = document.getElementById('empty-list-refresh').ontouchstart =
   $id("refresh").onmousedown = $id("refresh").ontouchstart =
+  $id("about").onmousedown = $id("about").ontouchstart =
   $id("quitViewer").onmousedown = $id("quitViewer").ontouchstart = function() {
     this.classList.add('touchover');
   };
   document.getElementById('empty-list-refresh').onmouseup = document.getElementById('empty-list-refresh').ontouchend =
   $id("refresh").onmouseup = $id("refresh").ontouchend =
+  $id("about").onmouseup = $id("about").ontouchend =
   $id("quitViewer").onmouseup = $id("quitViewer").ontouchend = function() {
     this.classList.remove('touchover');
   };
@@ -496,7 +506,6 @@ function init() {
       $id('modal-loading').style.marginTop = 0 + 'px';
       $id('loading-container').style.marginTop = ($id('modal-loading').clientHeight/2 - 50) + 'px';
     }
-    $id('file-ops-container').style.marginTop = ($id('file-action').clientHeight/2 - 50) + 'px';
   };
 
   var request = indexedDB.open("history");

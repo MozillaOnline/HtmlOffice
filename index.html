@@ -17,7 +17,10 @@
   <body class="main">
   <section id="list-header" class="">
     <div class="row-fluid nav1">
-      <div class="span8 offset2 title" data-l10n-id="reader"> Document Reader</div>
+      <div class="span2">
+        <div id="about" class="about"></div>
+      </div>
+      <div class="span8 title" data-l10n-id="reader"> Document Viewer</div>
       <div class="span2">
         <div id="refresh" class="refresh"></div>
       </div>
@@ -71,6 +74,37 @@
       </section>
       <menu>
         <button id="close-button" type="button" data-l10n-id="close">Close</button>
+      </menu>
+    </form>
+  </section>
+  <section id="about-dialog" class="hidden">
+    <form role="dialog" data-type="confirm">
+      <section>
+        <p>
+          <span data-l10n-id="description">Description</span>
+          <strong><span data-l10n-id="distribution-info">Document Viewer is a simple reader which allows you to read Office documents on Firefox OS device.</span></strong>
+        </p>
+        <p>
+          <span data-l10n-id="basedon">Based On</span>
+          <strong><span data-l10n-id="baseon-info1">WebODF technology</span></strong>
+          <strong><span data-l10n-id="baseon-info2">OdfAddinforOffice technology</span></strong>
+          <strong><span data-l10n-id="baseon-info3">JSZip technology</span></strong>
+        </p>
+        <p>
+          <span data-l10n-id="version">Version</span>
+          <strong><span>3.0</span></strong>
+        </p>
+        <p>
+          <span data-l10n-id="licence">License</span>
+          <strong><span>AGPL-3.0</span></strong>
+        </p>
+        <p>
+          <span data-l10n-id="source">Source Code</span>
+          <strong><span>https://github.com/MozillaOnline/HtmlOffice</span></strong>
+        </p>
+      </section>
+      <menu>
+        <button id="close-about" type="button" data-l10n-id="close">Close</button>
       </menu>
     </form>
   </section>

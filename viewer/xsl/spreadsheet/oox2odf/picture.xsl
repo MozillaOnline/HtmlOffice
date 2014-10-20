@@ -680,28 +680,200 @@ RefNo-1	1-Feb-2008 Sandeep s           1835598   Changes done to fix bug:XLSX: T
       <xsl:value-of select="concat($apos,$checkedName,$apos, '.', $ColEnd, $RowEnd)"/>
     </xsl:attribute>
 		</xsl:if>
-    <xsl:attribute name="svg:x">
+
+  <!-- Code added by dxue, fix for the bug 1072139
+         Date:17th Oct '14-->
+  <xsl:choose>
+    <xsl:when test="xdr:pic">
+      <xsl:variable name="xlengthincm">
+        <xsl:call-template name="ConvertToCentimeters">
+          <xsl:with-param name="length">
+            <xsl:value-of
+              select="concat(xdr:pic/xdr:spPr/a:xfrm/a:off/@x,'pt')"/>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:variable name="ylengthincm">
+        <xsl:call-template name="ConvertToCentimeters">
+          <xsl:with-param name="length">
+            <xsl:value-of
+              select="concat(xdr:pic/xdr:spPr/a:xfrm/a:off/@y,'pt')"/>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:attribute name="svg:x">
+        <xsl:call-template name="ConvertEmu">
+          <xsl:with-param name="length" select="$xlengthincm"/>
+          <xsl:with-param name="unit">cm</xsl:with-param>
+        </xsl:call-template>
+      </xsl:attribute>
+      <xsl:attribute name="svg:y">
+        <xsl:call-template name="ConvertEmu">
+          <xsl:with-param name="length" select="$ylengthincm"/>
+          <xsl:with-param name="unit">cm</xsl:with-param>
+        </xsl:call-template>
+      </xsl:attribute>
+    </xsl:when>
+    <xsl:otherwise>
       <xsl:choose>
-        <xsl:when test="xdr:pic/xdr:spPr/a:xfrm/@flipV = 1">
-          <xsl:call-template name="ConvertEmu">
-            <xsl:with-param name="length" select="xdr:to/xdr:colOff"/>
-            <xsl:with-param name="unit">cm</xsl:with-param>
-          </xsl:call-template>
+        <xsl:when test="self::node()[name()='xdr:twoCellAnchor']">
+          <xsl:variable name="startrowno" select="xdr:from/xdr:row">
+          </xsl:variable>
+          <xsl:variable name="startrowoffset">
+          <xsl:value-of select="xdr:from/xdr:rowOff"/>
+          </xsl:variable>
+          <xsl:variable name="startrowoffsetincm">
+            <xsl:call-template name="ConvertEmu">
+              <xsl:with-param name="length" select="$startrowoffset"/>
+              <xsl:with-param name="unit" select="'cm'"/>
+            </xsl:call-template>
+          </xsl:variable>
+          <xsl:variable name="startcolno" select="xdr:from/xdr:col">
+          </xsl:variable>
+          <xsl:variable name="startcoloffset">
+            <xsl:call-template name="ConvertEmu">
+              <xsl:with-param name="length" select="xdr:from/xdr:colOff"/>
+              <xsl:with-param name="unit" select="'cm'"/>
+            </xsl:call-template>
+          </xsl:variable>
+          <xsl:for-each select="key('Part', concat('xl/',$sheet))/e:worksheet/e:drawing">
+            <xsl:variable name="defaultrowheight">
+              <xsl:value-of select="parent::node()/child::node()[name()='sheetFormatPr']/@defaultRowHeight"/>
+            </xsl:variable>
+            <xsl:variable name="chartrowheight">
+              <xsl:call-template name="CalculateRowHeight">
+                <xsl:with-param name="sheet" select="$sheet"/>
+                <xsl:with-param name="startrowno" select="0"/>
+                <xsl:with-param name="endrowno" select="$startrowno"/>
+                <xsl:with-param name="total" select="0"/>
+                <xsl:with-param name="defaultrowheight" select="$defaultrowheight"/>
+                <xsl:with-param name="countchartrow" select="1"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:variable name="chartrowheightincm">
+              <xsl:call-template name="ConvertToCentimeters">
+                <xsl:with-param name="length">
+                <xsl:value-of
+                select="concat($chartrowheight,'pt')"/>
+                </xsl:with-param>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:variable name="finalchartrowheight">
+              <xsl:value-of select="concat((substring-before($chartrowheightincm,'cm') + substring-before($startrowoffsetincm,'cm')),'cm')"/>
+            </xsl:variable>
+            <xsl:attribute name="svg:y">
+              <xsl:value-of select="$finalchartrowheight"/>
+            </xsl:attribute>
+
+            <xsl:variable name="defaultFontSize">
+              <xsl:for-each select="key('Part', 'xl/styles.xml')">
+                <xsl:choose>
+                  <xsl:when test="e:styleSheet/e:fonts/e:font">
+                    <xsl:value-of select="e:styleSheet/e:fonts/e:font[1]/e:sz/@val"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:text>11</xsl:text>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:for-each>
+            </xsl:variable>
+            <xsl:variable name="defaultFontStyle">
+              <xsl:for-each select="key('Part', 'xl/styles.xml')">
+                <xsl:choose>
+                  <xsl:when test="e:styleSheet/e:fonts/e:font">
+                    <xsl:value-of select="e:styleSheet/e:fonts/e:font[1]/e:name/@val"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:text>11</xsl:text>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:for-each>
+            </xsl:variable>
+            <xsl:variable name="defaultcolWidth">
+              <xsl:choose>
+                <xsl:when test="parent::node()/child::node()[name()='sheetFormatPr']/@defaultColWidth">
+                  <xsl:value-of
+                  select="parent::node()/child::node()[name()='sheetFormatPr']/@defaultColWidth"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="'null'"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+            <xsl:variable name="colWidPlusdefaultColCount">
+              <!--<xsl:if test="parent::node()/child::node()[name()='cols']">-->
+              <xsl:call-template name="CalculateColWidth">
+                <xsl:with-param name="sheet" select="$sheet"/>
+                <xsl:with-param name="startcolno" select="0"/>
+                <xsl:with-param name="endcolno" select="$startcolno"/>
+                <xsl:with-param name="total" select="0"/>
+                <xsl:with-param name="defaultcolWidth" select="$defaultcolWidth"/>
+                <xsl:with-param name="countchartcol" select="1"/>
+                <xsl:with-param name="totalDefaultColCount"/>
+                <xsl:with-param name="startcoloffset" select="0"/>
+                <xsl:with-param name="endcoloffset" select="$startcoloffset"/>
+              </xsl:call-template>
+              <!--</xsl:if>-->
+            </xsl:variable>
+            <xsl:variable name="customColWid">
+              <xsl:variable name="customColWidPt">
+                <xsl:value-of select="substring-before($colWidPlusdefaultColCount,'|')"/>
+              </xsl:variable>
+              <xsl:choose>
+                <xsl:when test ="$customColWidPt = 0">
+                  <xsl:value-of select="concat($customColWidPt,'cm')"/>
+                </xsl:when>
+                <xsl:when test ="$customColWidPt = ''">
+                  <xsl:value-of select="concat(0,'cm')"/>
+                </xsl:when>
+                <xsl:when test ="$customColWidPt != 0">
+                  <xsl:call-template name="ConvertToCentimeters">
+                    <xsl:with-param name="length">
+                      <xsl:value-of
+                      select="concat(substring-before($colWidPlusdefaultColCount,'|'),'pt')"/>
+                    </xsl:with-param>
+                  </xsl:call-template>
+                </xsl:when>
+              </xsl:choose>
+            </xsl:variable>
+            <xsl:variable name="defaultColCount">
+              <xsl:value-of select="substring-after($colWidPlusdefaultColCount,'|')"/>
+            </xsl:variable>
+            <xsl:attribute name="svg:x">
+              <xsl:choose>
+                <xsl:when test="$defaultcolWidth != 'null' and translate($customColWid,'cm','')=0 ">
+                  <xsl:variable name="totalDefWid">
+                    <xsl:value-of select="number($defaultColCount) * number($defaultcolWidth) "/>
+                  </xsl:variable>
+                  <xsl:value-of select="concat('ooc-sonataChartWidth-oop-','False|',$defaultFontStyle,'|',$defaultFontSize,'|','0','|',$totalDefWid,'|',0,'|',substring-before($startcoloffset,'cm'), '-ooe')"/>
+                <!--<xsl:value-of select="concat(($defaultColCount * substring-before($defaultcolWidth,'cm')),'cm') "/>-->
+                </xsl:when>
+                <xsl:when test="$defaultcolWidth != 'null' and translate($customColWid,'cm','')!=0">
+                  <xsl:variable name="totalDefWid">
+                    <xsl:value-of select="number($defaultColCount) * number($defaultcolWidth)+ substring-before($colWidPlusdefaultColCount,'|')"/>
+                  </xsl:variable>
+                  <xsl:value-of select="concat('ooc-sonataChartWidth-oop-','False|',$defaultFontStyle,'|',$defaultFontSize,'|','0','|',$totalDefWid,'|',0,'|',substring-before($startcoloffset,'cm'), '-ooe')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:if test ="substring-before($colWidPlusdefaultColCount,'|')!=''">
+                    <xsl:value-of select="concat('ooc-sonataChartWidth-oop-','False|',$defaultFontStyle,'|',$defaultFontSize,'|',$defaultColCount,'|',substring-before($colWidPlusdefaultColCount,'|'),'|',0,'|',substring-before($startcoloffset,'cm'), '-ooe')"/>
+                  </xsl:if>
+                  <xsl:if test ="substring-before($colWidPlusdefaultColCount,'|')=''">
+                    <xsl:value-of select="concat('ooc-sonataChartWidth-oop-','False|',$defaultFontStyle,'|',$defaultFontSize,'|',$defaultColCount,'|','0','|',0,'|',substring-before($startcoloffset,'cm'), '-ooe')"/>
+                  </xsl:if>
+                  <!--<xsl:value-of select="concat('sonataChartWidth:','False|',$defaultFontStyle,'|',$defaultFontSize,'|',$defaultColCount,'|',substring-before($colWidPlusdefaultColCount,'|'))"/>-->
+                </xsl:otherwise>
+              </xsl:choose>
+            <!-- Call Post Processor Here-->
+            </xsl:attribute>
+          </xsl:for-each>
         </xsl:when>
-        <xsl:otherwise>
-          <xsl:call-template name="ConvertEmu">
-            <xsl:with-param name="length" select="xdr:from/xdr:colOff"/>
-            <xsl:with-param name="unit">cm</xsl:with-param>
-          </xsl:call-template>
-        </xsl:otherwise>
       </xsl:choose>
-    </xsl:attribute>
-    <xsl:attribute name="svg:y">
-      <xsl:call-template name="ConvertEmu">
-        <xsl:with-param name="length" select="xdr:from/xdr:rowOff"/>
-        <xsl:with-param name="unit">cm</xsl:with-param>
-      </xsl:call-template>
-    </xsl:attribute>
+    </xsl:otherwise>
+  </xsl:choose>
+  <!--End-->
+
+
 		<xsl:if test="$RowEnd!='' and $ColEnd!=''">
     <xsl:attribute name="table:end-x">
       <xsl:choose>
@@ -1416,7 +1588,7 @@ RefNo-1	1-Feb-2008 Sandeep s           1835598   Changes done to fix bug:XLSX: T
 			<xsl:choose>
 				<xsl:when test="xdr:wsDr/xdr:twoCellAnchor">
 					<xsl:for-each
-					  select="key('Part', concat(concat('xl/worksheets/_rels/', substring-after($sheet, '/')), '.rels'))//node()[name()='Relationship']">
+					  select="key('Part', concat(concat('xl/worksheets/_rels/', substring-after($sheet, '/')), '.rels'))//node()[name()='Relationship' and contains(@Type,'drawing')]">
 						<xsl:call-template name="CopyPictures">
 							<xsl:with-param name="document">
 								<xsl:value-of
@@ -1464,7 +1636,7 @@ RefNo-1	1-Feb-2008 Sandeep s           1835598   Changes done to fix bug:XLSX: T
 				</xsl:when>
 				<xsl:when test="xdr:wsDr/xdr:oneCellAnchor">
 					<xsl:for-each
-					  select="key('Part', concat(concat('xl/worksheets/_rels/', substring-after($sheet, '/')), '.rels'))//node()[name()='Relationship']">
+					  select="key('Part', concat(concat('xl/worksheets/_rels/', substring-after($sheet, '/')), '.rels'))//node()[name()='Relationship' and contains(@Type,'drawing')]">
 						<xsl:call-template name="CopyPictures">
 							<xsl:with-param name="document">
 								<xsl:value-of
