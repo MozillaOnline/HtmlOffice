@@ -64,7 +64,7 @@ function Viewer(viewerPlugin) {
             window.alert(navigator.mozL10n.get('file-is-too-big'));
             goBack();
           } else if (content) {
-            var url = {type: 4, files: content};
+            var url = {type: 7, files: content};
 
             viewerPlugin.onLoad = function () {
               isSlideshow = viewerPlugin.isSlideshow();
