@@ -724,75 +724,69 @@ html[dir='rtl'] .dropdownToolbarButton {
 }
 
 #canvasContainer {
-    overflow: auto;
-
-    padding-top: 6px;
-    padding-bottom: 6px;
-    position: absolute;
-    top: 32px;
-    right: 0;
-    bottom: 32px;
-    left: 0;
-
-    text-align: center;
-    
-    background-color: #FFF;
-    background-image: url(images/texture.png);
+  overflow: auto;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  position: absolute;
+  top: 32px;
+  right: 0;
+  bottom: 32px;
+  left: 0;
+  text-align: center;
+  background-color: #FFF;
+  background-image: url(images/texture.png);
 }
 
 #canvasContainer.slideshow {
-    padding: 0;
-    overflow: hidden;
+  padding: 0;
+  overflow: hidden;
 }
 
 #canvasContainer.slideshow > * {
-    margin: auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .presentationMode {
-    top: 0 !important;
-    bottom: 0 !important;
-    background-color: black !important;
-    cursor: default !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  background-color: black !important;
+  cursor: default !important;
 }
 
 #canvas {
-    box-shadow:         0px 0px 7px rgba(0, 0, 0, 0.75);
-    -webkit-box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow:    0px 0px 7px rgba(0, 0, 0, 0.75);
-    -ms-box-shadow:    0px 0px 7px rgba(0, 0, 0, 0.75);
-    -o-box-shadow:    0px 0px 7px rgba(0, 0, 0, 0.75);
+  box-shadow:         0px 0px 7px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow:    0px 0px 7px rgba(0, 0, 0, 0.75);
+  -ms-box-shadow:    0px 0px 7px rgba(0, 0, 0, 0.75);
+  -o-box-shadow:    0px 0px 7px rgba(0, 0, 0, 0.75);
 
-    /*
-     * Hide the canvas overflow because otherwise the CSS-scaled 'sizer' child
-     * of the canvas will still advertise the original size in Firefox, causing
-     * strange scrollbar behavior.
-     */
-    overflow: hidden;
+  /*
+   * Hide the canvas overflow because otherwise the CSS-scaled 'sizer' child
+   * of the canvas will still advertise the original size in Firefox, causing
+   * strange scrollbar behavior.
+   */
+  overflow: hidden;
 }
 
 #sliderContainer {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 #overlayNavigator {
-    position: absolute;
-    width: 100%;
-    height: 57px;
-    top: calc(50% - 43px);
-    background-color: rgba(0, 0, 0, 0);
-    z-index: 1001;
-    opacity: 1;
-    -webkit-transition: opacity 1s ease-out;
-    -moz-transition: opacity 1s ease-out;
-    transition: opacity 1s ease-out;
-    display: none;
-
+  position: absolute;
+  width: 100%;
+  height: 57px;
+  top: calc(50% - 43px);
+  background-color: rgba(0, 0, 0, 0);
+  z-index: 1001;
+  opacity: 1;
+  -moz-transition: opacity 1s ease-out;
+  transition: opacity 1s ease-out;
+  display: none;
 }
 #previousPage {
   float: left;
@@ -811,122 +805,119 @@ html[dir='rtl'] .dropdownToolbarButton {
   background-size: 57px 57px;
 }
 #previousPage:active {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 #nextPage:active {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 #overlayCloseButton {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 3;
-    font-size: 35px;
-    color: white;
-    background-color: black;
-    opacity: 0.5;
-
-    width: 40px;
-    height: 40px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
-    text-align: center;
-    cursor: pointer;
-    display: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  font-size: 35px;
+  color: white;
+  background-color: black;
+  opacity: 0.5;
+  width: 40px;
+  height: 40px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  text-align: center;
+  cursor: pointer;
+  display: none;
 }
 #overlayCloseButton:active {
-    background-color: red;
+  background-color: red;
 }
 
 #aboutDialog {
-    width: 200px;
-    top: calc(50% - 100px);
-    left: calc(50% - 100px);
-    position: absolute;
-    z-index: 4;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: #666;
-    color: white;
-    text-align: center;
-    border-radius: 2px;
-    box-shadow: 0px 1px 6px black;
-    padding: 5px;
-    font-style: sans-serif;
-    display: none;
+  width: 200px;
+  top: calc(50% - 100px);
+  left: calc(50% - 100px);
+  position: absolute;
+  z-index: 4;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #666;
+  color: white;
+  text-align: center;
+  border-radius: 2px;
+  box-shadow: 0px 1px 6px black;
+  padding: 5px;
+  font-style: sans-serif;
+  display: none;
 }
 
 #aboutDialog h1 {
-    font-size: 25pt;
+  font-size: 25pt;
 }
 
 #aboutDialog p {
-    font-size: 10pt;
+  font-size: 10pt;
 }
 
 #aboutDialog > * {
-    margin: 10px;
+  margin: 10px;
 }
 
 #overlay {
-    visibility: hidden;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width:100%;
-    height:100%;
-    text-align:center;
-    z-index: 3;
-    background-color: black;
-    opacity: 0.5;
+  visibility: hidden;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width:100%;
+  height:100%;
+  text-align:center;
+  z-index: 3;
+  background-color: black;
+  opacity: 0.5;
 }
 
 @media only screen and (max-device-width: 600px) and (max-device-height: 1000px) {
-    #canvasContainer {
-        top: 0;
-        bottom: 0;
-    }
+  #canvasContainer {
+    top: 0;
+    bottom: 0;
+  }
 
-    #overlayNavigator.touched {
-        display: block;
-        opacity: 1;
-        height: 100px;
-    }
+  #overlayNavigator.touched {
+    display: block;
+    opacity: 1;
+    height: 100px;
+  }
 
-    #nextPage, #previousPage {
-        pointer-events: all;
-    }
+  #nextPage, #previousPage {
+    pointer-events: all;
+  }
 
-    #titlebar, #toolbarContainer {
-        background-color: rgba(0, 0, 0, 0.6);
-        background-image: none;
-        -webkit-transition: all 0.5s;
-        -moz-transition: all 0.5s;
-        transition: all 0.5s;
-    }
+  #titlebar, #toolbarContainer {
+    background-color: rgba(0, 0, 0, 0.6);
+    background-image: none;
+    -moz-transition: all 0.5s;
+    transition: all 0.5s;
+  }
 
-    #titlebar {
-        top: -32px;
-    }
-    #titlebar.viewer-touched {
-        top: 0px;
-    }
-    #toolbarContainer {
-        bottom: -32px;
-    }
-    #toolbarContainer.viewer-touched {
-        bottom: 0px;
-    }
+  #titlebar {
+    top: -32px;
+  }
+  #titlebar.viewer-touched {
+    top: 0px;
+  }
+  #toolbarContainer {
+    bottom: -32px;
+  }
+  #toolbarContainer.viewer-touched {
+    bottom: 0px;
+  }
 
-    .viewer-touched {
-        display: block;
-        opacity: 1 !important;
-    }
+  .viewer-touched {
+    display: block;
+    opacity: 1 !important;
+  }
 
-    #next, #previous {
-        display: none;
-    }
+  #next, #previous {
+    display: none;
+  }
 }
 
 .hidden {

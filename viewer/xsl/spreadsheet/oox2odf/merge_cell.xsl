@@ -1674,11 +1674,18 @@ RefNo-1 7-Nov-2007 Sandeep S     1802631   Modification done to fix columns shif
               </xsl:otherwise>
             </xsl:choose>
           </xsl:attribute>
+          <xsl:attribute name="table:style-name">
+            <xsl:value-of select="generate-id(key('Xf', @s))"/>
+          </xsl:attribute>
 
         </table:covered-table-cell>
       </xsl:when>
       <xsl:otherwise>
-        <table:covered-table-cell/>
+        <table:covered-table-cell>
+          <xsl:attribute name="table:style-name">
+            <xsl:value-of select="generate-id(key('Xf', @s))"/>
+          </xsl:attribute>
+        </table:covered-table-cell>
       </xsl:otherwise>
     </xsl:choose>
 

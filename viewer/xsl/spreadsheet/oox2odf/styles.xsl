@@ -1094,7 +1094,7 @@ RefNo-5 12-Jan-2009 Sandeep S     ODF1.1   Changes done for ODF1.1 conformance
   <!-- convert font size -->
   <xsl:template match="e:sz" mode="style">
     <xsl:attribute name="fo:font-size">
-      <xsl:value-of select="round(@val)"/>
+      <xsl:value-of select="concat(round(@val),'pt')"/>
     </xsl:attribute>
     <!-- Fix for the bug 1802600 by chhavi -->
     <xsl:attribute name="style:font-size-asian">

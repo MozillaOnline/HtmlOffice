@@ -261,9 +261,13 @@ RefNo-3 8-Jan-2009 Sandeep S     ODF1.1   Changes done for ODF1.1 conformance
 											</xsl:for-each>
 										</xsl:when>
 										<xsl:otherwise>
+										  <text:a xlink:href="{$XlinkHref}" >
+										    <xsl:value-of select="e:v"/>
+										  </text:a>
+										  <!-- Modify by dxue for dispaly link text in xlsx
 											<pxsi:v>
 												<xsl:value-of select="e:v"/>
-											</pxsi:v>
+											</pxsi:v>-->
 										</xsl:otherwise>
 									</xsl:choose>
 								</xsl:otherwise>

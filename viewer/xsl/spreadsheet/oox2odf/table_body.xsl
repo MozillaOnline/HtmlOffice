@@ -1039,8 +1039,6 @@ RefNo-1 7-Jan-2009 Sandeep S     ODF1.1   Changes done for ODF1.1 conformance
         
           
           <!-- check if conditional -->
-          <xsl:if
-            test="@s  or $CheckIfConditional != 'false'">
             <xsl:choose>            
               <xsl:when test="$CheckIfConditional != 'false' and @s != ''">
                 <xsl:variable name="ConditionalStyleID">
@@ -1119,6 +1117,27 @@ RefNo-1 7-Jan-2009 Sandeep S     ODF1.1   Changes done for ODF1.1 conformance
             </xsl:otherwise>
               </xsl:choose>
             </xsl:when>
+            <xsl:otherwise>  
+              <xsl:choose>
+                <xsl:when test="$CheckIfMerge != 'false'">
+                  <xsl:attribute name="table:style-name">
+                    <xsl:value-of select="concat(generate-id(key('Xf', '0')), generate-id(key('Xf', '0')))"/>
+                  </xsl:attribute>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:attribute name="table:style-name">
+                    <xsl:choose>
+                      <xsl:when test="$horizontal = 'centerContinuous'">
+                        <xsl:value-of select="concat(generate-id(key('Xf', '0')), generate-id(key('Xf', '0')))"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="generate-id(key('Xf', '0'))"/>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </xsl:attribute>
+            </xsl:otherwise>
+              </xsl:choose>
+            </xsl:otherwise>
             </xsl:choose>
             <xsl:if test="$horizontal = 'centerContinuous' and e:v">
             <xsl:variable name="continous">
@@ -1130,7 +1149,6 @@ RefNo-1 7-Jan-2009 Sandeep S     ODF1.1   Changes done for ODF1.1 conformance
             <xsl:attribute name="table:number-rows-spanned">
             <xsl:text>1</xsl:text>
             </xsl:attribute>
-            </xsl:if>            
             </xsl:if>
           <xsl:if
             test="contains(concat(';', $ValidationCell), concat(';', $rowNum, ':', $colNum, ';'))">
