@@ -500,6 +500,9 @@ RefNo-3 8-Jan-2009 Sandeep S     ODF1.1   Changes done for ODF1.1 conformance
             <xsl:when test="$numId = 49">
               <xsl:text>string</xsl:text>
             </xsl:when>
+	    <xsl:when test="$numId = 57">
+              <xsl:text>date</xsl:text>
+            </xsl:when>
             <xsl:otherwise>
               <xsl:choose>
                 <xsl:when test="@t='d'">

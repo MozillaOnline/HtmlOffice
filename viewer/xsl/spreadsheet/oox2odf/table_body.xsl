@@ -1117,7 +1117,7 @@ RefNo-1 7-Jan-2009 Sandeep S     ODF1.1   Changes done for ODF1.1 conformance
             </xsl:otherwise>
               </xsl:choose>
             </xsl:when>
-            <xsl:otherwise>  
+            <xsl:otherwise>
               <xsl:choose>
                 <xsl:when test="$CheckIfMerge != 'false'">
                   <xsl:attribute name="table:style-name">

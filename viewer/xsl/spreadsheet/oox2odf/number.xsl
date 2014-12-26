@@ -2190,7 +2190,7 @@ RefNo-1 9-Jan-2009 Sandeep S     ODF1.1   Changes done for ODF1.1 conformance
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of
-          select="concat($valueBeforeComma,format-number(concat('.',$valueAfterComma),concat('.',substring-after($plainFormat,'.'))))"
+          select="format-number(concat($valueBeforeComma,'.',$valueAfterComma),$plainFormat)"
         />
       </xsl:otherwise>
     </xsl:choose>
@@ -2224,15 +2224,30 @@ RefNo-1 9-Jan-2009 Sandeep S     ODF1.1   Changes done for ODF1.1 conformance
       </xsl:call-template>
     </xsl:variable>
 
+    <xsl:variable name="scientificValue">
+      <xsl:choose>
+        <xsl:when test="contains($value,'E')">
+          <xsl:call-template name="ConvertScientific">
+            <xsl:with-param name="value">
+              <xsl:value-of select="$value"/>
+            </xsl:with-param>
+          </xsl:call-template>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$value"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <xsl:variable name="outputValue">
       <xsl:choose>
-        <xsl:when test="contains($value,'.') and $numStyle and $numStyle!=''">
+        <xsl:when test="contains($scientificValue,'.') and $numStyle and $numStyle!=''">
           <xsl:call-template name="FormatAfterComma">
             <xsl:with-param name="valueAfterComma">
-              <xsl:value-of select="substring-after($value,'.')"/>
+              <xsl:value-of select="substring-after($scientificValue,'.')"/>
             </xsl:with-param>
             <xsl:with-param name="valueBeforeComma">
-              <xsl:value-of select="substring-before($value,'.')"/>
+              <xsl:value-of select="substring-before($scientificValue,'.')"/>
             </xsl:with-param>
             <xsl:with-param name="format">
               <xsl:choose>
@@ -2246,22 +2261,68 @@ RefNo-1 9-Jan-2009 Sandeep S     ODF1.1   Changes done for ODF1.1 conformance
             </xsl:with-param>
           </xsl:call-template>
         </xsl:when>
-        <xsl:when test="contains($value,'.') and $numId = 10">
+        <xsl:when test="contains($scientificValue,'.') and $numId = 10">
           <xsl:call-template name="FormatAfterComma">
             <xsl:with-param name="valueAfterComma">
-              <xsl:value-of select="substring-after($value,'.')"/>
+              <xsl:value-of select="substring-after($scientificValue,'.')"/>
             </xsl:with-param>
             <xsl:with-param name="valueBeforeComma">
-              <xsl:value-of select="substring-before($value,'.')"/>
+              <xsl:value-of select="substring-before($scientificValue,'.')"/>
             </xsl:with-param>
             <xsl:with-param name="format">0.00%</xsl:with-param>
           </xsl:call-template>
         </xsl:when>
         <xsl:when test="$numId = 9">
-          <xsl:value-of select="format-number($value,'0%')"/>
+          <xsl:value-of select="format-number($scientificValue,'0%')"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="$value"/>
+          <xsl:choose>
+            <xsl:when test="contains($value,'E')">
+              <xsl:variable name="FormatAfterE">
+                <xsl:value-of select="substring-after($value,'E')"/>
+              </xsl:variable>
+              <xsl:variable name="valueBeforeE">
+                <xsl:value-of select="substring-before($value,'E')"/>
+              </xsl:variable>
+              <xsl:variable name="formatValueBeforeE">
+                <xsl:choose>
+                  <xsl:when test="contains($valueBeforeE,'.')">
+                    <xsl:call-template name="FormatAfterComma">
+                      <xsl:with-param name="valueAfterComma">
+                        <xsl:value-of select="substring-after($valueBeforeE,'.')"/>
+                      </xsl:with-param>
+                      <xsl:with-param name="valueBeforeComma">
+                        <xsl:value-of select="substring-before($valueBeforeE,'.')"/>
+                      </xsl:with-param>
+                      <xsl:with-param name="format">0.00</xsl:with-param>
+                    </xsl:call-template>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="$valueBeforeE"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
+              <xsl:value-of select="concat($formatValueBeforeE, 'E', $FormatAfterE)"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:choose>
+                <xsl:when test="contains($value,'.')">
+                  <xsl:call-template name="FormatAfterComma">
+                    <xsl:with-param name="valueAfterComma">
+                      <xsl:value-of select="substring-after($value,'.')"/>
+                    </xsl:with-param>
+                    <xsl:with-param name="valueBeforeComma">
+                      <xsl:value-of select="substring-before($value,'.')"/>
+                    </xsl:with-param>
+                    <xsl:with-param name="format">0.00</xsl:with-param>
+                  </xsl:call-template>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="$value"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
