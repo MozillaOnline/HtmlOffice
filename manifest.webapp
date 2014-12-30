@@ -35,6 +35,10 @@
     "zh-CN": {
       "name": "文档阅读器",
       "description": "在Firefox OS设备上打开 Office 文档。"
+    },
+    "fr": {
+      "name": "Visioneuse de Document",
+      "description": "Visioneuse de Document est un lecteur simple qui vous permet de lire des documents Office sur les appareils Firefox OS."
     }
   },
   "default_locale": "en-US"
