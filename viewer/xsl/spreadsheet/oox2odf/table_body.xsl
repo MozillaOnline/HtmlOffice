@@ -960,7 +960,6 @@ RefNo-1 7-Jan-2009 Sandeep S     ODF1.1   Changes done for ODF1.1 conformance
 
       <xsl:otherwise>
         <!-- insert this one cell-->
-
         <table:table-cell>
           <xsl:variable name="CheckIfPicture">
             <xsl:choose>

@@ -1740,29 +1740,6 @@ function linkFuncFromString(vals) {
       output = currentValue;
     }
     break;
-  case 'SonataAnnotation':
-    var content = vals[1].split('|');
-    var style = content[content.length - 1];
-    var textContent = content[0];
-    if (textContent.indexOf("\n") >= 0) {
-      var p = textContent.split('\n');
-      for (var i = 0; i < p.length; i++) {
-        if (p[i] == "") {
-          output += '<text:span xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" />';
-          if (i + 1 < p.length) {
-            output += '</text:p>';
-            output += '<text:p xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">';
-          }
-        } else {
-          output = '<text:span xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" text:style-name="' + style + '" >p[i]</text:span>';
-          if (i + 1 < p.length) {
-            output += '</text:p>';
-            output += '<text:p xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">';
-          }
-        }
-      }
-    }
-    break;
   case 'sonataColumnWidth':
     output = GetColumnWidth(vals[1]);
     break;
@@ -1846,6 +1823,37 @@ function linkFuncFromString(vals) {
   return output;
 }
 
+function replaceSonataAnnotation(xmlString) {
+  var newString;
+  var retString = '';
+  var startString = 'ooc-SonataAnnotation-oop-';
+  var endString = '-ooe';
+  var startIndex = 0;
+  if (!xmlString) {
+    return null;
+  }
+  startIndex = xmlString.indexOf(startString, startIndex);
+  var endIndex = xmlString.indexOf(endString, startIndex);
+  if (startIndex >= 0 && endIndex > startIndex) {
+    var funcString = xmlString.substring(startIndex, endIndex + endString.length);
+    var tempfuncstring = xmlString.substring(startIndex + startString.length, endIndex);
+    var content = tempfuncstring.split('|');
+    var style = content[content.length - 1];
+    var textContent = content[0];
+    if (textContent.indexOf("\n") >= 0) {
+      var p = textContent.split('\n');
+      for (var i = 0; i < p.length; i++) {
+        if (p[i] != "") {
+          retString = '<text:span text:style-name="' + style + '">' + p[i] + '</text:span>';
+        }
+      }
+    }
+    newString = xmlString.replace(funcString, retString);
+    console.log(newString);
+  }
+  return newString;
+}
+
 function ImageCopyBinary(source) {
 /*  var img = new Image();
   img.onload = function(){
@@ -1924,7 +1932,12 @@ function zipFile(xmlDoc) {
     } else {
       xmlfilecontent = xmlfilecontent.value;
     }
-    zipObject[xmlfilepath] = xmlfilecontent
+    var newxmlfilecontent = replaceSonataAnnotation(xmlfilecontent);
+    if (newxmlfilecontent) {
+      zipObject[xmlfilepath] = newxmlfilecontent;
+    } else {
+      zipObject[xmlfilepath] = xmlfilecontent;
+    }
   }
   return zipObject;
 }
@@ -2297,9 +2310,11 @@ function copyPartAfterTransform(oXMLParent) {
       }
     }
   }
-  xmlString = replaceOoc(oXMLParent.nodeValue);
-  if (xmlString) {
-    oXMLParent.nodeValue = xmlString;
+  if (oXMLParent.nodeValue && oXMLParent.nodeValue != '') {
+    xmlString = replaceOoc(oXMLParent.nodeValue);
+    if (xmlString) {
+      oXMLParent.nodeValue = xmlString;
+    }
   }
 }
 

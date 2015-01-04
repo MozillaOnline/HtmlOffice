@@ -51,8 +51,6 @@ RefNo-1 7-Nov-2007 Sandeep S     1802631   Modification done to fix columns shif
     <xsl:param name="rowNum"/>
     <xsl:param name="MergeCell"/>
 
-  
-
       <!-- Checks if Merge Cells exist  in the document-->
       <xsl:choose>
         <xsl:when test="$MergeCell != ''">
@@ -135,7 +133,7 @@ RefNo-1 7-Nov-2007 Sandeep S     1802631   Modification done to fix columns shif
       
       <!-- Checks if this cell is in "Merge Cell" -->
       <xsl:when
-        test="$colNum = $StartColNum and $EndColNum &gt;= $colNum and $rowNum &gt;= $StartRowNum and $EndRowNum &gt;= $rowNum">
+        test="$colNum &gt;= $StartColNum and $EndColNum &gt;= $colNum and $rowNum &gt;= $StartRowNum and $EndRowNum &gt;= $rowNum">
         <xsl:value-of select="concat('true:', number($EndColNum - $StartColNum +1 ))"/>
       </xsl:when>
       <xsl:otherwise>
