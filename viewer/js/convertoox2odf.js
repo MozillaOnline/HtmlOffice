@@ -1832,11 +1832,12 @@ function replaceSonataAnnotation(xmlString) {
   if (!xmlString) {
     return null;
   }
-  startIndex = xmlString.indexOf(startString, startIndex);
-  var endIndex = xmlString.indexOf(endString, startIndex);
-  if (startIndex >= 0 && endIndex > startIndex) {
-    var funcString = xmlString.substring(startIndex, endIndex + endString.length);
-    var tempfuncstring = xmlString.substring(startIndex + startString.length, endIndex);
+  var start = xmlString.indexOf(startString, startIndex);
+  startIndex = start;
+  var end = xmlString.indexOf(endString, start);
+  while (start >= 0 && end > start) {
+    var funcString = xmlString.substring(start, end + endString.length);
+    var tempfuncstring = xmlString.substring(start + startString.length, end);
     var content = tempfuncstring.split('|');
     var style = content[content.length - 1];
     var textContent = content[0];
@@ -1848,8 +1849,11 @@ function replaceSonataAnnotation(xmlString) {
         }
       }
     }
-    newString = xmlString.replace(funcString, retString);
-    console.log(newString);
+    xmlString = xmlString.replace(funcString, retString);
+    start = xmlString.indexOf(startString, startIndex);
+    end = xmlString.indexOf(endString, start);
+    startIndex = start;
+    newString = xmlString;
   }
   return newString;
 }

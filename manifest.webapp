@@ -3,7 +3,7 @@
   "description": "Document Viewer is a simple reader that allows users to read Office documents on Firefox OS device.",
   "type": "privileged",
   "launch_path": "/index.html",
-  "version": "3.1",
+  "version": "3.2",
   "icons": {
     "48": "/icons/icon48.png",
     "60": "/icons/icon60.png",
