@@ -1928,10 +1928,10 @@ RefNo-1 26-Oct-2007 Sandeep S     1757322   Modification done to handle column b
                     <xsl:attribute name="table:number-columns-repeated">
                       <xsl:choose>
                         <xsl:when test="256 &gt; @max">
-                          <xsl:value-of select="256 - @min + 1"/>
+                          <xsl:value-of select="@max - @min + 1"/>
                         </xsl:when>
                         <xsl:otherwise>
-                          <xsl:value-of select="@max - @min + 1"/>
+                          <xsl:value-of select="256 - @min + 1"/>
                         </xsl:otherwise>
                       </xsl:choose>
                     </xsl:attribute>
