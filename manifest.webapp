@@ -1,6 +1,6 @@
 {
   "name": "Document Viewer",
-  "description": "Document Viewer is a simple reader that allows users to read Office documents on Firefox OS device.",
+  "description": "Document Viewer is a simple reader that allows users to read Office documents on Firefox OS devices.",
   "type": "privileged",
   "launch_path": "/index.html",
   "version": "3.2",

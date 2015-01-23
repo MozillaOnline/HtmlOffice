@@ -2,7 +2,7 @@ Document Viewer
 ===============
 
 Document Viewer is a simple reader that allows users to read Office documents on
-Firefox OS device.
+Firefox OS devices.
 
 
 Based on
